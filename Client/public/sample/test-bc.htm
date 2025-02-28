@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Demo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./base64.js"></script>
+    <script type="text/javascript" src="./vgcaplugin.js"></script>
+    <script type="text/javascript">
+        function GetVersionCallBack(rv) {
+            var received_msg = JSON.parse(rv);
+            if (received_msg.Status == 0) {
+                document.getElementById("_signature").value = received_msg.Version;
+            } else {
+                alert("Ký số không thành công:" + received_msg.Status + ":" + received_msg.Message);
+            }
+        }
+
+        function exc_get_version() {
+            try {
+                vgca_get_version(GetVersionCallBack);
+            } catch (err) {
+                var prms = {};
+                prms["Status"] = 503;
+                prms["Message"] = err.message;
+                GetVersionCallBack(JSON.stringify(prms));
+            }
+        }
+
+        function SignCallBack(sender, rv) {
+            var received_msg = JSON.parse(rv);
+            if (received_msg.Status == 0) {
+                document.getElementById("_signature").value = received_msg.Signature;
+            } else {
+                alert("Ký số không thành công:" + received_msg.Status + ":" + received_msg.Message);
+            }
+        }
+
+        function exc_sign_msg(sender) {
+            //NoiDung = "Hello word"
+            //bytes=Encoding.UTF8.GetBytes(NoiDung)=>hash=sha245.Hash(bytes)=> hash_value=Convert.ToBase64String(hash);
+            var hash_value = "rqHRFGoA4cVeSceDfCJOz7dsoDN/1LttwJ6JLKAZARk=";
+            var hash_alg = "SHA256";
+
+            var prms = {};
+            prms["HashAlg"] = hash_alg;
+            prms["HashValue"] = hash_value;
+            var json_prms = JSON.stringify(prms);
+            vgca_sign_msg(sender, json_prms, SignCallBack);
+        }
+
+
+
+        function exc_verify_msg(sender) {
+            var prms = {};
+            //content = Encoding.UTF8.GetBytes(NoiDung)
+            var content = "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPEhTRExHQ1MgeG1sbnM6eHNkPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYSIgeG1sbnM6eHNpPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYS1pbnN0YW5jZSI+CiAgPEdJQVlDSFVOR1NJTkg+CiAgICA8R0lBWUNIVU5HU0lOSD4KICAgICAgPE1BX0dDUz4yM0JBMDAwMDAyNTM8L01BX0dDUz4KICAgICAgPE1BX0JOPjIzMDAwMDAyNTQ8L01BX0JOPgogICAgICA8TUFfQ1Q+MjAyOTk8L01BX0NUPgogICAgICA8U09fU0VSSSAvPgogICAgICA8TUFfQkhYSF9OTkQgLz4KICAgICAgPE1BX1RIRV9OTkQgLz4KICAgICAgPEhPVEVOX05ORD5OR1VZ4buETiBWxIJOIE1PSTwvSE9URU5fTk5EPgogICAgICA8TkdBWVNJTkhfTk5EPjIwMjMwODAzPC9OR0FZU0lOSF9OTkQ+CiAgICAgIDxNQV9EQU5UT0NfTk5EPjAwMTEzPC9NQV9EQU5UT0NfTk5EPgogICAgICA8TUFfUVVPQ1RJQ0hfTk5EIC8+CiAgICAgIDxMT0FJX0dJQVlUT19OTkQ+MDwvTE9BSV9HSUFZVE9fTk5EPgogICAgICA8U09fQ01ORF9OTkQgLz4KICAgICAgPE5HQVlDQVBfQ0NDRF9OTkQ+MTkwMDAxMDE8L05HQVlDQVBfQ0NDRF9OTkQ+CiAgICAgIDxOT0lDQVBfQ0NDRF9OTkQgLz4KICAgICAgPE5PSV9ES19USFVPTkdUUlVfTk5EIC8+CiAgICAgIDxNQVRJTkhfQ1VfVFJVPjg5PC9NQVRJTkhfQ1VfVFJVPgogICAgICA8TUFIVVlFTl9DVV9UUlU+ODg2PC9NQUhVWUVOX0NVX1RSVT4KICAgICAgPE1BWEFfQ1VfVFJVIC8+CiAgICAgIDxIT19URU5fQ0hBIC8+CiAgICAgIDxNQV9USEVfVEFNIC8+CiAgICAgIDxURU5fQ09OIC8+CiAgICAgIDxHSU9JX1RJTkhfQ09OPjA8L0dJT0lfVElOSF9DT04+CiAgICAgIDxTT19DT04gLz4KICAgICAgPExBTl9TSU5IPjA8L0xBTl9TSU5IPgogICAgICA8U09fQ09OX1NPTkcgLz4KICAgICAgPENBTl9OQU5HX0NPTiAvPgogICAgICA8TkdBWV9TSU5IX0NPTj4xOTAwMDEwMTAwMDA8L05HQVlfU0lOSF9DT04+CiAgICAgIDxOT0lfU0lOSF9DT04gLz4KICAgICAgPFRJTkhfVFJBTkdfQ09OIC8+CiAgICAgIDxTSU5IQ09OX1BIQVVUSFVBVD5mYWxzZTwvU0lOSENPTl9QSEFVVEhVQVQ+CiAgICAgIDxTSU5IQ09OX0RVT0kzMlRVQU4+ZmFsc2U8L1NJTkhDT05fRFVPSTMyVFVBTj4KICAgICAgPEdISV9DSFUgLz4KICAgICAgPE5HVU9JX0RPX0RFPjAwMDAwMDwvTkdVT0lfRE9fREU+CiAgICAgIDxOR1VPSV9HSElfUEhJRVUgLz4KICAgICAgPE1BX1RURFYgLz4KICAgICAgPE5HQVlfQ1Q+MTkwMDAxMDE8L05HQVlfQ1Q+CiAgICAgIDxTTyAvPgogICAgICA8UVVZRU5fU08gLz4KICAgIDwvR0lBWUNIVU5HU0lOSD4KICA8L0dJQVlDSFVOR1NJTkg+CjwvSFNETEdDUz4="
+
+
+            prms["Base64Content"] = content;
+            prms["Signature"] = document.getElementById("_signature").value;
+            var json_prms = JSON.stringify(prms);
+
+            vgca_verify_msg(json_prms, verifyCallBack);
+        }
+
+        function verifyCallBack(rv) {
+            var received_msg = JSON.parse(rv);
+            if (received_msg.Status == 0) {
+                alert(rv);
+            } else {
+                alert(rv);
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <form id="message_form">
+
+        <div id="page-wrapper">
+            <h1>Plugin Demo</h1>
+
+            <p><textarea id="_signature" cols="80" rows="10" readonly></textarea></p>
+            <p><textarea id="_verifier" cols="80" rows="10"></textarea></p>
+
+            <button type="button" id="_Version" onclick="exc_get_version();">GetVersion</button><br />
+
+            <button type="button" id="_Sign1" onclick="exc_sign_msg();">Ký số Hash Value và Đóng gói PKCS#7 Detached</button><br />
+
+            <button type="button" id="_Verify" onclick="exc_verify_msg();">Verify</button><br />
+
+
+
+
+
+        </div>
+    </form>
+</body>
+
+</html>

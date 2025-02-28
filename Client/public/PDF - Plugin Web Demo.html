@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<!-- saved from url=(0029)./PDF - Plugin Web Demo -->
+<html style="" class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>
+    .navbar-custom {
+        background-color: #229922;
+        color: #ffffff;
+        border-radius: 0;
+    }
+    .fotter_custom {
+        padding-bottom: 10px;
+        width: 100%;
+        text-align: center;
+    }
+    .content {
+        padding: 30px;
+        margin-bottom: 30px;
+        margin-top: 60px;
+        font-size: 21px;
+        font-weight: 200;
+        line-height: 2;
+        padding: 10px 30px 15px 30px;
+        border-radius: 4px 4px 0 0;
+        -webkit-border-radius: 4px 0 0 0;
+        -moz-border-radius: 4px 0 0 0;
+        border: 3px solid #ccc;
+        min-height: 480px;
+        /*color: white;*/
+        /*background-color: white;*/
+    }
+</style>
+
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF - Plugin Web Demo</title>
+    <link href="./PDF - Plugin Web Demo_files/bootstrap.css" rel="stylesheet">
+<link href="./PDF - Plugin Web Demo_files/site.css" rel="stylesheet">
+
+    <script src="./PDF - Plugin Web Demo_files/modernizr-2.6.2.js "></script>
+    
+    <script src="./PDF - Plugin Web Demo_files/jquery-1.10.2.js "></script>
+    <script src="./PDF - Plugin Web Demo_files/jquery-1.10.2.min.js "></script>
+    
+   
+    
+    <script src="./PDF - Plugin Web Demo_files/BkavCAPlugin.js "></script>
+    
+    <script src="./PDF - Plugin Web Demo_files/verify.js "></script>
+    <script src="./PDF - Plugin Web Demo_files/base64.js "></script>
+    <script src="./PDF - Plugin Web Demo_files/xml2json.js "></script>
+    <script src="./PDF - Plugin Web Demo_files/xml2json.min.js "></script>
+    <script src="./PDF - Plugin Web Demo_files/CheckBrowser.js "></script>
+    <script src="./PDF - Plugin Web Demo_files/CheckResult.js "></script>
+    <script src="./PDF - Plugin Web Demo_files/CheckPluginValid.js "></script>
+    <script src="./PDF - Plugin Web Demo_files/XML.js "></script>
+    <script src="./PDF - Plugin Web Demo_files/Utils.js "></script>
+    <script src="./PDF - Plugin Web Demo_files/OOXML.js "></script>
+    <script src="./PDF - Plugin Web Demo_files/PDF.js "></script>
+    <script src="./PDF - Plugin Web Demo_files/CMS.js "></script>
+    <script src="./PDF - Plugin Web Demo_files/CertUtils.js "></script>
+    
+    <script>
+        var licenseKey = "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PExpY2Vuc2UgaWQ9IkwwMDEiPjxUZW5QaGFuTWVtPkJrYXZDQSBTaWduZXIgUGx1Z2luPC9UZW5QaGFuTWVtPjxOZ3VvaUNhcD5Ca2F2IENvcnBvcmF0aW9uPC9OZ3VvaUNhcD48RG9uVmlEdW9jQ2FwPlZQIEJhbms8L0RvblZpRHVvY0NhcD48SGFuU3VEdW5nPjxOZ2F5Q2FwPjEwLTA1LTIwMjA8L05nYXlDYXA+PE5nYXlIZXRIYW4+MTAtMDYtMjAyMjwvTmdheUhldEhhbj48L0hhblN1RHVuZz48UXV5ZW5TdUR1bmc+PFVuZ0R1bmc+KjwvVW5nRHVuZz48TW9kdWxlWE1MPjE8L01vZHVsZVhNTD48TW9kdWxlUERGPjE8L01vZHVsZVBERj48TW9kdWxlQ01TPjE8L01vZHVsZUNNUz48TW9kdWxlT09YTUw+MTwvTW9kdWxlT09YTUw+PE1vZHVsZUNlcnRpZmljYXRlVXRpbHM+MTwvTW9kdWxlQ2VydGlmaWNhdGVVdGlscz48TW9kdWxlSW1wb3J0Q2VydD4xPC9Nb2R1bGVJbXBvcnRDZXJ0PjwvUXV5ZW5TdUR1bmc+PFNpZ25hdHVyZSB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC8wOS94bWxkc2lnIyI+PFNpZ25lZEluZm8+PENhbm9uaWNhbGl6YXRpb25NZXRob2QgQWxnb3JpdGhtPSJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy14bWwtYzE0bi0yMDAxMDMxNSNXaXRoQ29tbWVudHMiLz48U2lnbmF0dXJlTWV0aG9kIEFsZ29yaXRobT0iaHR0cDovL3d3dy53My5vcmcvMjAwMC8wOS94bWxkc2lnI3JzYS1zaGExIi8+PFJlZmVyZW5jZSBVUkk9IiI+PFRyYW5zZm9ybXM+PFRyYW5zZm9ybSBBbGdvcml0aG09Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvMDkveG1sZHNpZyNlbnZlbG9wZWQtc2lnbmF0dXJlIi8+PC9UcmFuc2Zvcm1zPjxEaWdlc3RNZXRob2QgQWxnb3JpdGhtPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwLzA5L3htbGRzaWcjc2hhMSIvPjxEaWdlc3RWYWx1ZT5XaTFJblFsZlQvMzJ2RjJ6RlNkU3FoQXFQVlU9PC9EaWdlc3RWYWx1ZT48L1JlZmVyZW5jZT48L1NpZ25lZEluZm8+PFNpZ25hdHVyZVZhbHVlPlRNUEJaWDUwZXozQkdWVGtzOGZrb09LWEl4WEdlYXlralg2WkZQTWY3czNBTFVNTDY2NlNCRWlpYW93RG5uQ0xWR3RqNm1CeDladmgNCmVlWEJmcTUwcjd1NHBsYzZCYXZLYWFseldVREtJNVhqQ0ttTndQaU85aHlZRWpWOEt5QVgydzhjdkNzdkNycTM1MmJweDFXT0IvRXoNCnpHTTBiVWZPekUxMGw5ZHRVZFpOTmYvL2lSc1pmYkpLT21zY2xncm9CeFBPM0xCMmxyRDJtUU9LZTg2RzU3MmdzNUx5UC9YSlVobVINCktnRllYbDgwWEhBNGxwdHVwa3hUZXZBOGpjUGNPcGdVUFFOOHRycitBa3hrYkxqWm5hNXVZU2RqL1V0OUlHQWs5OFZHTzQyejIrU2sNCms4UFk0NHg0YnBJZk1RMHFFZExQS2ovcE1uVU94bGUvdDcyWTFBPT08L1NpZ25hdHVyZVZhbHVlPjxLZXlJbmZvPjxYNTA5RGF0YT48WDUwOVN1YmplY3ROYW1lPkM9Vk4sU1Q9SMOgIE7hu5lpLEw9Q+G6p3UgR2nhuqV5LE89Q8O0bmcgdHkgQ+G7lSBwaOG6p24gQmthdixPVT1CYW4gQU5NLENOPUJrYXZDQSBMaWNlbnNlLFVJRD1NU1Q6MDEwMTM2MDY5Ny1Ca2F2Q0FMaWNlbnNlPC9YNTA5U3ViamVjdE5hbWU+PFg1MDlDZXJ0aWZpY2F0ZT5NSUlFMWpDQ0E3NmdBd0lCQWdJUVZBTmdmV2RnWDBBVkdIdVlKTTVFcmpBTkJna3Foa2lHOXcwQkFRVUZBREJKTVFzd0NRWURWUVFHDQpFd0pXVGpFT01Bd0dBMVVFQnhNRlNHRnViMmt4R1RBWEJnTlZCQW9URUVKcllYWWdRMjl5Y0c5eVlYUnBiMjR4RHpBTkJnTlZCQU1UDQpCa0pyWVhaRFFUQWVGdzB4T0RBNE1Ea3dPRFF3TWpKYUZ3MHlNREExTVRVd016TTFORGhhTUlHMU1Td3dLZ1lLQ1pJbWlaUHlMR1FCDQpBUXdjVFZOVU9qQXhNREV6TmpBMk9UY3RRbXRoZGtOQlRHbGpaVzV6WlRFWE1CVUdBMVVFQXd3T1FtdGhka05CSUV4cFkyVnVjMlV4DQpFREFPQmdOVkJBc01CMEpoYmlCQlRrMHhJakFnQmdOVkJBb01HVVBEdEc1bklIUjVJRVBodTVVZ2NHamh1cWR1SUVKcllYWXhGVEFUDQpCZ05WQkFjTURFUGh1cWQxSUVkcDRicWxlVEVTTUJBR0ExVUVDQXdKU01PZ0lFN2h1NWxwTVFzd0NRWURWUVFHRXdKV1RqQ0NBU0l3DQpEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBUExkUTJjVGdZOVJieTNPNUdFWXU3Y2gxeVJXQVNCV2RjZHFYamFaDQpMYkxicUVXWUwwVCtBdkE0cUFrcUNBZHdzOTBuZWtHVjZNWjdzVHUrMEsrcjFBL2xSc0EwOERtRjczL0JDNW1DR09lb3huYkNhQVorDQpIQ2t5NDRsSVF5QWgwT011UUllSE9PZW8wUkhYOGJWVXozZUJ0ZGJoZmZTVC8zYWIyd09kaVpFYVp6SU5GaFBKZGpITXRibWpYUlAvDQo1RzV6ZDFGekVGYkVyTDVFUHo3U1c0ektLMmJ3ekRySjg5UGswRjZubVNMTk5kTTNJbGRFNmhwZlFYN3h5cFdWWk15cjNDdXRGSktPDQo5NHFwVlJaMmF1bTUrQ0dlS1c4SHo5MHQ3VE9HNVExOElQdUp1ajl4VGRGUHhiaFprTTNjT2thbmVNMHFESGx0aEs3WjVoSDN4K2tDDQpBd0VBQWFPQ0FVc3dnZ0ZITURFR0NDc0dBUVVGQndFQkJDVXdJekFoQmdnckJnRUZCUWN3QVlZVmFIUjBjRG92TDI5amMzQXVZbXRoDQpkbU5oTG5adU1CMEdBMVVkRGdRV0JCVG1HZVVrR1l5TmJBY2JQRXZOL0xKZitiUnhsakFNQmdOVkhSTUJBZjhFQWpBQU1COEdBMVVkDQpJd1FZTUJhQUZCNndEMGlYMzlERFo2ZEdoRHRZTzRnTlU1U0dNSDhHQTFVZEh3UjRNSFl3ZEtBam9DR0dIMmgwZEhBNkx5OWpjbXd1DQpZbXRoZG1OaExuWnVMMEpyWVhaRFFTNWpjbXlpVGFSTE1Fa3hEekFOQmdOVkJBTU1Ca0pyWVhaRFFURVpNQmNHQTFVRUNnd1FRbXRoDQpkaUJEYjNKd2IzSmhkR2x2YmpFT01Bd0dBMVVFQnd3RlNHRnViMmt4Q3pBSkJnTlZCQVlUQWxaT01BNEdBMVVkRHdFQi93UUVBd0lFDQo4REF6QmdOVkhTVUVMREFxQmdnckJnRUZCUWNEQVFZSUt3WUJCUVVIQXdJR0NDc0dBUVVGQndNRUJnb3JCZ0VFQVlJM0NnTU1NQTBHDQpDU3FHU0liM0RRRUJCUVVBQTRJQkFRQ1NCTndOVW5TaTJ6MUtLK1A1Q3VkZ1NpYktJeklvdmxmMDJhMUhIK1MxZnFUVmdzNTRwV0d3DQpFRndBWHBqb2FBdU5kN2hqR1dMckVGRHFISmc2ZGNTcGFzVmlDdWFGMTYrZEluU2hhelY2Q1ZOeDRaMXZseXVIbzBEUHJFekRvVUdzDQpHZ0Zvc3R0NHIzZDVnblhuSWhrSGdyZDdsbWxPNnEyYVp6STM0TUc2aHlZNVd4em5nZm9NNjBuTzdnVnhwL3Rmb2VFMGhFUTQ3QW5QDQpxNDBvd0k0QXlVL3VyNEQza2pDbEttWHIycHV1Szk4ZUxVTWZhVUNlMTJrMlo3d0ROWnc4eFZDbVhRZ09yaEt5ME1kV1RYSzlFcFM3DQo4VEJkUmNlcjc2blZvRDFnMG5pc2dmL0FkbHo1Vmp4ZlVJdmcxWmRzdkFKNXdncmRoU0xVM2ZYdkZXNEw8L1g1MDlDZXJ0aWZpY2F0ZT48WDUwOUNlcnRpZmljYXRlPk1JSUVOekNDQXgrZ0F3SUJBZ0lLWVIrazFBQUFBQUFBRVRBTkJna3Foa2lHOXcwQkFRVUZBREIrTVFzd0NRWURWUVFHRXdKV1RqRXoNCk1ERUdBMVVFQ2hNcVRXbHVhWE4wY25rZ2IyWWdTVzVtYjNKdFlYUnBiMjRnWVc1a0lFTnZiVzExYm1sallYUnBiMjV6TVJzd0dRWUQNClZRUUxFeEpPWVhScGIyNWhiQ0JEUVNCRFpXNTBaWEl4SFRBYkJnTlZCQU1URkUxSlF5Qk9ZWFJwYjI1aGJDQlNiMjkwSUVOQk1CNFgNCkRURTVNRFV4TURBM05UTXdOMW9YRFRJME1EVXhNREE0TURNd04xb3dTVEVMTUFrR0ExVUVCaE1DVms0eERqQU1CZ05WQkFjVEJVaGgNCmJtOXBNUmt3RndZRFZRUUtFeEJDYTJGMklFTnZjbkJ2Y21GMGFXOXVNUTh3RFFZRFZRUURFd1pDYTJGMlEwRXdnZ0VpTUEwR0NTcUcNClNJYjNEUUVCQVFVQUE0SUJEd0F3Z2dFS0FvSUJBUUREall5MkJ6bzVyMzN2bHdZVHA3cXhXeDRkcGZwaXphZjZlUTZ4ekVEUGVSUU4NCmptbVc2L1JGZzNkMXR2OGtjU1dXeDZLaHVtSUx6elpkdmZFUlhNa1FwVEd1ZXFxMzV6RzdkOUdVbGttSVZEeWNRNFZ3dm94cTlNVFcNCk5uclFzWW4vQVJxaXgxdUUwWk9zWW55YzNjY1NpMHJLWmtnT3J5QkdYVWRrbXV6SE8xWE1rOElHTjJBTGhnMElyMGxZK0RkQ200dGUNCmVhc2Iwc1lkY2JVRHdISlB0ZzFrRUplMVQybVhTd1lDTkhCdjdMZzdpbkMrQVJmeG9DMEFsYUhhWlVQekhIQm1XdHlKUjJXSHd1WXANCkRNRTRSbThOSnUwb2ZHN0IrTm5aZ3ExczJhR0tYbTRjeDRFOTV4UEpudkszZTZ3bmp4YUE1LzNYQ1phL0dXUWxCUkkxQWdNQkFBR2oNCmdlc3dnZWd3RWdZRFZSMFRBUUgvQkFnd0JnRUIvd0lCQURBTEJnTlZIUThFQkFNQ0FZWXdIUVlEVlIwT0JCWUVGQjZ3RDBpWDM5REQNClo2ZEdoRHRZTzRnTlU1U0dNQjhHQTFVZEl3UVlNQmFBRk0xaWNlUmh2ZjQ5N0xKQVlOT0JkZDA2ckd2R01Ed0dBMVVkSHdRMU1ETXcNCk1hQXZvQzJHSzJoMGRIQTZMeTl3ZFdKc2FXTXVjbTl2ZEdOaExtZHZkaTUyYmk5amNtd3ZiV2xqYm5KallTNWpjbXd3UndZSUt3WUINCkJRVUhBUUVFT3pBNU1EY0dDQ3NHQVFVRkJ6QUNoaXRvZEhSd09pOHZjSFZpYkdsakxuSnZiM1JqWVM1bmIzWXVkbTR2WTNKMEwyMXANClkyNXlZMkV1WTNKME1BMEdDU3FHU0liM0RRRUJCUVVBQTRJQkFRQkVnb3VHWEY5em1YckpHb0N4UDNYQ2FxdXVLYUZXbnVLMUs2YXYNCm9Qa3pReXJvcTlqN1VRcjJWeE5UcEFKbWRqUjV2UWFIUEVWakxFZ1lhSHo5ckhHay93dThVOHE2M3lyUFhtNjF6K1cvWEJuYjlvRFYNCld4MDB2ODFlOFJiRDdDdmJJSng3eFprVGNtWnFBbXhzR3VOOHFGMWxzVFR4c2I0bC9vclh2RnFhNmdTR2RxODNjVDNkN0Q5dS9BRjkNCmpxenlNWFpwVVo2d2NRWitsRUVPRGVXSXJwZUdrSGZBWnVkNGE1TkhjYUk3YWw5QUZ3ZVBYU1ZlS2ZxTjdnbEEwWVdCSmFzZzhIWXENCjdEcU0rNE81YU5YUzBRcFBOSEY0QUJ4Znk2TFZJNFNEbkx2dzg4KzNmbXFld0w3SVpsNzZtWm5Yb1pCWWJJK3cvaWVGYks3emRLVm48L1g1MDlDZXJ0aWZpY2F0ZT48WDUwOUNlcnRpZmljYXRlPk1JSUQxekNDQXIrZ0F3SUJBZ0lRRytSemloOCt3STlIbjZiUE5jV1lJakFOQmdrcWhraUc5dzBCQVFVRkFEQitNUXN3Q1FZRFZRUUcNCkV3SldUakV6TURFR0ExVUVDaE1xVFdsdWFYTjBjbmtnYjJZZ1NXNW1iM0p0WVhScGIyNGdZVzVrSUVOdmJXMTFibWxqWVhScGIyNXoNCk1Sc3dHUVlEVlFRTEV4Sk9ZWFJwYjI1aGJDQkRRU0JEWlc1MFpYSXhIVEFiQmdOVkJBTVRGRTFKUXlCT1lYUnBiMjVoYkNCU2IyOTANCklFTkJNQjRYRFRBNE1EVXhOakF4TVRJME9Wb1hEVFF3TURVeE5qQXhNakF6TWxvd2ZqRUxNQWtHQTFVRUJoTUNWazR4TXpBeEJnTlYNCkJBb1RLazFwYm1semRISjVJRzltSUVsdVptOXliV0YwYVc5dUlHRnVaQ0JEYjIxdGRXNXBZMkYwYVc5dWN6RWJNQmtHQTFVRUN4TVMNClRtRjBhVzl1WVd3Z1EwRWdRMlZ1ZEdWeU1SMHdHd1lEVlFRREV4Uk5TVU1nVG1GMGFXOXVZV3dnVW05dmRDQkRRVENDQVNJd0RRWUoNCktvWklodmNOQVFFQkJRQURnZ0VQQURDQ0FRb0NnZ0VCQUtFL1dWRU8vakQvWWR1V2VCU0wyME04TnI1aHI5eTFQMkFlMHcwQlFhMzQNCnlZcENqc2p0TW9aSHhmNjE5K3JXUkRjUUVzTklDRkZRdXVWWDZjNDF5WTRjY3dtRk0wemh1emlzanEyM0V3UXVab0ZYTGN6N0d2MHUNCm5JdjlDVUR3WUJlYmNVVnRmZVBiS3RLN210M3J6RjdrQU4vVmJEQ0ZtNzFYZnkzVUpOT0ErK0FvVWI2dzFtRUh6T1dnUitlUmJTK0gNCldPaTByY0d4UnJQY1doMDRDZG43dFNlWW5sNzg4ZlJJLytpaE8vOVFNOWttcTdLWllwM01lOGhTVFo1Y1FvdHZkSDc4bEJQZUN0THcNCnRXcjRsa3hRbk9ZaGpzSGxsd0ZPelord1FCbDhHMWx2WERnWm1qZmEwWUU1RmpMdmdhMndJV3NSbDhMQkNMMXZJMXdFRDlNQ0F3RUENCkFhTlJNRTh3Q3dZRFZSMFBCQVFEQWdHR01BOEdBMVVkRXdFQi93UUZNQU1CQWY4d0hRWURWUjBPQkJZRUZNMWljZVJodmY0OTdMSkENCllOT0JkZDA2ckd2R01CQUdDU3NHQVFRQmdqY1ZBUVFEQWdFQU1BMEdDU3FHU0liM0RRRUJCUVVBQTRJQkFRQk1uYzErSXlDQUhDalANCjhQSEozeEhLc21sVG8vSmZETE5sbkM5VTRSeFFLdUJWRjhRWHZxaVRVVWFxaHUwa1pDOVBFNDZ3dEJTY2ZFTytMVTVqVW16YjFuQVgNCldVZGJvbHF6eDVaNnRnMzFMUTNaWkRxdjBGUTYwUk5vdHZvNERnWHI0UHd3OTB5YlgrTHVaM3Y0WXVwMHIzSlVUTlQ2WG92czY3Z24NCmdTeVlqdmZLb0ZHV2M4WVhpZm4wVTVjL1Y4UGJWU2hKYzA5S055cG5oTVVUdnNiSjdnbEhZcitvc3VwODVWOGsyenU0ZERXdzRZV1ANCmlwZElqdWQ0WjRuTDVhUUM3RnRYb2JuSGxyZkI2ZVZkanBtbXB5V2FIYkRPMWp0ck0vSytTZUV0MW9lQnVYYXVwL3pOczhaMk1xOU4NClVGSnNMUTJ5dmRkUTVkTjFZNTlkelFxWjwvWDUwOUNlcnRpZmljYXRlPjwvWDUwOURhdGE+PC9LZXlJbmZvPjwvU2lnbmF0dXJlPjwvTGljZW5zZT4=";
+    </script>
+</head>
+<body style="">
+    <div class="navbar navbar-inverse navbar-fixed-top navbar-brand navbar-custom">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                 <a class="navbar-brand" href="./Home Page - Plugin Web Demo.html">Home</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                     <li><a href="./XML - Plugin Web Demo.html">XML</a></li>
+                    <li><a href="./PDF - Plugin Web Demo.html">PDF</a></li>
+                    <li><a href="./CMS - Plugin Web Demo.html">CMS</a></li>
+                    <li><a href="./OOXML - Plugin Web Demo.html">OOXML</a></li>
+                    <li><a href="./CertUtils - Plugin Web Demo.html">CertUtils</a></li>
+                    <li><a href="./Utils - Plugin Web Demo.html">Utils</a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content well-lg content">
+        
+
+<link href="./PDF - Plugin Web Demo_files/bootstrap.vertical-tabs.css" rel="stylesheet">
+<link href="./PDF - Plugin Web Demo_files/bootstrap.vertical-tabs.min.css" rel="stylesheet">
+<script src="./PDF - Plugin Web Demo_files/jquery.xml2json.js "></script>
+<style>
+    .vertical_custom {
+        margin-top: 80px;
+        width: 17%;
+    }
+
+    .input-custom {
+        margin-right: 0px;
+        width: 80%;
+    }
+
+    .btn-file {
+        position: relative;
+        overflow: hidden;
+    }
+
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 999px;
+            text-align: right;
+            filter: alpha(opacity = 0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
+
+    .span-custom {
+        margin-right: 20px;
+        width: 150px;
+    }
+
+    .text-custom {
+        width: 80%;
+    }
+
+    .v-divider {
+        margin-left: 5px;
+        margin-right: 5px;
+        width: 1px;
+        height: 100%;
+        border-left: 1px solid gray;
+    }
+</style>
+<script>
+   function SignPDFCallback(data) {
+    var decodedata = base64.decode(data); 
+    var iRet = parseInt(decodedata);
+
+    var dataRet;
+    switch (iRet) {
+        case 0:
+            dataRet = "Không có quyền sử dụng chức năng này";
+            alert("Không có quyền sử dụng chức năng này");
+            break;
+        case 1:
+           // alert("Ký thành công");
+            break;
+        case 2:
+            dataRet = "Ký lỗi: Dữ liệu đã được ký";
+            alert("Ký lỗi: Dữ liệu đã được ký");
+            break;
+        case 3:
+            dataRet = "Không tìm thấy chứng thư số";
+            alert("Không tìm thấy chứng thư số");
+            break;
+        case 4:
+            dataRet = "Dữ liệu đầu vào không đúng định dạng";
+            alert("Dữ liệu đầu vào không đúng định dạng");
+            break;
+        case 5:
+            dataRet = "Có lỗi trong quá trình ký";
+            alert("Có lỗi trong quá trình ký");
+            break;
+        case 6:
+            dataRet = "Có lỗi trong quá trình lưu chữ ký";
+            alert("Có lỗi trong quá trình lưu chữ ký");
+            break;
+        case 13:
+            dataRet = "Người dùng hủy bỏ";
+            alert("Người dùng hủy bỏ");
+            break;
+        default:
+            dataRet = data;
+        //    alert("Ký thành công");
+            break;
+    }
+
+    var resultSplit = dataRet.split('*');
+    document.getElementById('SigningResult').value = resultSplit[0];
+  
+}
+
+function SignBase64PDF() {
+        var xmlFileIn = document.getElementById('pdfPath').value;
+        var serial = document.getElementById('selectCertSerial').value.substring("Số serial: ".length, document.getElementById('selectCertSerial').value.length);
+        
+       // var fileName = xmlFileIn.split('.').pop();
+       // xmlFileOut = xmlFileIn.substring(0, xmlFileIn.length - fileName.length - 1) + '_signed.pdf';
+        var signername1 = document.getElementById('selectCert').value;
+       // var urlIcon = document.getElementById('urlIcon').value;
+      //  var offsetX = document.getElementById('offsetX').value;
+       // var offsetY = document.getElementById('offsetY').value;
+        SignPDF(xmlFileIn, "", serial, signername1,"","0","0","1" ,SignPDFCallback);
+    
+}
+
+function Base64Decode(){
+    var dataDecode = document.getElementById('xmlEncode').value;     
+     document.getElementById('xmlEncodeResult').value =  base64.decode(dataDecode);
+    
+}
+
+// hàm trả về kết quả sau khi verify
+function VerifyPDFBase64Callback(data) {
+    var iRet = parseInt(data);
+    CheckVerifyResult(iRet);
+}
+// hàm lấy giá trị verify
+function VerifyBase64PDF() {
+    var pdfIn = document.getElementById('pdfVerifyPath').value;
+    VerifyPDF(pdfIn, VerifyPDFBase64Callback);
+}
+function GetSysConfigCallback(data){
+    var iRet = data;
+    var resultSplit = data.split('*');
+    document.getElementById('SystemConfig').value  = "Host name: "+ resultSplit[0] + "; Mac: "+ resultSplit[1]+"; IP: "+ resultSplit[2];
+}
+function GetSysConfigWindows()
+{
+    BkavCAPlugin.GetSysConfig(GetSysConfigCallback);
+}
+function LogoutToken(){
+    
+    BkavCAPlugin.LogoutSession();
+}
+
+function CheckPluginGetCert(data) {
+    switch (data) {
+        case "0":
+            alert("Plugin chưa được cài đặt!");
+            break;
+        case "1":
+            GetCertListByFilter(GetCertResult);
+
+            break;
+       default:
+            alert("Có lỗi trong việc xác thực Plugin!");
+            break;
+    }
+}
+
+</script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="tab-pane active" id="signing">
+                <div class="form-group" style="margin:30px">
+                    <h3>Signing</h3>
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <span class="buttonText span-custom"></span>
+                        </span>
+
+                        <textarea id="pdfPath" rows="6" placeholder="Dữ liệu cần ký" class="form-control"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <span class="span-custom"></span>
+                        </span>
+                        <!-- load cert in store -->
+                        <script> CheckPluginValid(CheckPluginGetCert);</script>
+                        <!-- <script >GetSysConfigWindows();</script> -->
+                        
+                        <div class="">
+                            <select id="selectCert" onchange="selectChange()" class="form-control" name="size">
+                                <option value="">Chọn chứng thư số</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <span class="span-custom"></span>
+                        </span>
+                        <input id="selectCertIssuer" type="text" class="form-control text-custom" placeholder="Nhà cung cấp" aria-describedby="sizing-addon2" readonly="readonly">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <span class="span-custom"></span>
+                        </span>
+                        <input id="selectCertSerial" type="text" class="form-control text-custom" placeholder="Số serial của chứng thư số" aria-describedby="sizing-addon2" readonly="readonly">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <span class="buttonText span-custom"></span>
+                        </span>
+                        <input id="selectCertExpire" type="text" class="form-control" placeholder="Hạn sử dụng" aria-describedby="sizing-addon2" readonly="readonly">
+                    </div>
+                     <div class="input-group">
+                        <span class="input-group-btn">
+                            <span class="buttonText span-custom"></span>
+                        </span>
+                        <input id="SystemConfig" type="text" class="form-control" placeholder="Thông tin Local" aria-describedby="sizing-addon2" readonly="readonly">
+                    </div>
+
+                   <!--    <div class="input-group">
+                        <div class="col-xs-5 col-xs-offset-3">
+                            <button onclick="  GetSysConfigWindows();" class="btn btn-success" style="width:100px;margin-left:10px">GetSysConfig</button>
+                        </div>
+                    </div> -->
+                    <!-- <div class="input-group">
+                        <div class="col-xs-5 col-xs-offset-3">
+                            <button onclick="LogoutToken();" class="btn btn-success" style="width:100px;margin-left:10px">Logout</button>
+                        </div>
+                    </div> -->
+                    <div class="input-group">
+                        <div class="col-xs-5 col-xs-offset-3">
+                            <button onclick=" SignBase64PDF();" class="btn btn-success" style="width:100px;margin-left:10px">Sign</button>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <span class="span-custom"></span>
+                        </span>
+
+                        <textarea id="SigningResult" rows="6" placeholder="Dữ liệu đã ký" class="form-control" readonly="readonly"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-2 v-divider"></div>
+        <div class="col-xs-6">
+            <div class="tab-pane" id="verifying">
+                <div class="form-group" style="margin:30px">
+                    <h3>Verifying</h3>
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <span class="buttonText span-custom"></span>
+                        </span>
+                        <textarea id="pdfVerifyPath" rows="6" placeholder="Dữ liệu cần xác thực" class="form-control"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <div class="col-xs-5 col-xs-offset-3">
+                            <button class="btn btn-success" onclick="VerifyBase64PDF();" style="width:100px;margin-left:10px">Verify</button>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <span class="span-custom"></span>
+                        </span>
+                        <input type="text" id="verifyingRet" style="color:red" class="form-control text-custom" placeholder="Kết quả xác thực" aria-describedby="sizing-addon2" readonly="readonly">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="tab-pane" id="verifying">
+                <div class="form-group" style="margin:30px">
+                    <h3>Decode XML</h3>
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <span class="buttonText span-custom"></span>
+                        </span>
+                        <textarea id="xmlEncode" rows="6" placeholder="Dữ liệu cần decode" class="form-control"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <div class="col-xs-5 col-xs-offset-3">
+                            <button class="btn btn-success" onclick="Base64Decode()" style="width:100px;margin-left:10px">Decode</button>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <span class="span-custom"></span>
+                        </span>
+                       
+                          <textarea id="xmlEncodeResult" rows="4" placeholder="Dữ liệu đã decode" class="form-control" readonly="readonly"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        
+    </div>
+    <footer class="fotter_custom">
+        <div id="ExtensionPlaceHolder" clientidmode="Static"><input type="image" id="holderDataInputToExtension" style="visibility:hidden" clientidmode="Static" name=""><input type="image" id="hrSignedData" style="visibility:hidden" clientidmode="Static" name=""><button type="button" id="actionToExtensionProcess" style="visibility:hidden" clientidmode="Static" name=""></button></div>
+        <p>© 2018 - BkavCA</p>
+    </footer>
+    <script src="./XML - Plugin Web Demo_files/jquery-1.10.2.js.download"></script>
+
+    <script src="./XML - Plugin Web Demo_files/bootstrap.js.download"></script>
+<script src="./XML - Plugin Web Demo_files/respond.js.download"></script>
+
+    
+    <object id="plugin0" type="application/x-bkavcaplugin" width="0" height="0">
+
+
+</object><div id="iackjmmabodkopglcheffjfdcjakocgf"></div></body></html>

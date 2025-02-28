@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Demo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./base64.js"></script>
+    <script type="text/javascript" src="./vgcaplugin.js"></script>
+    <script type="text/javascript">
+        function SignXMLCallBack(sender, rv) {
+            var received_msg = JSON.parse(rv);
+            if (received_msg.Status == 0) {
+                document.getElementById("_signature").value = received_msg.Signature;
+                document.getElementById("_signature2").value = Base64.decode(received_msg.Signature);
+            } else {
+                alert("Ký số không thành công:" + received_msg.Status + ":" + received_msg.Error);
+            }
+        }
+
+        function VerifyXMLCallBack(rv) {
+            var received_msg = JSON.parse(rv);
+            if (received_msg.Status == 0) {
+                document.getElementById("_signature").value = JSON.stringify(received_msg);
+            } else {
+                alert("Lỗi xác thức:" + received_msg.Status + ":" + received_msg.Message);
+            }
+        }
+
+        function exc_sign_xml(sender) {
+            var prms = {};
+            prms["Base64Content"] = document.getElementById("_plain_text").value; //Base64.encode(document.getElementById("_plain_text").value);
+            prms["ReturnSignatureOnly"] = "false";
+            prms["HashAlg"] = "Sha256";
+            prms["XmlDsigForm"] = "false"; //"DSign";
+            var json_prms = JSON.stringify(prms);
+            vgca_sign_xml(sender, json_prms, SignXMLCallBack);
+        }
+
+        function exc_verify_xml() {
+            var s1 = document.getElementById("_signature2").value;
+            var prms = {};
+            prms["Data"] = s1;
+            prms["Format"] = "XML";
+            var json_prms = JSON.stringify(prms);
+            vgca_verify_xml(json_prms, VerifyXMLCallBack);
+        }
+
+        function SignJSONCallBack(sender, rv) {
+            var received_msg = JSON.parse(rv);
+            if (received_msg.Status == 0) {
+                document.getElementById("_signature").value = received_msg.Signature;
+                document.getElementById("_signature2").value = Base64.decode(received_msg.Signature);
+            } else {
+                alert("Ký số không thành công:" + received_msg.Status + ":" + received_msg.Error);
+            }
+        }
+
+        function VerifyJSONCallBack(rv) {
+            var received_msg = JSON.parse(rv);
+            if (received_msg.Status == 0) {
+                //var srt = ("Content:")
+                document.getElementById("_signature").value = JSON.stringify(received_msg.JsonContent);
+                document.getElementById("_signature2").value = JSON.stringify(received_msg);
+            } else {
+                alert("Error:" + received_msg.Status + ":" + received_msg.Message);
+            }
+        }
+
+        function exc_sign_json(sender) {
+            var prms = {};
+            prms["JsonContent"] = document.getElementById("_plain_text").value;
+            prms["DetachPayload"] = "false";
+            prms["IsPss"] = "true";
+            var json_prms = JSON.stringify(prms);
+            vgca_sign_json(sender, json_prms, SignJSONCallBack);
+        }
+
+        function exc_verify_json() {
+            var content = document.getElementById("_signature").value;
+            vgca_verify_json(content, VerifyJSONCallBack);
+        }
+    </script>
+</head>
+
+<body>
+    <form id="message_form" runat="server">
+
+        <div id="page-wrapper">
+            <h1>Plugin Demo</h1>
+
+            <ul id="messages"></ul>
+
+            <p><textarea id="_plain_text" cols="80" rows="10" placeholder="Write your message here..." required></textarea></p>
+            <p><textarea id="_signature" cols="80" rows="10"></textarea></p>
+            <p><textarea id="_signature2" cols="80" rows="10"></textarea></p>
+
+            <textarea id="message" placeholder="Write your message here..." required></textarea>
+            <button type="button" id="_Config" onclick="vgca_show_config();">Show config</button> <br />
+
+            <button type="button" id="_SignXML" onclick="exc_sign_xml();">Sign XML Form</button><br />
+
+            <button type="button" id="_SignXML2" onclick="exc_verify_xml();"> Verify XML Form</button><br />
+
+            <button type="button" id="_SignXML3" onclick="exc_sign_json();"> Sign JSON Form</button><br />
+
+            <button type="button" id="_SignPDF4" onclick="exc_verify_json();"> Verify JSON Form</button><br />
+
+        </div>
+    </form>
+</body>
+
+</html>
