@@ -45,6 +45,7 @@ namespace Medyx_EMR_BCA.ApiAssets.ViewModels
     {
         public new decimal? Idba { get; set; }
         public new byte? canNangNhi { get; set; }
+        public new byte? canNangSinh { get; set; }
     }
     public class ThongTinBnVM : ThongTinBn
     {

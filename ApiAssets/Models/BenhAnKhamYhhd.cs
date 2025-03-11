@@ -63,5 +63,8 @@ namespace Medyx_EMR_BCA.ApiAssets.Models
 		public virtual DmnhanVien DmBskham { get; set; }
         [JsonIgnore]
         public virtual DmbenhTat DmBenhPhanBiet { get; set; }
+        public int? VaoNgayThu { get; set; }
+        public decimal? VongDau { get; set; }
+        public decimal? VongNguc { get; set; }
     }
 }

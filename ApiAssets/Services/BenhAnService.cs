@@ -1543,6 +1543,7 @@ namespace Medyx_EMR_BCA.ApiAssets.Services
             if (info.BenhAnTienSuBenh != null)
             {
                 benhAnTienSu.CanNang = info.BenhAnTienSuBenh.canNangNhi;
+                benhAnTienSu.CanNang = info.BenhAnTienSuBenh.canNangSinh;
                 _benhAnTienSuBenhRepository.Update(benhAnTienSu);
                 _benhAnTienSuBenhRepository.Save();
             }

@@ -6,8 +6,7 @@
             max-width: 1080px;
             width: 100%;
             border-bottom: 2px solid #497caf;
-            height: 100%;
-          ">
+            height: 100%;">
           <div style="flex: 1">
             <div style="font-size: 20px; font-weight: bold">Tờ bệnh án</div>
             <div class="mt-1" style="font-style: italic">
@@ -16,7 +15,6 @@
           </div>
 
           <div class="d-flex">
-
 
             <v-btn color="primary" @click="handlePrint1" class="mr-4" small de depressed
               :disabled="!disableActions.export" :loading="isLoadingPrint1">
@@ -33,12 +31,21 @@
               <v-icon small left> mdi-printer </v-icon>In phần 3
             </v-btn>
 
-
-
-            <v-btn color="primary" @click="handlePrint" class="mr-4" small de depressed
-              :disabled="!disableActions.export">
+            <!-- <v-btn
+              color="primary"
+              @click="handlePrint"
+              class="mr-4"
+              small
+              de
+              depressed
+              :disabled="!disableActions.export"
+            >
               <v-icon small left> mdi-printer </v-icon>In phiếu
-            </v-btn>
+            </v-btn> -->
+<!-- 
+            <v-btn color="primary" @click="viewPdf" class="mr-4" small de depressed :disabled="!disableActions.export">
+              <v-icon small left> mdi-printer </v-icon>Xem file đã ký
+            </v-btn> -->
             <v-btn color="primary" @click="updateData" small depressed :disabled="!disableActions.export"
               :loading="isLoading">
               <v-icon small left> mdi-pencil </v-icon>Cập nhật
@@ -77,8 +84,8 @@
               <v-icon small left> mdi-printer </v-icon>Ký phần 3
             </v-btn>
             <!-- <v-btn color="primary" small de depressed class="mr-4" @click="onDownloadFile" size="medium"> <v-icon small left> mdi-printer </v-icon>Tải file đã ký</v-btn> -->
-            <v-btn color="primary" small de depressed class="mr-4" @click="onPreviewFile" size="medium"> <v-icon small
-                left> mdi-printer </v-icon>Xem file đã ký</v-btn>
+            <v-btn color="primary" small de depressed class="mr-4" @click="onPreviewFile" size="medium"> <v-icon small left> mdi-printer </v-icon>Xem file đã ký</v-btn>
+
 
 
             <!-- <v-btn
@@ -99,7 +106,7 @@
         </div>
       </div>
 
-      <div class="side-content pb-4" style="flex: 1">
+      <div class="side-content pb-4 mt-4" style="flex: 1">
         <div class="pa-4" style="flex: 1">
           <div class="mb-6">
             <TieuDe :thongTinChung="thongTinChung" />
@@ -122,11 +129,12 @@
       <div class="d-flex justify-center bottom-side-benh-an">
         <div class="title-tab d-flex mt-2 px-4" v-for="item in tabs" :key="item.index" @click="scrollToElement(item)"
           :style="{
-            'border-bottom': item.index == tabView ? '4px solid #2980b9' : '',
-          }">
+    'border-bottom': item.index == tabView ? '4px solid #2980b9' : '',
+  }">
           <div class="d-flex align-center" style="height: 100%"
             :style="{ color: item.index == tabView ? '#2980B9' : '' }">
-            <v-badge color="red" :content="tongFile" v-if="item.bage" small>
+            <v-badge color="red" :content="tongFile" v-if="item.bage" small
+              :dot="tongFile && tongFile > 0 ? false : true">
               <div class="">{{ item.name }}</div>
             </v-badge>
             <div v-else>{{ item.name }}</div>
@@ -142,7 +150,7 @@ import PhanChung from "./components/phan-chung/index.vue";
 import BanhAn from "./components/benh-an/index.vue";
 import TongKetRaVien from "./components/tong-ket-ra-vien/index.vue";
 import TapTinDinhKem from "./components/tap-tin/Index.vue";
-import { update, printBa, printBa1, printBa2, printBa3 } from "@/api/benh-an.js";
+import { update, printBa, printBa1, printBa2, printBa3, viewPdf } from "@/api/benh-an.js";
 import { DownloadFile, PreviewFile } from "@/api/tap-tin-dinh-kem.js"
 export default {
   props: ['disableActions'],
@@ -155,7 +163,6 @@ export default {
   },
   data() {
     return {
-      idba: window.location.href.split("/").at(-1),
       isLoading: false,
       isLoading1: false,
       isLoading2: false,
@@ -204,12 +211,16 @@ export default {
         },
       ],
       thongTinChung: {},
+      idba: window.location.href.split("/").at(-1),
     };
   },
   mounted() {
     setTimeout(() => {
       this.dragElement(document.getElementById("button-action"));
-    }, 500);
+    }, 800);
+  },
+  created() {
+    window.addEventListener("keydown", this.handlerKeyPress, false);
   },
 
   methods: {
@@ -224,6 +235,7 @@ export default {
             "_blank"
           );
         }
+        console.log(response);
         // if (response) {
         //   const host = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
         //   window.open(
@@ -275,6 +287,12 @@ export default {
         console.error('Error downloading file:', error);
       }
     },
+    handlerKeyPress(e) {
+      if (e.key == 'F10') {
+        location.href = `${window.origin}/HSBADS/Index`;
+        e.preventDefault();
+      }
+    },
     exit() {
       location.href = `${window.origin}/HSBADS/Index`;
     },
@@ -306,7 +324,6 @@ export default {
     getTotalFile(tongFile) {
       this.tongFile = tongFile;
     },
-
     dragElement(elmnt) {
       var pos1 = 0,
         pos2 = 0,
@@ -354,6 +371,7 @@ export default {
       this.form.benhAn = benhAn;
       this.form.BenhAnKhoaDieuTri = benhAnkdt;
       this.form.thongTinBenhNhan = thongtinbenhnhan;
+      console.log(this.form.thongTinBenhNhan);
     },
     getBenhAn(benhAnTienSuBenh, benhAnYhhd, benhAnYhct) {
       this.form.benhAnKhamYhct = benhAnYhct;
@@ -381,6 +399,46 @@ export default {
     },
     handlePrint() {
       return printBa(this.idba);
+    },
+    async handlePrint1() {
+      const host = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""
+        }`;
+      try {
+        window.open(
+          `${host}/api/benh-an/${this.idba}/print-ba-file1/${this.idba}_1.pdf`,
+          "_blank"
+        );
+      } catch (error) {
+        console.log(error);
+      }
+      // return printBa1(this.idba) + "_1";
+    },
+
+    async handlePrint2() {
+      const host = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""
+        }`;
+      try {
+        window.open(
+          `${host}/api/benh-an/${this.idba}/print-ba-file2/${this.idba}_2.pdf`,
+          "_blank"
+        );
+      } catch (error) {
+        console.log(error);
+      }
+      // return printBa1(this.idba) + "_1";
+    },
+    async handlePrint3() {
+      const host = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""
+        }`;
+      try {
+        window.open(
+          `${host}/api/benh-an/${this.idba}/print-ba-file3/${this.idba}_3.pdf`,
+          "_blank"
+        );
+      } catch (error) {
+        console.log(error);
+      }
+      // return printBa1(this.idba) + "_1";
     },
 
     // async handlePrint1() {
@@ -449,50 +507,10 @@ export default {
 
     //   //return printBa3(this.idba);
     // },
-
-    async handlePrint1() {
-      const host = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""
-        }`;
-      try {
-        window.open(
-          `${host}/api/benh-an/${this.idba}/print-ba-file1/${this.idba}_1.pdf`,
-          "_blank"
-        );
-      } catch (error) {
-        console.log(error);
-      }
-      // return printBa1(this.idba) + "_1";
-    },
-
-    async handlePrint2() {
-      const host = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""
-        }`;
-      try {
-        window.open(
-          `${host}/api/benh-an/${this.idba}/print-ba-file2/${this.idba}_2.pdf`,
-          "_blank"
-        );
-      } catch (error) {
-        console.log(error);
-      }
-      // return printBa1(this.idba) + "_1";
-    },
-    async handlePrint3() {
-      const host = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""
-        }`;
-      try {
-        window.open(
-          `${host}/api/benh-an/${this.idba}/print-ba-file3/${this.idba}_3.pdf`,
-          "_blank"
-        );
-      } catch (error) {
-        console.log(error);
-      }
-      // return printBa1(this.idba) + "_1";
-    },
     viewPdf() {
       return viewPdf()
     },
+
     async handleSign1() {
       const host = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""
         }`;
@@ -541,6 +559,7 @@ export default {
         this.isLoading3 = false
       }
     },
+
     // async handleSign1() {
     //   const host = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""
     //     }`;
@@ -617,6 +636,11 @@ export default {
     //     this.isLoading3 = false
     //   }
     // },
+
+      // const host = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+      // const fileSignUrl = `${window.origin}/api/benh-an/${this.idba}/print-ba-file3/${this.idba}_3.pdf`
+      // window.open(host + "/client/sample/Demo.htm?fileSignUrl=" + fileSignUrl)
+ 
   },
 };
 </script>

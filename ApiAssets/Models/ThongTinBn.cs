@@ -51,6 +51,10 @@ namespace Medyx_EMR_BCA.ApiAssets.Models
         public string NguoiSd { get; set; }
         public DateTime? NgayHuy { get; set; }
         public string NguoiHuy { get; set; }
+        public string TrinhDoVHBo { get; set; }
+        public string MaNgheNghiepBo { get; set; }
+        public string TrinhDoVHMe { get; set; }
+        public string MaNgheNghiepMe { get; set; }
         [JsonIgnore]
         public virtual ICollection<BenhAn> BenhAns { get; set; }
         [JsonIgnore]

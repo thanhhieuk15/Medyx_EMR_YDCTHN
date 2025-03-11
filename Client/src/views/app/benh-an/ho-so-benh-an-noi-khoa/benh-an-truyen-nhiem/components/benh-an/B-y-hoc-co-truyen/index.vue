@@ -889,6 +889,7 @@ export default {
   watch: {
     form: {
       handler(val) {
+        console.log("watch form: " + this.form.machChan);
         this.$emit('get-phanB', val, this.benhAnYhct)
       },
       deep: true
@@ -926,6 +927,7 @@ export default {
 
     setCheckbox(model, checkBoxArray) {
       if (model) {
+        console.log(model);
         let arrModel = model.split(",")
         arrModel = arrModel.map((item) => (item = item.trim()));
         return checkBoxArray.map((item) => {
@@ -945,7 +947,6 @@ export default {
         if (checkBoxItem) {
           let modelName = checkBoxItem.Model;
           let arrCheckBox = checkBoxList[lableKey];
-          console.log(arrCheckBox);
           this.setModelFormCheckbox(arrCheckBox, modelName);
         } else {
           console.warn(`Checkbox label key '${lableKey}' not found in danhMucData.`);
@@ -960,7 +961,6 @@ export default {
         }
       })
       this.form[modelName] = ma;
-      console.log(this.form[modelName]);
     }
   },
 };

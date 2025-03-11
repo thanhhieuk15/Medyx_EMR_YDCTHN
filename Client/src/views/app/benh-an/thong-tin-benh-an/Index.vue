@@ -209,6 +209,26 @@
             </el-form-item>
           </v-col>
           <v-col cols="12" xs="12" sm="12" md="3" lg="4" xl="3" class="padding-cols">
+            <el-form-item label="26. Trình độ VH của bố ">
+              <el-input size="small" v-model="benhAn.benhNhan.trinhDoVHBo" placeholder=""></el-input>
+            </el-form-item>
+          </v-col>
+          <v-col cols="12" xs="12" sm="12" md="3" lg="4" xl="3" class="padding-cols">
+            <el-form-item label="26. Mã nghề nghiệp của bố">
+              <el-input size="small" v-model="benhAn.benhNhan.maNgheNghiepBo" placeholder=""></el-input>
+            </el-form-item>
+          </v-col>
+          <v-col cols="12" xs="12" sm="12" md="3" lg="4" xl="3" class="padding-cols">
+            <el-form-item label="26. Trình độ VH của mẹ ">
+              <el-input size="small" v-model="benhAn.benhNhan.trinhDoVHMe" placeholder=""></el-input>
+            </el-form-item>
+          </v-col>
+          <v-col cols="12" xs="12" sm="12" md="3" lg="4" xl="3" class="padding-cols">
+            <el-form-item label="26. Mã nghề nghiệp của mẹ">
+              <el-input size="small" v-model="benhAn.benhNhan.maNgheNghiepMe" placeholder=""></el-input>
+            </el-form-item>
+          </v-col>
+          <v-col cols="12" xs="12" sm="12" md="3" lg="4" xl="3" class="padding-cols">
             <el-form-item label="27. Người giám hộ">
               <el-input size="small" v-model="benhAn.benhNhan.nguoiGiamHo" placeholder="VD: Nguyễn Thị B"></el-input>
             </el-form-item>
@@ -409,6 +429,10 @@ export default {
           maDt: null,
           tenDt: null,
         },
+        trinhDoVHBo:null,
+        maNgheNghiepBo:null,
+        trinhDoVHMe:null,
+        maNgheNghiepMe:null,
         gioiTinh: null,
         ghtbhyt: null,
         hoTen: null,

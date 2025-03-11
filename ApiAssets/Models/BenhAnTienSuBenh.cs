@@ -83,6 +83,15 @@ namespace Medyx_EMR_BCA.ApiAssets.Models
         public byte? DaTiemChung { get; set; }
         public byte? BenhDaMac { get; set; }
         public string DacDienSH { get; set; }
-
+        public string Para { get; set; }
+        public string TinhTrangSinh { get; set; }
+        public bool? DiTatBamSinh { get; set; }
+        public string CuTheDiTat { get; set; }
+        public string PhatTrienTinhThan { get; set; }
+        public string PhatTrienVanDong { get; set; }
+        public string BenhLyKhac { get; set; }
+        public string NuoiDuong { get; set; }
+        public string ChamSoc { get; set; }
+        public string TiemChungBenhKhac { get; set; }
     }
 }

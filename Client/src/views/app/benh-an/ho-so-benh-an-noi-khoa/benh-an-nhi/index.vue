@@ -228,7 +228,6 @@ export default {
       try {
         const response = await PreviewFile(this.idba);
         if (response == undefined) {
-          console.error('Không có file đã ký nào');
           alert('Không có file đã ký nào');
         } else {
           window.open(
@@ -236,14 +235,6 @@ export default {
             "_blank"
           );
         }
-        console.log(response);
-        // if (response) {
-        //   const host = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
-        //   window.open(
-        //     `${host}/Storage/DownloadFolder/`+response.data,
-        //     "_blank"
-        //   );
-        // }
       } catch (error) {
         console.log(error)
       }
@@ -386,7 +377,6 @@ export default {
       const id = window.location.href.split("/").at(-1);
       try {
         this.isLoading = true
-        console.log(this.form);
         await update(id, this.form);
         this.$message({
           message: "Cập nhật thành công.",

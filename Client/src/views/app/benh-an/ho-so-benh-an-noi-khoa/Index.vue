@@ -7,6 +7,8 @@
     <BenhAnNoiTru v-if="loaiBenhAn == 5" :disableActions="disableActions" />
     <BenhAnNgoaiKhoa v-if="loaiBenhAn == 6" :disableActions="disableActions" />
     <BenhAnNhi v-if="loaiBenhAn == 7" :disableActions="disableActions" />
+    <BenhAnNhiKhoa v-if="loaiBenhAn == 8" :disableActions="disableActions" />
+    <BenhAnTruyenNhiem v-if="loaiBenhAn == 9" :disableActions="disableActions" />
   </div>
 </template>
 
@@ -16,6 +18,8 @@ import BenhAnNgoaiTru from "./benh-an-ngoai-tru/Index.vue";
 import BenhAnManTinh from "./benh-an-man-tinh/Index.vue";
 import BenhAnNgoaiKhoa from "./benh-an-ngoai-khoa/Index.vue";
 import BenhAnNhi from "./benh-an-nhi/index.vue";
+import BenhAnNhiKhoa from "./benh-an-nhi-khoa/index.vue";
+import BenhAnTruyenNhiem from "./benh-an-truyen-nhiem/index.vue";
 import { getLoai } from "@/api/benh-an.js";
 export default {
   props: {
@@ -33,7 +37,9 @@ export default {
     BenhAnNgoaiTru,
     BenhAnManTinh,
     BenhAnNgoaiKhoa,
-    BenhAnNhi
+    BenhAnNhi,
+    BenhAnNhiKhoa,
+    BenhAnTruyenNhiem
 },
   data: (vm) => ({
     // loaiBenhAn: 3,
