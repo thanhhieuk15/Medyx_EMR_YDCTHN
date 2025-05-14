@@ -10,23 +10,17 @@
             <el-input v-model="form.lyDoVv" type="textarea" rows="2"></el-input>
           </el-form-item>
         </v-col>
-        <v-col cols="4" class="padding-cols">
-          <el-form-item label="Vào viện do bệnh này lần thứ">
-            <el-input v-model="form.vvlan" dense outlined type="number" :min="0" size="small"></el-input>
-          </el-form-item>
-        </v-col>
         <v-col cols="12" class="padding-cols">
           <el-form-item label="II. Bệnh Sử">
-            <div>1. Quá trình bệnh lý:(khởi phát,diễn biến, chẩn đoán, điều trị tuyến dưới v.v...)</div>
             <el-input v-model="form.benhSu" type="textarea" rows="2"></el-input>
           </el-form-item>
         </v-col>
         <v-col cols="12" class="padding-cols">
-          <el-form-item label="2. Tiền sử bệnh"></el-form-item>
+          <el-form-item label="III. Tiền sử"></el-form-item>
         </v-col>
         <v-col cols="6" class="padding-cols">
           <el-form-item class="item-form"
-            label="Bản thân: (Phát triển thể lực từ nhỏ đến lớn, những bệnh đã mắc, phương pháp điều trị, tiêm phòng, ăn uống, sinh hoạt v.v ..)">
+            label="1.Bản thân: (Phát triển thể lực từ nhỏ đến lớn, những bệnh đã mắc, phương pháp điều trị, tiêm phòng, ăn uống, sinh hoạt v.v ..)">
             <el-input v-model="form.tienSuBanThan" type="textarea" rows="2"></el-input>
           </el-form-item>
         </v-col>
@@ -115,7 +109,7 @@
           </v-row>
         </v-col>
         <v-col cols="12" class="padding-cols mt-4">
-          <el-form-item label="Các cơ quan:"></el-form-item>
+          <el-form-item label="2. Khám bộ phận:"></el-form-item>
         </v-col>
         <v-col cols="12" class="padding-cols">
           <el-form-item label="Tuần hoàn:">
@@ -132,7 +126,7 @@
           </el-form-item>
         </v-col>
         <v-col cols="12" class="padding-cols">
-          <el-form-item label="Thận - Tiết niệu-sinh dục:">
+          <el-form-item label="Tiết niệu-sinh dục:">
             <el-input v-model="form.thanTnieuSduc" type="textarea"></el-input>
           </el-form-item>
         </v-col>
@@ -167,17 +161,17 @@
           </el-form-item>
         </v-col>
         <v-col cols="12" class="padding-cols">
-          <el-form-item label="3. Các xét nghiệm cận lâm sàng cần làm">
+          <el-form-item label="V. Cận lâm sàng">
             <el-input v-model="form.canLamSang" type="textarea" rows="5"></el-input>
           </el-form-item>
         </v-col>
         <v-col cols="12" class="padding-cols">
-          <el-form-item label="4 Tóm tắt bệnh án">
+          <el-form-item label="VI. Tóm tắt bệnh án">
             <el-input v-model="form.tomTatBenhAn" type="textarea" rows="6"></el-input>
           </el-form-item>
         </v-col>
         <v-col cols="12" class="padding-cols">
-          <el-form-item label="IV. Chẩn đoán khi vào khoa điều trị"></el-form-item>
+          <el-form-item label="VII. Chẩn đoán khi vào khoa điều trị"></el-form-item>
         </v-col>
         <v-col cols="6">
           <b>Bệnh chính</b>
@@ -203,7 +197,7 @@
             <el-input v-model="form.tenBenhKemVv1" size="small"></el-input>
           </el-form-item>
         </v-col>
-        <v-col cols="6">
+        <!-- <v-col cols="6">
           <b>Bệnh kèm theo 2</b>
           <el-form-item label="Mã bệnh">
             <base-select-async v-model="form.maBenhKemVv2" :label="(item) => `${item.maBenh} - ${item.tenBenh}`"
@@ -298,7 +292,7 @@
           <el-form-item label="Tên bệnh">
             <el-input v-model="form.tenBenhKemVv9" size="small"></el-input>
           </el-form-item>
-        </v-col>
+        </v-col> -->
         <!-- <v-col cols="4" class="padding-cols">
           <el-form-item label="Mã bệnh">
             <base-select-async v-model="form.maBenhChinhVv" :label="(item) => `${item.maBenh} - ${item.tenBenh}`"
@@ -374,7 +368,6 @@
           </el-form-item>
         </v-col> -->
 
-
         <v-col cols="4" class="padding-cols">
           <el-form-item label="Phân biệt:">
             <base-select-async v-model="form.tenBenhPhanBiet" :label="(item) => `${item.maBenh} - ${item.tenBenh}`"
@@ -383,17 +376,7 @@
           </el-form-item>
         </v-col>
 
-        <v-col cols="12" class="padding-cols">
-          <el-form-item label="Tiên Lượng">
-            <el-input v-model="form.tienLuong" type="textarea"></el-input>
-          </el-form-item>
-        </v-col>
-
-        <v-col cols="12" class="padding-cols">
-          <el-form-item label="Hướng Dẫn điều trị">
-            <el-input v-model="form.huongDanDieuTri" type="textarea"></el-input>
-          </el-form-item>
-        </v-col>
+        
       </v-row>
     </el-form>
   </div>

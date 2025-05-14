@@ -223,6 +223,10 @@ namespace Medyx_EMR_BCA.ApiAssets.Dto
         public string DangKhuyetTat { get; set; }
         public string MucDoKhuyetTat { get; set; }
         public DateTime? NgayCapCmnd { get; set; }
+        public string TrinhDoVHBo { get; set; }
+        public string MaNgheNghiepBo { get; set; }
+        public string TrinhDoVHMe { get; set; }
+        public string MaNgheNghiepMe { get; set; }
     }
 
 

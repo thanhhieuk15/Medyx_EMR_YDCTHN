@@ -50,7 +50,7 @@
               {{ form.quocGia ? form.quocGia.tenQg : "" }}
             </div>
           </v-col>
-          <v-col xl="6" lg="6" md="5" sm="12" class="d-flex align-end padding-cols">
+          <!-- <v-col xl="6" lg="6" md="5" sm="12" class="d-flex align-end padding-cols">
             <div class="mr-2 pt-4 title-lable">Họ tên bố:</div>
             <div class="content-pchung">{{ form.hoTenCha }}</div>
           </v-col>
@@ -73,7 +73,7 @@
           <v-col xl="6" lg="6" md="5" sm="12" class="d-flex align-end padding-cols">
             <div class="mr-2 pt-4 title-lable">Nghề nghiệp của mẹ:</div>
             <div class="content-pchung">{{ form.maNgheNghiepMe }}</div>
-          </v-col>
+          </v-col> -->
           <v-col xl="6" lg="6" md="7" sm="12" class="d-flex align-end padding-cols">
             <div class="mr-2 title-lable">Đối tượng:</div>
             <el-radio-group row hide-details v-model="form.doiTuong.maDt" style="padding-bottom: 6px" @change="thayDoiDoiTuong()">

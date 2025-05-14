@@ -10,7 +10,7 @@
             <el-input placeholder="Lý do vào viện" size="small" v-model="form.lyDoVv"></el-input>
           </el-form-item>
         </v-col> -->
-        <v-col cols="12" class="padding-cols">
+        <!-- <v-col cols="12" class="padding-cols">
           <el-form-item label="Quá trình bệnh lý và diễn biến lâm sàng">
             <el-input type="textarea" :rows="2" size="small" v-model="form.quaTrinhBenhLy"></el-input>
           </el-form-item>
@@ -121,7 +121,7 @@
           <el-form-item label="4. Tình trạng người bệnh ra viện">
             <el-input size="small" v-model="form.tinhTrangBnrv"></el-input>
           </el-form-item>
-        </v-col>
+        </v-col> -->
         <v-col xl="3" lg="3" md="4" cols="3" class="padding-cols">
           <el-form-item label="5. Hướng điều trị và các chế độ tiếp theo">
             <el-input v-model="form.huongDt" size="small"></el-input>

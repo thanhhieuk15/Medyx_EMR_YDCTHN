@@ -22,8 +22,8 @@
             HSBA</el-button>
           <el-button type="success" :disabled="daLuuTru" @click="submitForm" size="medium">Lưu trữ</el-button>
           <el-button type="success" @click="submitExport" size="medium">Kết xuất</el-button>
-          <el-button type="success" @click="onDownloadFile" size="medium">Tải file đã ký</el-button>
-          <el-button type="primary" @click="onPreviewFile" size="medium">Xem file đã ký</el-button>
+          <!-- <el-button type="success" @click="onDownloadFile" size="medium">Tải file đã ký</el-button>
+          <el-button type="primary" @click="onPreviewFile" size="medium">Xem file đã ký</el-button> -->
         </v-col>
 
         <!-- <el-form-item>

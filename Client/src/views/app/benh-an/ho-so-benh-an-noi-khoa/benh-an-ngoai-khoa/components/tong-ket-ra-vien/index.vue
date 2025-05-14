@@ -6,237 +6,45 @@
     <el-form>
       <v-row>
         <v-col cols="12" class="padding-cols">
-          <el-form-item label="Quá trình bệnh lý và diễn biến lâm sàng">
-            <el-input placeholder="Quá trình bệnh lý và diễn biến lâm sàng" size="small" v-model="form.lyDoVv"></el-input>
+          <el-form-item label="1. Quá trình bệnh lý và diễn biến lâm sàng">
+            <el-input placeholder="Quá trình bệnh lý và diễn biến lâm sàng" size="small"
+              v-model="form.lyDoVv"></el-input>
           </el-form-item>
         </v-col>
         <v-col cols="12" class="padding-cols">
-          <el-form-item label="Tóm tắt kết quả xét nghiệm cận lâm sàng có giá trị chẩn đoán">
+          <el-form-item label="2. Tóm tắt kết quả xét nghiệm cận lâm sàng có giá trị chẩn đoán">
             <el-input type="textarea" :rows="2" size="small" v-model="form.quaTrinhBenhLy"></el-input>
           </el-form-item>
         </v-col>
         <v-col cols="12" class="padding-cols">
-          <el-form-item label="Kết quả xét nghiệm cận lâm sàng">
-            <el-input size="small" v-model="form.tomTatKetQuaCls"></el-input>
+          <el-form-item label="3. Phương pháp điều trị">
+            <el-input size="small" v-model="form.ppdttheoYhhd"></el-input>
           </el-form-item>
         </v-col>
         <v-col cols="6">
-                <el-form-item label="Phẫu Thuật">
-                  <el-radio-group
-                    v-model="form.phauthuatngoaikhoa"
-                    style="width: 100%"
-                  >
-                    <el-radio :label="1">Có</el-radio>
-                    <el-radio :label="2">Không</el-radio>
-                  </el-radio-group>
-                </el-form-item>
-              </v-col> 
-               <v-col cols="6">
-                <el-form-item label="Thủ Thuật">
-                  <el-radio-group
-                    v-model="form.thuthuatngoaikhoa"
-                    style="width: 100%"
-                  >
-                    <el-radio :label="1">Có</el-radio>
-                    <el-radio :label="2">Không</el-radio>
-                  </el-radio-group>
-                </el-form-item>
-              </v-col> 
-        <!-- <v-col cols="12" class="padding-cols">
-          <el-form-item label="Vào Viện"></el-form-item>
-        </v-col> -->
-        <!-- <v-col cols="6" class="padding-cols">
-          <div style="border: 1px solid #d6dbdf" class="pa-4 pb-8">
-            <v-row>
-              <v-col cols="12" class="padding-cols mb-2 pt-3">
-                <div style="font-weight: 600" class="pb-1">Y học hiện đại</div>
-                <hr />
-              </v-col>
-              <v-col cols="12" class="padding-cols">
-                <el-form-item label="Bệnh chính">
-                  <base-select-async v-model="form2.benhChinh.maBenh"
-                    :label="(item) => `${item.maBenh} - ${item.tenBenh}`" keyValue="maBenh" :apiFunc="getChanDoanBenh"
-                    placeholder="" style="width: 100%" size="small">
-                  </base-select-async>
-                </el-form-item>
-              </v-col>
-              <v-col cols="12" class="padding-cols">
-                <el-form-item label="Bệnh kèm theo 1">
-                  <base-select-async v-model="form2.benhKem1.maBenh"
-                    :label="(item) => `${item.maBenh} - ${item.tenBenh}`" keyValue="maBenh" :apiFunc="getChanDoanBenh"
-                    placeholder="" style="width: 100%" size="small">
-                  </base-select-async>
-                </el-form-item>
-              </v-col>
-              <v-col cols="12" class="padding-cols">
-                <el-form-item label="Bệnh kèm theo 2">
-                  <base-select-async v-model="form2.benhKem2.maBenh"
-                    :label="(item) => `${item.maBenh} - ${item.tenBenh}`" keyValue="maBenh" :apiFunc="getChanDoanBenh"
-                    placeholder="" style="width: 100%" size="small">
-                  </base-select-async>
-                </el-form-item>
-              </v-col>
-              <v-col cols="12" class="padding-cols">
-                <el-form-item label="Bệnh kèm theo 3">
-                  <base-select-async v-model="form2.benhKem3.maBenh"
-                    :label="(item) => `${item.maBenh} - ${item.tenBenh}`" keyValue="maBenh" :apiFunc="getChanDoanBenh"
-                    placeholder="" style="width: 100%" size="small">
-                  </base-select-async>
-                </el-form-item>
-              </v-col>
-              <v-col cols="12" class="padding-cols">
-                <el-form-item label="Phương pháp điều trị">
-                  <el-input v-model="form.ppdttheoYhhd" size="small"></el-input>
-                </el-form-item>
-              </v-col>
-            </v-row>
-          </div>
-        </v-col> -->
-        <!-- <v-col cols="6" class="padding-cols">
-          <div style="border: 1px solid #d6dbdf" class="pa-4 pb-8">
-            <v-row>
-              <v-col cols="12" class="padding-cols mb-2 pt-3">
-                <div style="font-weight: 600" class="pb-1">Y học cổ truyền</div>
-                <hr />
-              </v-col>
-              <v-col cols="12" class="padding-cols">
-                <el-form-item label="Bệnh chính">
-                  <base-select-async v-model="form2.maBenhChinhVvyhct"
-                    :label="(item) => `${item.maBenh} - ${item.tenBenh} - ${item.tenBenhBhyt}`" keyValue="maBenh" :apiFunc="getChanDoanBenhCT"
-                    placeholder="" style="width: 100%" size="small">
-                  </base-select-async>
-                </el-form-item>
-              </v-col>
-              <v-col cols="12" class="padding-cols">
-                <el-form-item label="Bệnh kèm theo 1">
-                  <base-select-async v-model="form2.maBenhKemVv1yhct"
-                    :label="(item) => `${item.maBenh} - ${item.tenBenh} - ${item.tenBenhBhyt}`" keyValue="maBenh" :apiFunc="getChanDoanBenhCT"
-                    placeholder="" style="width: 100%" size="small">
-                  </base-select-async>
-                </el-form-item>
-              </v-col>
-              <v-col cols="12" class="padding-cols">
-                <el-form-item label="Bệnh kèm theo 2">
-                  <base-select-async v-model="form2.maBenhKemVv2yhct"
-                    :label="(item) => `${item.maBenh} - ${item.tenBenh} - ${item.tenBenhBhyt}`" keyValue="maBenh" :apiFunc="getChanDoanBenhCT"
-                    placeholder="" style="width: 100%" size="small">
-                  </base-select-async>
-                </el-form-item>
-              </v-col>
-              <v-col cols="12" class="padding-cols">
-                <el-form-item label="Bệnh kèm theo 3">
-                  <base-select-async v-model="form2.maBenhKemVv3yhct"
-                    :label="(item) => `${item.maBenh} - ${item.tenBenh} - ${item.tenBenhBhyt}`" keyValue="maBenh" :apiFunc="getChanDoanBenhCT"
-                    placeholder="" style="width: 100%" size="small">
-                  </base-select-async>
-                </el-form-item>
-              </v-col>
-              <v-col cols="12" class="padding-cols">
-                <el-form-item label="Phương pháp điều trị">
-                  <el-input size="small" v-model="form.ppdttheoYhct"></el-input>
-                </el-form-item>
-              </v-col>
-            </v-row>
-          </div>
-        </v-col> -->
-        <!-- <v-col cols="6" class="padding-cols mt-3">
-          <el-form-item label="Kết quả điều trị">
-            <el-select size="small" style="width: 100%" v-model="form.kqdt">
-              <el-option v-for="item in ketQuaDieuTri" :key="item.ma" :label="item.ten" :value="item.ma">
-              </el-option>
-            </el-select>
+          <el-form-item label="Phẫu Thuật">
+            <el-radio-group v-model="form2.phauThuatYhhd" style="width: 100%">
+              <el-radio :label="1">Có</el-radio>
+              <el-radio :label="2">Không</el-radio>
+            </el-radio-group>
           </el-form-item>
-        </v-col> -->
-        <!-- <v-col cols="12" class="padding-cols">
-          <el-form-item label="Ra viện"></el-form-item>
-        </v-col> -->
-        <!-- <v-col cols="6" class="padding-cols mb-3">
-          <div style="border: 1px solid #d6dbdf" class="pa-4 pb-8">
-            <v-row>
-              <v-col cols="12" class="padding-cols mb-2 pt-3">
-                <div style="font-weight: 600" class="pb-1">Y học hiện đại</div>
-                <hr />
-              </v-col>
-              <v-col cols="12" class="padding-cols">
-                <el-form-item label="Bệnh chính">
-                  <base-select-async v-model="form2.maBenhChinhRv" :label="(item) => `${item.maBenh} - ${item.tenBenh}`"
-                    keyValue="maBenh" :apiFunc="getChanDoanBenh" placeholder="" style="width: 100%" size="small">
-                  </base-select-async>
-                </el-form-item>
-              </v-col>
-              <v-col cols="12" class="padding-cols">
-                <el-form-item label="Bệnh kèm theo 1">
-                  <base-select-async v-model="form2.maBenhKemRv1" :label="(item) => `${item.maBenh} - ${item.tenBenh}`"
-                    keyValue="maBenh" :apiFunc="getChanDoanBenh" placeholder="" style="width: 100%" size="small">
-                  </base-select-async>
-                </el-form-item>
-              </v-col>
-              <v-col cols="12" class="padding-cols">
-                <el-form-item label="Bệnh kèm theo 2">
-                  <base-select-async v-model="form2.maBenhKemRv2" :label="(item) => `${item.maBenh} - ${item.tenBenh}`"
-                    keyValue="maBenh" :apiFunc="getChanDoanBenh" placeholder="" style="width: 100%" size="small">
-                  </base-select-async>
-                </el-form-item>
-              </v-col>
-              <v-col cols="12" class="padding-cols">
-                <el-form-item label="Bệnh kèm theo 3">
-                  <base-select-async v-model="form2.maBenhKemRv3" :label="(item) => `${item.maBenh} - ${item.tenBenh}`"
-                    keyValue="maBenh" :apiFunc="getChanDoanBenh" placeholder="" style="width: 100%" size="small">
-                  </base-select-async>
-                </el-form-item>
-              </v-col>
-            </v-row>
-          </div>
-        </v-col> -->
-        <!-- <v-col cols="6" class="padding-cols mb-3">
-          <div style="border: 1px solid #d6dbdf" class="pa-4 pb-8">
-            <v-row>
-              <v-col cols="12" class="padding-cols mb-2 pt-3">
-                <div style="font-weight: 600" class="pb-1">Y học cổ truyền</div>
-                <hr />
-              </v-col>
-              <v-col cols="12" class="padding-cols">
-                <el-form-item label="Bệnh chính">
-                  <base-select-async v-model="form2.maBenhChinhRvyhct"
-                    :label="(item) => `${item.maBenh} - ${item.tenBenhBhyt} - ${item.tenBenhBhyt}`" keyValue="maBenh" :apiFunc="getChanDoanBenhCT"
-                    placeholder="" style="width: 100%" size="small">
-                  </base-select-async>
-                </el-form-item>
-              </v-col>
-              <v-col cols="12" class="padding-cols">
-                <el-form-item label="Bệnh kèm theo 1">
-                  <base-select-async v-model="form2.maBenhKemRv1yhct"
-                    :label="(item) => `${item.maBenh} - ${item.tenBenhBhyt} - ${item.tenBenhBhyt}`" keyValue="maBenh" :apiFunc="getChanDoanBenhCT"
-                    placeholder="" style="width: 100%" size="small">
-                  </base-select-async>
-                </el-form-item>
-              </v-col>
-              <v-col cols="12" class="padding-cols">
-                <el-form-item label="Bệnh kèm theo 2">
-                  <base-select-async v-model="form2.maBenhKemRv2yhct"
-                    :label="(item) => `${item.maBenh} - ${item.tenBenhBhyt} - ${item.tenBenhBhyt}`" keyValue="maBenh" :apiFunc="getChanDoanBenhCT"
-                    placeholder="" style="width: 100%" size="small">
-                  </base-select-async>
-                </el-form-item>
-              </v-col>
-              <v-col cols="12" class="padding-cols">
-                <el-form-item label="Bệnh kèm theo 3">
-                  <base-select-async v-model="form2.maBenhKemRv3yhct"
-                    :label="(item) => `${item.maBenh} - ${item.tenBenhBhyt} - ${item.tenBenhBhyt}`" keyValue="maBenh" :apiFunc="getChanDoanBenhCT"
-                    placeholder="" style="width: 100%" size="small">
-                  </base-select-async>
-                </el-form-item>
-              </v-col>
-            </v-row>
-          </div>
-        </v-col> -->
+        </v-col>
+        <v-col cols="6">
+          <el-form-item label="Thủ Thuật">
+            <el-radio-group v-model="form2.thuThuatYhhd" style="width: 100%">
+              <el-radio :label="1">Có</el-radio>
+              <el-radio :label="2">Không</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </v-col>
+        <PhauThuatPhieuPttt />
         <v-col xl="3" lg="3" md="4" cols="3" class="padding-cols">
-          <el-form-item label="Tình trạng người bệnh khi ra viện">
+          <el-form-item label="4.Tình trạng người bệnh khi ra viện">
             <el-input size="small" v-model="form.tinhTrangBnrv"></el-input>
           </el-form-item>
         </v-col>
         <v-col xl="3" lg="3" md="4" cols="3" class="padding-cols">
-          <el-form-item label="Hướng điều trị và các chế độ tiếp theo">
+          <el-form-item label="5.Hướng ĐT và các chế độ tiếp theo">
             <el-input v-model="form.huongDt" size="small"></el-input>
           </el-form-item>
         </v-col>
@@ -249,12 +57,6 @@
         <v-col xl="3" lg="3" md="4" cols="3" class="padding-cols">
           <el-form-item label="Số tờ CT Scanner">
             <el-input-number style="width: 100%" size="small" controls-position="right" v-model="form.soToCt">
-            </el-input-number>
-          </el-form-item>
-        </v-col>
-        <v-col xl="3" lg="3" md="4" cols="3" class="padding-cols">
-          <el-form-item label="Số tờ MRI">
-            <el-input-number style="width: 100%" size="small" controls-position="right" v-model="form.soToMri">
             </el-input-number>
           </el-form-item>
         </v-col>
@@ -290,28 +92,29 @@
         <v-col xl="3" lg="3" md="4" cols="3" class="padding-cols">
           <el-form-item label="Người giao hồ sơ">
             <base-select-async v-model="form.nguoiGiaoHs" placeholder="Tìm kiếm theo tên"
-              :label="(item) => `${item.hoTen} - ${item.maNv} - ${item.khoa.tenKhoa}`" keyValue="maNv" :apiFunc="getNhanVien" style="width: 100%"
-              size="small"></base-select-async>
+              :label="(item) => `${item.hoTen} - ${item.maNv} - ${item.khoa.tenKhoa}`" keyValue="maNv"
+              :apiFunc="getNhanVien" style="width: 100%" size="small"></base-select-async>
           </el-form-item>
         </v-col>
         <v-col xl="3" lg="3" md="4" cols="3" class="padding-cols">
           <el-form-item label="Người nhận hồ sơ">
             <base-select-async v-model="form.nguoiNhanHs" placeholder="Tìm kiếm theo tên"
-              :label="(item) => `${item.hoTen} - ${item.maNv} - ${item.khoa.tenKhoa}`" keyValue="maNv" :apiFunc="getNhanVien" style="width: 100%"
-              size="small"></base-select-async>
+              :label="(item) => `${item.hoTen} - ${item.maNv} - ${item.khoa.tenKhoa}`" keyValue="maNv"
+              :apiFunc="getNhanVien" style="width: 100%" size="small"></base-select-async>
           </el-form-item>
         </v-col>
         <v-col xl="3" lg="3" md="4" cols="3" class="padding-cols">
           <el-form-item label="Ngày tháng năm ký">
-            <el-date-picker type="datetime" style="width: 100%" size="small" v-model="form.ngayKy" format="dd/mm/yyyy HH:mm:ss" value-format="yyyy-MM-ddTHH:mm:ss"
+            <el-date-picker type="datetime" style="width: 100%" size="small" v-model="form.ngayKy"
+              format="dd/mm/yyyy HH:mm:ss" value-format="yyyy-MM-ddTHH:mm:ss"
               placeholder="dd/mm/yyyy HH:mm"></el-date-picker>
           </el-form-item>
         </v-col>
         <v-col xl="3" lg="3" md="4" cols="3" class="padding-cols">
           <el-form-item label="Bác sĩ khám, chữa bệnh">
             <base-select-async v-model="form.bsdieuTri" placeholder="Tìm kiếm theo tên"
-              :label="(item) => `${item.hoTen} - ${item.maNv} - ${item.khoa.tenKhoa}`" keyValue="maNv" :apiFunc="getNhanVien" style="width: 100%"
-              size="small"></base-select-async>
+              :label="(item) => `${item.hoTen} - ${item.maNv} - ${item.khoa.tenKhoa}`" keyValue="maNv"
+              :apiFunc="getNhanVien" style="width: 100%" size="small"></base-select-async>
           </el-form-item>
         </v-col>
       </v-row>
@@ -325,7 +128,7 @@ import * as apiBenhTat from "@/api/benh-tat.js";
 import * as apiBenhTatCT from "@/api/benh-tat-yhct.js";
 import { getSelectBox } from '@/api/danh-muc.js';
 import store from '@/store'
-
+import PhauThuatPhieuPttt from "./phauThuatPhieuPttt.vue";
 import {
   chiTietToBenhAn,
   getTienSuBenh,
@@ -335,6 +138,9 @@ import {
   getKhamYhct,
 } from "@/api/benh-an.js";
 export default {
+  components: {
+    PhauThuatPhieuPttt
+  },
   data: () => ({
     ketQuaDieuTri: [
       {
@@ -359,10 +165,10 @@ export default {
       }
     ],
     form: {
-      phauthuatngoaikhoa:null,
-      thuthuatngoaikhoa:null,
-      ppdttheoYhct:null,
-      ppdttheoYhhd:null,
+      phauthuatngoaikhoa: null,
+      thuthuatngoaikhoa: null,
+      ppdttheoYhct: null,
+      ppdttheoYhhd: null,
       lyDoVv: null,
       quaTrinhBenhLy: null,
       tomTatKetQuaCls: null,
@@ -380,9 +186,9 @@ export default {
       ngayKy: null,
       bsdieuTri: null,
       kqdt: null,
-      huongDt:null,
+      huongDt: null,
     },
-    form2:{
+    form2: {
       maBenhChinhRv: null,
       maBenhChinhRvyhct: null,
       maBenhKemRv1: null,
@@ -395,6 +201,8 @@ export default {
       maBenhKemVv1yhct: null,
       maBenhKemVv2yhct: null,
       maBenhKemVv3yhct: null,
+      thuThuatYhhd: null,
+      phauThuatYhhd:null,
       benhChinh: {
         maBenh: null,
         tenBenh: null,
@@ -420,13 +228,14 @@ export default {
   watch: {
     form: {
       handler(val) {
-        this.form.soToToanBoHs = this.form.soToXquang + this.form.soToCt +this.form.soToKhac + this.form.soToMri + this.form.soToSa + this.form.soToXn
+        this.form.soToToanBoHs = this.form.soToXquang + this.form.soToCt + this.form.soToKhac + this.form.soToMri + this.form.soToSa + this.form.soToXn
         this.$emit('get-tongKetRaVien', val)
       },
       deep: true
     },
     form2: {
       handler(val) {
+        console.log(val);
         store.dispatch("hosobenhan/setTongKetRaVien", val)
       },
       deep: true
@@ -443,7 +252,7 @@ export default {
     },
   },
   computed: {
-    CHANDOAN(){
+    CHANDOAN() {
       return this.$store.state.hosobenhan.dataChanDoan
     }
   },
@@ -457,12 +266,14 @@ export default {
         }
       }
       data = await chiTietToBenhAn(id);
+      console.log(data.data);
+      
       for (let key in this.form2) {
         if (data && data.data && data.data.hasOwnProperty(key)) {
           this.form2[key] = data.data[key]
         }
       }
-      data = await getKhoaDieuTri({ idba: id, forSelect: true});
+      data = await getKhoaDieuTri({ idba: id, forSelect: true });
       data = data && data.data ? data.data[0] : null;
       for (let key in this.form2) {
         if (data && data.hasOwnProperty(key)) {

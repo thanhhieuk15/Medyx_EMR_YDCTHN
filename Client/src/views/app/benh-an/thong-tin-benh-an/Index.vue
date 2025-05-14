@@ -58,7 +58,7 @@
           </v-col>
           <v-col cols="12" xs="6" sm="6" md="2" lg="2" xl="2" class="padding-cols">
             <el-form-item label="5. Mã người bệnh" prop="maBn">
-              <el-input size="small" v-model="benhAn.benhNhan.maBn" placeholder="VD: 123456"></el-input>
+              <el-input size="small" v-model="form.maBn" placeholder="VD: 123456"></el-input>
             </el-form-item>
           </v-col>
           <v-col cols="12" xs="6" sm="6" md="2" lg="2" xl="2" class="padding-cols">
@@ -429,6 +429,7 @@ export default {
           maDt: null,
           tenDt: null,
         },
+        hoTenMe:null,
         trinhDoVHBo:null,
         maNgheNghiepBo:null,
         trinhDoVHMe:null,
@@ -437,7 +438,6 @@ export default {
         ghtbhyt: null,
         hoTen: null,
         hoTenCha: null,
-        hoTenme: null,
         idba: null,
         lienHe: null,
         maBn: null,
@@ -650,6 +650,7 @@ export default {
     async getData() {
       let data = await getDetailBenhAn(this.id);
       this.benhAn = data.data;
+      
       if (data.data.benhNhan.tinh.maTinh) {
         this.getQuanHuyenSelect(data.data.benhNhan.tinh.maTinh);
       }

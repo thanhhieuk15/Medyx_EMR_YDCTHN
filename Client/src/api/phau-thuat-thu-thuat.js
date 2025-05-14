@@ -75,12 +75,19 @@ export function addPhieuPhauThuat(data) {
       data
     });
   }
+  
 export function detailPhieuPhauThuat(idba, stt) {
     return request({
         url: `/benh-an-phau-thuat-phieu-pttt/${idba}/chi-tiet/${stt}`,
         method: "get",
     });
 }
+export function getDeatilPhieuPhauThuat(id) {
+    return request({
+      url: "/benh-an-phau-thuat-phieu-pttt/" + id,
+      method: "get",
+    });
+  }
 export function updatePhieuPhauThuat(idba, stt, data) {
     return request({
         url: `/benh-an-phau-thuat-phieu-pttt/${idba}/chi-tiet/${stt}`,
@@ -92,5 +99,12 @@ export function detroyPhieuPhauThuat(idba, stt) {
     return request({
         url: `/benh-an-phau-thuat-phieu-pttt/${idba}/chi-tiet/${stt}`,
         method: "delete",
+    });
+}
+export function updatePhieuPhauThuatPttt(idba, stt, data) {
+    return request({
+        url: `/benh-an-phau-thuat-phieu-pttt/${idba}/chi-tiet-update/${stt}`,
+        method: "put",
+        data
     });
 }

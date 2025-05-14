@@ -228,8 +228,6 @@
     },
     watch: {
       benhAn: function (val) {
-        console.log(val);
-        
         for (let key in this.form) {
           if (val && val.hasOwnProperty(key)) {
             this.form[key] = val[key];
@@ -238,7 +236,6 @@
       },
       benhAnKhoaDieuTri: function (val) {
         if (val) {
-          console.log(val)
           val.forEach((item, index) => {
             let a = {};
             a.khoa = item.khoa;

@@ -44,6 +44,10 @@ using System.Linq.Dynamic.Core;
 using SessionHelper = Medyx_EMR_BCA.ApiAssets.Helpers.SessionHelper;
 using System.Windows.Interop;
 using Microsoft.EntityFrameworkCore.Query.ExpressionTranslators.Internal;
+using Medyx_EMR.Models.DanhMuc;
+using System.Threading.Tasks;
+using CrystalDecisions.CrystalReports.Engine;
+using CrystalDecisions.Shared;
 
 namespace HTC.WEB.NIOEH.Areas.Client.DanhMuc
 {
@@ -172,7 +176,7 @@ namespace HTC.WEB.NIOEH.Areas.Client.DanhMuc
                         UserProfileSessionData u = new UserProfileSessionData();
                         u.ListRoleSession = db.GetActionByRoleID(u.Pub_sAccount);
                         u.MongoDBConnectionString = _config.GetValue<string>("Medyx_BCADatabase:ConnectionString");
-                        u.MongoDBDataBaseName = _config.GetValue<string>("Medyx_BCADatabase:DatabaseName"); 
+                        u.MongoDBDataBaseName = _config.GetValue<string>("Medyx_BCADatabase:DatabaseName");
                         string constr = u.MongoDBConnectionString;
                         var client = new MongoClient(constr);
                         IMongoDatabase dbm = client.GetDatabase(u.MongoDBDataBaseName);
@@ -193,7 +197,7 @@ namespace HTC.WEB.NIOEH.Areas.Client.DanhMuc
                 else
                 {
                     return Json(new { success = false, message = "Không tìm thấy file", status = 500 });
-  
+
                 }
             }
         }
@@ -300,41 +304,181 @@ namespace HTC.WEB.NIOEH.Areas.Client.DanhMuc
 
         }
 
+        public DataTable GetSalePara(string loai)
+        {
+            DataTable dr = new DataTable();
+            string tenStore = "sp_ThamSoKyBkav";
+            string StrConection = ConfigurationManager.ConnectionStrings["Medyx_EMR_BCA_SQLConnectionString"].ConnectionString + "; connection timeout=600; pooling=true; Max Pool Size=6000;Timeout=600;MultipleActiveResultSets=True";
+            using (SqlConnection Conection = new SqlConnection(StrConection))
+            {
+                Conection.Open();
+                using (SqlCommand Command = new SqlCommand(tenStore, Conection))
+                {
+                    Command.CommandType = CommandType.StoredProcedure;
+                    Command.Parameters.Add(new SqlParameter("@Loai", loai));
+                    SqlDataAdapter dp = new SqlDataAdapter(Command);
+                    dp.Fill(dr);
+                }
+                return dr;
+            }
+        }
+
+        private string GetPathReport(string loai)
+        {
+            string tenStore = "sp_GetPathReport";
+            string connectionString = ConfigurationManager.ConnectionStrings["Medyx_EMR_BCA_SQLConnectionString"].ConnectionString + "; connection timeout=600; pooling=true; Max Pool Size=6000;Timeout=600;MultipleActiveResultSets=True";
+            using (SqlConnection Connection = new SqlConnection(connectionString))
+            {
+                Connection.Open();
+                using (SqlCommand Command = new SqlCommand(tenStore, Connection))
+                {
+                    Command.CommandType = CommandType.StoredProcedure;
+                    Command.Parameters.AddWithValue("@Loai", loai);
+                    string pdfFilePath = Command.ExecuteScalar() as string;
+                    if (!string.IsNullOrEmpty(pdfFilePath))
+                    {
+                        return pdfFilePath;
+                    }
+                    else
+                    {
+                        return "";
+                    }
+                }
+            }
+        }
+        public DataSet GetInforBenhAn(decimal Idba, string stt)
+        {
+            DataSet dr = new DataSet();
+            string tenStore = "";
+            switch (stt)
+            {
+                case "1":
+                    tenStore = "sp_GetBenhAnFile1";
+                    break;
+                case "2":
+                    tenStore = "sp_GetBenhAnFile2";
+                    break;
+                case "3":
+                    tenStore = "sp_GetBenhAnFile3";
+                    break;
+                default:
+                    break;
+            }
+            string StrConection = ConfigurationManager.ConnectionStrings["Medyx_EMR_BCA_SQLConnectionString"].ConnectionString + "; connection timeout=600; pooling=true; Max Pool Size=6000;Timeout=600;MultipleActiveResultSets=True";
+            using (SqlConnection Conection = new SqlConnection(StrConection))
+            {
+                Conection.Open();
+                using (SqlCommand Command = new SqlCommand(tenStore, Conection))
+                {
+                    Command.CommandType = CommandType.StoredProcedure;
+                    Command.Parameters.Add(new SqlParameter("@IDBA", Idba));
+                    SqlDataAdapter dp = new SqlDataAdapter(Command);
+                    dp.Fill(dr);
+                }
+                return dr;
+            }
+        }
+        public string GenerateAndSavePDF(decimal id, string stt)
+        {
+            try
+            {
+                DataSet dt = GetInforBenhAn(id, stt);
+                if (dt == null || dt.Tables.Count == 0 || dt.Tables[0].Rows.Count == 0)
+                    throw new Exception("Không tìm thấy dữ liệu để tạo báo cáo.");
+
+                string reportPathFromDB = dt.Tables[0].Rows[0]["ReportPath"].ToString();
+                string webRootPath = ConfigurationManager.AppSettings["ReportDirectory"].Replace("\\\\", "\\");
+                string fullReportPath = webRootPath + reportPathFromDB;
+                string timeStamp = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+                string fileName = $"{timeStamp}-{id}_{stt}.pdf";
+
+                string outputFolder = Path.Combine(webRootPath.Replace("\\ReportHSBA", ""), "Storage", "Print");
+                if (!Directory.Exists(outputFolder))
+                    Directory.CreateDirectory(outputFolder);
+
+                string fullOutputPath = Path.Combine(outputFolder, fileName);
+
+                if (System.IO.File.Exists(fullOutputPath))
+                    System.IO.File.Delete(fullOutputPath);
+
+                using (ReportDocument rpt = new ReportDocument())
+                {
+                    rpt.Load(fullReportPath);
+                    rpt.SetDataSource(dt);
+
+                    // Export trực tiếp ra file
+                    rpt.ExportToDisk(ExportFormatType.PortableDocFormat, fullOutputPath);
+                }
+
+                return fullOutputPath; // Trả về đường dẫn file PDF đã tạo
+            }
+            catch (Exception ex)
+            {
+                WriteLog("GenerateAndSavePDFToPath Error: " + ex.ToString());
+                return null;
+            }
+        }
+
+
         [HttpGet]
+        public ActionResult SignPdf(string base64URL)
+        {
+            try
+            {
+                var u = SessionHelper.GetObjectFromJson<UserProfileSessionData>(HttpContext.Session, "UserProfileSessionData");
+                string dk = u.Pub_sNguoiSD;
+                SignPdfRequest request = new SignPdfRequest();
+                DataTable signBkav = GetSalePara("KySoBKAV_"+ dk);
+                if (signBkav.Rows.Count > 0)
+                {
+                    request.CerUrl = signBkav.Rows[0]["CerUrl"].ToString();
+                    request.CerPath = signBkav.Rows[0]["CerPath"].ToString();
+                    request.CerPass = signBkav.Rows[0]["CerPass"].ToString();
+                    request.Id = signBkav.Rows[0]["PDFId"].ToString();
+                    request.Serial = signBkav.Rows[0]["Serial"].ToString();
+                    request.PartnerName = signBkav.Rows[0]["PartnerName"].ToString();
+                    request.FileUrl = signBkav.Rows[0]["FileUrl"].ToString();
+                    request.SignatureCreator = signBkav.Rows[0]["SignatureCreator"].ToString();
+                    request.Reason = signBkav.Rows[0]["Reason"].ToString();
+                    request.Location = signBkav.Rows[0]["Location"].ToString();
+                }
 
-        //public ActionResult urlSgintFilePath(string base64URL)
+               
+                string fileName = Path.GetFileName(base64URL);
+                string fileold = fileName.Replace(".pdf", "");
+                int idx = fileold.IndexOf('_');
+                string IDBAEMR = fileold.Substring(0, idx);
+                string loaitailieu = fileold.Substring(idx + 1);
+                string filePath = GenerateAndSavePDF(decimal.Parse(IDBAEMR), loaitailieu);
+                byte[] pdfData = System.IO.File.ReadAllBytes(filePath);
+                var pdfSigner = new PDFSigning(pdfData, request.CerUrl, request.CerPath, request.CerPass)
+                {
+                    id = request.Id,
+                    serial = request.Serial,
+                    partnerName = request.PartnerName
+                };
+                if (!Directory.Exists(request.FileUrl))
+                {
+                    Directory.CreateDirectory(request.FileUrl);
+                }
+                string signedFileName = $"signed_{Guid.NewGuid()}.pdf";
+                string signedFilePath = Path.Combine(request.FileUrl, signedFileName);
+                //string signedFilePath = Path.Combine(Path.GetTempPath(), $"signed_{Guid.NewGuid()}.pdf");
 
-        //{
-        //    string fileName = Path.GetFileName(base64URL);
-        //    string url = "http://192.168.1.14:7000/Upload/";
-        //    // Gán IDBA bằng tên của tệp
-        //    string IDBAEMR = fileName.Replace(".pdf", "");
-        //    var u = SessionHelper.GetObjectFromJson<UserProfileSessionData>(HttpContext.Session, "UserProfileSessionData");
-        //    string dk = u.Pub_sNguoiSD;
-        //    string urlFilesign =  url + IDBAEMR + ".signed.pdf.pdf";
-        //    string LtL = "1";
-        //    using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["SqlDataProvider"].ConnectionString))
-        //    {
-        //        connection.Open();
-
-        //        using (SqlCommand command = new SqlCommand("spTrangThaiKy_linkemr", connection))
-        //        {
-        //            command.CommandType = CommandType.StoredProcedure;
-
-        //            command.Parameters.AddWithValue("@IDBAEMR", IDBAEMR);
-        //            command.Parameters.AddWithValue("@DuongDanFile", urlFilesign);                 
-        //            command.Parameters.AddWithValue("@MaBS", dk);
-        //            command.Parameters.AddWithValue("@LoaigiayTo", LtL);
-        //            command.ExecuteNonQuery();
-        //        }
-        //    }
-        //    return Ok(urlFilesign);
-        //}
+                pdfSigner.Sign(signedFilePath, request.SignatureCreator, request.Reason, request.Location, u.Pub_sTenNguoiSD, filePath);
+                spDMTrangThaiKy_Create(fileold, dk, signedFilePath,u.Pub_sTenNguoiSD);
+               
+                return Ok(new { success = true, file = signedFilePath });
 
 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = ex.Message });
+            }
+        }
 
-
-
+        [HttpGet]
         public ActionResult urlSgintFilePath(string base64URL)
         {
             string fileName = Path.GetFileName(base64URL);
@@ -358,7 +502,7 @@ namespace HTC.WEB.NIOEH.Areas.Client.DanhMuc
                 string idba_stt = "";
                 if (match.Success)
                 {
-                     idba_stt = match.Groups[1].Value;
+                    idba_stt = match.Groups[1].Value;
                 }
                 //string IDBAEMR = fileName.Replace("_1.pdf", "");
                 //string[] parts = fileNames.Split('_');
@@ -414,15 +558,9 @@ namespace HTC.WEB.NIOEH.Areas.Client.DanhMuc
             var u = SessionHelper.GetObjectFromJson<UserProfileSessionData>(HttpContext.Session, "UserProfileSessionData");
             string dk = u.Pub_sNguoiSD;
             string ltl = "";
-            string[] segments = base64URL.TrimEnd('/').Split('/');
-            string fileNames = segments[segments.Length - 1]; // Lấy phần tử cuối cùng của mảng segments
-            // Tách phần số sau dấu gạch trong fileName
-            string[] parts = fileNames.Split('_');
-            if (parts.Length >= 2)
-            {
-                ltl = parts[1].Split('.')[0]; // Lấy phần sau dấu _ và loại bỏ phần mở rộng .pdf
-            }
-            string tenStore = "spGetPdfHistoemr";
+            int idx = IDBAEMR.IndexOf('_');
+            ltl = IDBAEMR.Substring(idx + 1);
+            string tenStore = "spGetDMTrangThaiKy_FileDaKy";
             string connectionString = ConfigurationManager.ConnectionStrings["SqlDataProvider"].ConnectionString + "; connection timeout=600; pooling=true; Max Pool Size=6000;Timeout=600;MultipleActiveResultSets=True";
             using (SqlConnection Connection = new SqlConnection(connectionString))
             {
@@ -445,7 +583,7 @@ namespace HTC.WEB.NIOEH.Areas.Client.DanhMuc
                             //set lan Da Ky
                             lanDaKy = int.Parse(dr.Tables[0].Rows[0]["LanDaKy"].ToString());
                             FilePathGoc = dr.Tables[0].Rows[0]["DuongDanFile"].ToString();
-                         
+
                         }
                         if (dr.Tables[1].Rows.Count > 0)
                         {
@@ -462,7 +600,7 @@ namespace HTC.WEB.NIOEH.Areas.Client.DanhMuc
                         }
                         if (dr.Tables[3].Rows.Count > 0)
                         {
-                           
+
                             maChucVu = dr.Tables[3].Rows[0]["MaChucVu"].ToString();
                         }
                     }
@@ -472,7 +610,7 @@ namespace HTC.WEB.NIOEH.Areas.Client.DanhMuc
                         {
                             isCheckKy = true;
                             message = "Giấy tờ này đã được ký đủ bởi " + tenBSNames;
-                           
+
                         }
                         else if (maChucVu == "001" || maChucVu == "002" || maChucVu == "003" || maChucVu == "004")
                         {
@@ -481,7 +619,7 @@ namespace HTC.WEB.NIOEH.Areas.Client.DanhMuc
                         else
                         {
                             isCheckKy = true;
-                            message = "Giấy tờ này đã ký đủ, các bác sĩ đã ký: "+ tenBSNames;
+                            message = "Giấy tờ này đã ký đủ, các bác sĩ đã ký: " + tenBSNames;
                         }
                     }
                     else if (lanky == 0)
@@ -490,16 +628,10 @@ namespace HTC.WEB.NIOEH.Areas.Client.DanhMuc
                     }
                     else
                     {
-                        message = "Giấy tờ này bạn đã ký bởi bác sĩ:"+ tenBSNames +"!";
+                        message = "Giấy tờ này bạn đã ký bởi bác sĩ:" + tenBSNames + "!";
                     }
 
-                    //string pdfFilePath = Command.ExecuteScalar() as string;
-                    //if (!string.IsNullOrEmpty(pdfFilePath))
-                    //{
-
-                    //    string fullPdfUrl = pdfFilePath.Replace(".pdf.pdf", ".pdf");
-                    //}
-                    return Ok(new {DuongDanFile = FilePathGoc, Message = message, IsCheckKy = isCheckKy });
+                    return Ok(new { DuongDanFile = FilePathGoc, Message = message, IsCheckKy = isCheckKy });
 
                 }
             }
@@ -532,7 +664,7 @@ namespace HTC.WEB.NIOEH.Areas.Client.DanhMuc
                 string ngayYLenh = arr[8].Replace("-", "/");
                 string LoaiGiayToErm = arr[9]; ;
                 string ltl = "";
-               
+
                 if (LoaiGiayToErm == null || LoaiGiayToErm == "")
                 {
                     var MaGiayTo = _dmbaLoaiTaiLieuRepository._context.DmbaLoaiTaiLieu.Where(x => x.MaLoaiGiayTo.Trim().Equals(LoaiGiayTo)).FirstOrDefault()?.MaLoaiTaiLieu;
@@ -559,7 +691,7 @@ namespace HTC.WEB.NIOEH.Areas.Client.DanhMuc
                         Command.CommandType = CommandType.StoredProcedure;
                         mss += "IDBAEMR:" + IDBAEMR + "/";
                         Command.Parameters.AddWithValue("@IDBAEMR", IDBAEMR);
-                        mss += "dk:" + dk+ "/";
+                        mss += "dk:" + dk + "/";
                         Command.Parameters.AddWithValue("@MaBS", dk);
                         mss += "ltl:" + ltl + "/";
                         Command.Parameters.AddWithValue("@LoaiGiayTo", ltl);
@@ -685,9 +817,9 @@ namespace HTC.WEB.NIOEH.Areas.Client.DanhMuc
             string fileName = Path.GetFileName(base64URL);
             string IDBAEMR = fileName.Replace(".pdf", "");
             var u = SessionHelper.GetObjectFromJson<UserProfileSessionData>(HttpContext.Session, "UserProfileSessionData");
-            var Quyen = u.ListRoleSession.Where(x => x.ActionDetailsName == "/DMTrangThaiKy/Index/Delete").Count() > 0;
-            if (Quyen)
-            {
+            //var Quyen = u.ListRoleSession.Where(x => x.ActionDetailsName == "/DMTrangThaiKy/Index/Delete").Count() > 0;
+            //if (Quyen)
+            //{
                 HL7CoreDataDataContext db = new HL7CoreDataDataContext();
                 string MaMay = this.GetLocalIPAddress();
                 #region ghi log
@@ -735,10 +867,7 @@ namespace HTC.WEB.NIOEH.Areas.Client.DanhMuc
 
                     }
                 }
-            }
-            else
-                return Json(new { success = false, message = "Không có quyền xóa trạng thái ký  !", status = 500 });
-
+           
         }
 
 
@@ -778,6 +907,33 @@ namespace HTC.WEB.NIOEH.Areas.Client.DanhMuc
             else
                 return Json(new { success = false, message = "Không có quyền thêm mới trạng thái ký !", status = 500 });
         }
+
+        public DataTable spDMTrangThaiKy_Create(string IDBA, string MaBS, string DuongDanFile, string TenBS)
+        {
+            string tenStore = "SpInsertURLDMTrangThaiKyERM";
+            DataTable dr = new DataTable();
+            string StrConection = ConfigurationManager.ConnectionStrings["SqlDataProvider"].ConnectionString + "; connection timeout=6000; pooling=true; Max Pool Size=6000;Timeout=6000;MultipleActiveResultSets=True";
+            using (SqlConnection Conection = new SqlConnection(StrConection))
+            {
+                Conection.Open();
+                using (SqlCommand Command = new SqlCommand(tenStore, Conection))
+                {
+                    Command.CommandType = CommandType.StoredProcedure;
+                    Command.Parameters.Add(new SqlParameter("@IDBA", IDBA));
+                    Command.Parameters.Add(new SqlParameter("@MaBS ", MaBS));
+                    Command.Parameters.Add(new SqlParameter("@TenBS ", TenBS));
+                    Command.Parameters.Add(new SqlParameter("@DuongDanFile", DuongDanFile));
+                    //Command.ExecuteNonQuery();
+                    SqlDataAdapter dp = new SqlDataAdapter(Command);
+                    dp.Fill(dr);
+                }
+                Conection.Close();
+                Conection.Dispose();
+                return dr;
+
+            }
+        }
+       
         #endregion
 
         //#region Load danh mục trạng thái ký  get all
@@ -905,6 +1061,20 @@ namespace HTC.WEB.NIOEH.Areas.Client.DanhMuc
                 return Json(new { success = false, message = "Không có quyền thêm mới trạng thái   ký !", status = 500 });
         }
         #endregion
+    }
+    public class SignPdfRequest
+    {
+        public string FileBase64 { get; set; }
+        public string CerUrl { get; set; }
+        public string CerPath { get; set; }
+        public string CerPass { get; set; }
+        public string Id { get; set; }
+        public string Serial { get; set; }
+        public string PartnerName { get; set; }
+        public string SignatureCreator { get; set; }
+        public string Reason { get; set; }
+        public string Location { get; set; }
+        public string FileUrl { get; set; }
     }
     [ApiController]
     [Route("api/[controller]")]

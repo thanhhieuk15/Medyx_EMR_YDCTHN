@@ -31,7 +31,7 @@
                 </el-form-item>
               </v-col>
               <v-col cols="12" class="mt-3">
-                <b>Chẩn đoán KKB/cấp cứu</b>
+                <b>Khoa khám bệnh</b>
                 <el-form-item label="Mã bệnh">
                   <base-select-async v-model="form.maBenhKkbyhhd" :label="(item) => `${item.maBenh} - ${item.tenBenh}`"
                     keyValue="maBenh" :apiFunc="getChanDoanBenh" placeholder="" style="width: 100%" clearable
@@ -70,7 +70,7 @@
                   <el-input v-model="form.tenBenhKemVv1" size="small"></el-input>
                 </el-form-item>
               </v-col>
-              <v-col cols="12">
+              <!-- <v-col cols="12">
                 <b>Vào khoa điều trị - Bệnh kèm theo 2</b>
                 <el-form-item label="Mã bệnh">
                   <base-select-async v-model="form.maBenhKemVv2"
@@ -167,7 +167,7 @@
                 <el-form-item label="Tên bệnh">
                   <el-input v-model="form.tenBenhKemVv9" size="small"></el-input>
                 </el-form-item>
-              </v-col>
+              </v-col> -->
               <v-col cols="6">
                 <el-form-item label="Thủ thuật">
                   <el-radio-group v-model="form.thuThuatYhhd" style="width: 100%">
@@ -176,14 +176,14 @@
                   </el-radio-group>
                 </el-form-item>
               </v-col>
-              <v-col cols="6">
+              <!-- <v-col cols="6">
                 <el-form-item label="Phẫu thuật">
                   <el-radio-group v-model="form.phauThuatYhhd" style="width: 100%">
                     <el-radio :label="1">Có</el-radio>
                     <el-radio :label="2">Không</el-radio>
                   </el-radio-group>
                 </el-form-item>
-              </v-col>
+              </v-col> -->
               <v-col cols="12">
                 <b>Ra viện - Bệnh chính</b>
                 <el-form-item label="Mã bệnh">
@@ -208,7 +208,7 @@
                   <el-input v-model="form.tenBenhKemRv1" size="small" placeholder="Tên bệnh"></el-input>
                 </el-form-item>
               </v-col>
-              <v-col cols="12">
+              <!-- <v-col cols="12">
                 <b>Ra viện - Bệnh kèm theo 2</b>
                 <el-form-item label="Mã bệnh">
                   <base-select-async v-model="form.maBenhKemRv2" :label="(item) => `${item.maBenh} - ${item.tenBenh}`"
@@ -303,7 +303,7 @@
                 <el-form-item label="Tên bệnh">
                   <el-input v-model="form.tenBenhKemRv9" size="small" placeholder="Tên bệnh"></el-input>
                 </el-form-item>
-              </v-col>
+              </v-col> -->
               <v-col cols="6" class="padding-cols">
                 <el-form-item label="Tai biến">
                   <el-radio-group v-model="form.taiBienYhhd" style="width: 100%">
@@ -350,7 +350,7 @@
                 </el-form-item>
               </v-col>
               <v-col cols="12" class="mt-3">
-                <b>Chẩn đoán KKB/cấp cứu</b>
+                <b>Khoa khám bệnh</b>
                 <el-form-item label="Mã bệnh">
                   <base-select-async v-model="form.maBenhKkbyhct"
                     :label="(item) => `${item.maBenh} - ${item.tenBenh} - ${item.tenBenhBhyt}`" keyValue="maBenh"
@@ -388,7 +388,7 @@
                   <el-input v-model="form.tenBenhKemVv1yhct" size="small" placeholder="Tên bệnh"></el-input>
                 </el-form-item>
               </v-col>
-              <v-col cols="12">
+              <!-- <v-col cols="12">
                 <b>Vào khoa điều trị - bệnh kèm 2</b>
                 <el-form-item label="Mã bệnh">
                   <base-select-async v-model="form.maBenhKemVv2yhct"
@@ -491,7 +491,7 @@
                 <el-form-item label="Tên bệnh">
                   <el-input v-model="form.tenBenhKemVv9yhct" size="small" placeholder="Tên bệnh"></el-input>
                 </el-form-item>
-              </v-col>
+              </v-col> -->
               <v-col cols="6">
                 <el-form-item label="Thủ thuật">
                   <el-radio-group v-model="form.thuThuatYhct" style="width: 100%">
@@ -500,14 +500,14 @@
                   </el-radio-group>
                 </el-form-item>
               </v-col>
-              <v-col cols="6">
+              <!-- <v-col cols="6">
                 <el-form-item label="Phẫu thuật">
                   <el-radio-group v-model="form.phauThuatYhct" style="width: 100%">
                     <el-radio :label="1">Có</el-radio>
                     <el-radio :label="2">Không</el-radio>
                   </el-radio-group>
                 </el-form-item>
-              </v-col>
+              </v-col> -->
               <v-col cols="12">
                 <b>Ra viện - Bệnh chính</b>
                 <el-form-item label="Mã bệnh">
@@ -534,7 +534,7 @@
                   <el-input v-model="form.tenBenhKemRv1yhct" size="small" placeholder="Tên bệnh"></el-input>
                 </el-form-item>
               </v-col>
-              <v-col cols="12">
+              <!-- <v-col cols="12">
                 <b>Ra viện - Bệnh kèm theo 2</b>
                 <el-form-item label="Mã bệnh">
                   <base-select-async v-model="form.maBenhKemRv2yhct"
@@ -637,7 +637,7 @@
                 <el-form-item label="Tên bệnh">
                   <el-input v-model="form.tenBenhKemRv9yhct" size="small" placeholder="Tên bệnh"></el-input>
                 </el-form-item>
-              </v-col>
+              </v-col> -->
 
               <v-col cols="6" class="padding-cols">
                 <el-form-item label="Tai biến">

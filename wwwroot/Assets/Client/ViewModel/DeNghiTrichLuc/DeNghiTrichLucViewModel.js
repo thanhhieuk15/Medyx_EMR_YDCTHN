@@ -4,6 +4,7 @@
 /// <reference path="../../../Extention/GeneralCategory.js" />
 /// <reference path="../../../Extention/Extention.js" />
 /// <reference path="../../admin/libs/jquery/dist/jquery.min.js" />
+
 var DeNghiTrichLucViewModel = function () {
     //khởi tạo tham số
     //biến trung gian để lưu thông tin của bản ghi được chọn trước khi thay đổi thông tin 
@@ -1236,6 +1237,7 @@ var DeNghiTrichLucViewModel = function () {
         }
     }
     self.printListHSBA = function () {
+
         var DNlist = '';
         $('.chkChon_read').each(function () {
             if (this.checked == true) {
@@ -1267,6 +1269,44 @@ var DeNghiTrichLucViewModel = function () {
             //    }
             //});
             window.open('/TrichLucHSBA/PrintHSBA?sophieulist=' + DNlist.substring(0, DNlist.length - 1));
+        }
+    }
+    //Ký hồ sơ bệnh án trích lục
+    self.SignListHSBA = function () {
+      
+        var DNlist = '';
+        $('.chkChon_read').each(function () {
+            if (this.checked == true) {
+                //var menuid = this.id.replace('chkChon_read', '');
+                var DN = this.parentNode.parentNode.id;
+                DNlist += DN + ',';
+            }
+        });
+        if (DNlist.length == 0) {
+            alert('Chưa chọn số phiếu để Ký!');
+        }
+        else {
+            window.open('/client/sample/SignFileTrichLuc.html?fileSignUrl=' + DNlist.substring(0, DNlist.length - 1));
+            window.open('/TrichLucHSBA/PrintPDFHSBA?sophieulist=' + DNlist.substring(0, DNlist.length - 1));
+            //var url = '/TrichLucHSBA/SignHSBA?sophieulist=' + encodeURIComponent(DNlist.substring(0, DNlist.length - 1));
+
+            //$.ajax({
+            //    url: url,
+            //    type: 'GET',
+            //    success: function (response) {
+            //        if (response != null && response.success == false)
+            //            alert(response.message);
+            //        else if (response != null && response.success == true) {
+            //            console.log(response);
+            //            // Có thể mở file zip nếu response.message là đường dẫn file
+            //            // window.open('/TrichLucHSBA/GetReport?ReportURL=' + response.message);
+            //        }
+            //    },
+            //    error: function (error) {
+            //        alert('Xảy ra lỗi:' + error + ' khi ký phiếu!');
+            //    }
+            //});
+            /*window.open('/TrichLucHSBA/SignHSBA?sophieulist=' + DNlist.substring(0, DNlist.length - 1)) + '&ltl=' + cboLoaiDeNghi;*/
         }
     }
     //Export dữ liệu

@@ -11,37 +11,34 @@
           </el-form-item>
         </v-col>
         <v-col cols="12" class="padding-cols">
-          <el-form-item label="II. BỆNH SỬ">
+          <el-form-item label="Vào ngày thứ của bệnh">
+            <el-input v-model="form.vaoNgayThu" type="text"></el-input>
+          </el-form-item>
+        </v-col>
+        <v-col cols="12" class="padding-cols">
+          <el-form-item label="II. Hỏi bệnh">
+            <div>1. Quá trình bệnh lý:(khởi phát, diễn biến, chẩn đoán, điều trị của tuyến dưới v.v ).</div>
             <el-input v-model="form.benhSu" type="textarea" rows="2"></el-input>
           </el-form-item>
         </v-col>
         <v-col cols="12" class="padding-cols">
-          <el-form-item label="III. TIỀN SỬ"></el-form-item>
+          <el-form-item label="2.Tiền sử bệnh"></el-form-item>
         </v-col>
         <v-col cols="6" class="padding-cols">
-          <el-form-item label="1. Bản Thân">
+          <el-form-item label="Bản Thân">
             <el-input v-model="form.tienSuBanThan" type="textarea" rows="2"></el-input>
           </el-form-item>
         </v-col>
         <v-col cols="6" class="padding-cols">
           <el-form-item>
             <br />
-            <el-checkbox @change="setModelFormCheckbox(tienSuBenhAnNew)" v-for="(item, index) in tienSuBenhAnNew" :key="index" v-model="item.checkbox">{{ item.ten }}
+            <el-checkbox @change="setModelFormCheckbox(tienSuBenhAnNew)" v-for="(item, index) in tienSuBenhAnNew"
+              :key="index" v-model="item.checkbox">{{ item.ten }}
             </el-checkbox>
           </el-form-item>
         </v-col>
-        <v-col cols="6" class="padding-cols">
-          <el-form-item label="Mô tả">
-            <el-input v-model="form.moTaTienSu" type="textarea" rows="2"></el-input>
-          </el-form-item>
-        </v-col>
-        <v-col cols="6" class="padding-cols">
-          <el-form-item label="Đặc điểm liên quan đến bệnh tất">
-            <el-input v-model="form.dacDiemLienQuanBenh" type="textarea" rows="2"></el-input>
-          </el-form-item>
-        </v-col>
         <v-col cols="12" class="padding-cols">
-          <el-form-item label="2. Gia đình">
+          <el-form-item label="Gia đình">
             <el-input v-model="form.tienSuGiaDinh" type="textarea" rows="2"></el-input>
           </el-form-item>
         </v-col>
@@ -70,8 +67,8 @@
             </v-col>
             <v-col cols="3" class="padding-cols">
               <el-form-item label="Nhiệt độ (℃):">
-                <el-input type="number" v-model="form.nhietDo" size="mini" :step="0.01"
-                  controls-position="right" style="width: 100%"></el-input>
+                <el-input type="number" v-model="form.nhietDo" size="mini" :step="0.01" controls-position="right"
+                  style="width: 100%"></el-input>
               </el-form-item>
             </v-col>
             <v-col cols="3" class="padding-cols">
@@ -81,37 +78,26 @@
             </v-col>
             <v-col cols="3" class="padding-cols">
               <el-form-item label="Nhịp thở (lần/phút):">
-                <el-input type="number" v-model="form.nhipTho" size="mini" controls-position="right" style="width: 100%">
+                <el-input type="number" v-model="form.nhipTho" size="mini" controls-position="right"
+                  style="width: 100%">
                 </el-input>
               </el-form-item>
             </v-col>
             <v-col cols="3" class="padding-cols">
               <el-form-item label="Cân Nặng (kg):">
-                <el-input type="number" v-model="form.canNang" size="mini" :step="0.01"
-                  controls-position="right" style="width: 100%"></el-input>
-              </el-form-item>
-            </v-col>
-            <v-col cols="3" class="padding-cols">
-              <el-form-item label="Chiều cao (cm):">
-                <el-input type="number" v-model="form.chieuCao" size="mini" :step="0.01"
-                  controls-position="right" style="width: 100%"></el-input>
-              </el-form-item>
-            </v-col>
-            <v-col cols="3" class="padding-cols">
-              <el-form-item label="BMI:">
-                <el-input type="number" v-model="form.bmi" size="mini" :step="0.001" controls-position="right" 
+                <el-input type="number" v-model="form.canNang" size="mini" :step="0.01" controls-position="right"
                   style="width: 100%"></el-input>
               </el-form-item>
             </v-col>
             <v-col cols="12" class="padding-cols">
-          <el-form-item label="Bệnh ngoại khoa">
-            <el-input v-model="form.benhNgoaikhoa" type="textarea"></el-input>
-          </el-form-item>
-        </v-col>
+              <el-form-item label="2.Bệnh ngoại khoa">
+                <el-input v-model="form.spO2" type="textarea"></el-input>
+              </el-form-item>
+            </v-col>
           </v-row>
         </v-col>
         <v-col cols="12" class="padding-cols mt-4">
-          <el-form-item label="2. Khám bộ phận"></el-form-item>
+          <el-form-item label="3. Các cơ quan"></el-form-item>
         </v-col>
         <v-col cols="12" class="padding-cols">
           <el-form-item label="Tuần hoàn:">
@@ -128,7 +114,7 @@
           </el-form-item>
         </v-col>
         <v-col cols="12" class="padding-cols">
-          <el-form-item label="Tiết niệu-sinh dục:">
+          <el-form-item label="Thận -Tiết niệu-sinh dục:">
             <el-input v-model="form.thanTnieuSduc" type="textarea"></el-input>
           </el-form-item>
         </v-col>
@@ -163,12 +149,12 @@
           </el-form-item>
         </v-col>
         <v-col cols="12" class="padding-cols">
-          <el-form-item label="V. CẬN LÂM SÀNG">
+          <el-form-item label="4.Các xét nghiệm cận lâm sàng cần làm: ">
             <el-input v-model="form.canLamSang" type="textarea" rows="5"></el-input>
           </el-form-item>
         </v-col>
         <v-col cols="12" class="padding-cols">
-          <el-form-item label="VI. TÓM TẮT BỆNH ÁN">
+          <el-form-item label="5. Tóm tắt bệnh án">
             <el-input v-model="form.tomTatBenhAn" type="textarea" rows="6"></el-input>
           </el-form-item>
         </v-col>
@@ -177,29 +163,15 @@
         </v-col>
         <v-col cols="4" class="padding-cols">
           <el-form-item label="Bệnh chính:">
-            <base-select-async v-model="form.benhChinh.maBenh" :label="(item) => `${item.maBenh} - ${item.tenBenh}`" keyValue="maBenh"
-              :apiFunc="getChanDoanBenh" placeholder="" style="width: 100%" size="small">
+            <base-select-async v-model="form.maBenhChinhVv" :label="(item) => `${item.maBenh} - ${item.tenBenh}`"
+              keyValue="maBenh" :apiFunc="getChanDoanBenh" placeholder="" style="width: 100%" size="small">
             </base-select-async>
           </el-form-item>
         </v-col>
         <v-col cols="4" class="padding-cols">
           <el-form-item label="Bệnh kèm theo 1(nếu có):">
-            <base-select-async v-model="form.benhKem1.maBenh" :label="(item) => `${item.maBenh} - ${item.tenBenh}`" keyValue="maBenh"
-              :apiFunc="getChanDoanBenh" placeholder="" style="width: 100%" size="small">
-            </base-select-async>
-          </el-form-item>
-        </v-col>
-        <v-col cols="4" class="padding-cols">
-          <el-form-item label="Bệnh kèm theo 2(nếu có):">
-            <base-select-async v-model="form.benhKem2.maBenh" :label="(item) => `${item.maBenh} - ${item.tenBenh}`" keyValue="maBenh"
-              :apiFunc="getChanDoanBenh" placeholder="" style="width: 100%" size="small">
-            </base-select-async>
-          </el-form-item>
-        </v-col>
-        <v-col cols="4" class="padding-cols">
-          <el-form-item label="Bệnh kèm theo 3(nếu có):">
-            <base-select-async v-model="form.benhKem3.maBenh" :label="(item) => `${item.maBenh} - ${item.tenBenh}`" keyValue="maBenh"
-              :apiFunc="getChanDoanBenh" placeholder="" style="width: 100%" size="small">
+            <base-select-async v-model="form.maBenhKemVv1" :label="(item) => `${item.maBenh} - ${item.tenBenh}`"
+              keyValue="maBenh" :apiFunc="getChanDoanBenh" placeholder="" style="width: 100%" size="small">
             </base-select-async>
           </el-form-item>
         </v-col>
@@ -220,7 +192,7 @@ import * as apiBenhTat from "@/api/benh-tat.js";
 import store from '@/store'
 import { getSelectBox } from '@/api/danh-muc.js';
 import { chiTietToBenhAn, getTienSuBenh, getKhamYhhd, getTongKetBenhAn, getKhoaDieuTri, getKhamYhct } from "@/api/benh-an.js";
-import {getChiTietPhieuKhamVaoVien}from "@/api/phieu-kham-benh-vao-vien";
+import { getChiTietPhieuKhamVaoVien } from "@/api/phieu-kham-benh-vao-vien";
 
 export default {
   data() {
@@ -236,10 +208,12 @@ export default {
         }
       }, 1000);
     };
-    return{
+    return {
       form: {
         benhSu: null,
+        spO2:null,
         bmi: null,
+        vaoNgayThu:null,
         canLamSang: null,
         canNang: null,
         cdchamSoc: null,
@@ -275,6 +249,8 @@ export default {
         tienSuBanThan: null,
         tienSuGiaDinh: null,
         dacDiemLienQuanBenh: null,
+        maBenhChinhVv:null,
+        maBenhKemVv1:null,
         benhChinh: {
           maBenh: null,
           tenBenh: null,
@@ -312,8 +288,8 @@ export default {
         { ten: "Thuốc lá", checkbox: false },
         { ten: "Thuốc Lào", checkbox: false },
       ],
-      rules:{
-        mach:[
+      rules: {
+        mach: [
           {
             validator: checkMach,
             trigger: "blur",
@@ -333,14 +309,14 @@ export default {
       },
       deep: true
     },
-    "form.canNang": function(val){
-      if(val && this.form.chieuCao){
-        this.form.bmi=(val/((this.form.chieuCao/100)*(this.form.chieuCao/100))).toFixed(2)
+    "form.canNang": function (val) {
+      if (val && this.form.chieuCao) {
+        this.form.bmi = (val / ((this.form.chieuCao / 100) * (this.form.chieuCao / 100))).toFixed(2)
       }
     },
-    "form.chieuCao": function(val){
-      if(this.form.canNang && val){
-        this.form.bmi=(this.form.canNang/((val/100)*(val/100))).toFixed(2)
+    "form.chieuCao": function (val) {
+      if (this.form.canNang && val) {
+        this.form.bmi = (this.form.canNang / ((val / 100) * (val / 100))).toFixed(2)
       }
     },
     CHANDOAN: {
@@ -372,7 +348,7 @@ export default {
           this.form[key] = data.data[key]
         }
       }
-      data = await getTienSuBenh(id, {getModelNull: true})
+      data = await getTienSuBenh(id, { getModelNull: true })
       for (let key in this.form) {
         if (data && data.data && data.data.hasOwnProperty(key)) {
           this.form[key] = data.data[key]
@@ -380,15 +356,15 @@ export default {
       }
       data = await getSelectBox({ MaParent: '017' });
       this.tienSuBenhAnNew = this.setCheckbox(this.form.maTienSu, data.data)
-      if(this.form.canNang&&this.form.chieuCao){
-        this.form.bmi=(this.form.canNang/((this.form.chieuCao/100)*(this.form.chieuCao/100))).toFixed(2)
+      if (this.form.canNang && this.form.chieuCao) {
+        this.form.bmi = (this.form.canNang / ((this.form.chieuCao / 100) * (this.form.chieuCao / 100))).toFixed(2)
       }
-      data= await getChiTietPhieuKhamVaoVien(id)
-      if(this.form.lyDoVv==null){
-        this.form.lyDoVv=data.data.lyDoVv
+      data = await getChiTietPhieuKhamVaoVien(id)
+      if (this.form.lyDoVv == null) {
+        this.form.lyDoVv = data.data.lyDoVv
       }
-      if(this.form.canLamSang==null){
-        this.form.canLamSang=data.data.tomTatKqcls
+      if (this.form.canLamSang == null) {
+        this.form.canLamSang = data.data.tomTatKqcls
       }
     },
     setCheckbox(model, checkBoxArray) {
@@ -405,14 +381,14 @@ export default {
       }
       return checkBoxArray
     },
-    setModelFormCheckbox(arrCheckbox){
-      let ma="";
-      arrCheckbox.forEach(item=>{
-        if(item.checkbox){
-          ma=ma+item.ma+","
+    setModelFormCheckbox(arrCheckbox) {
+      let ma = "";
+      arrCheckbox.forEach(item => {
+        if (item.checkbox) {
+          ma = ma + item.ma + ","
         }
-      }) 
-      this.form.maTienSu=ma;
+      })
+      this.form.maTienSu = ma;
     }
   },
 };

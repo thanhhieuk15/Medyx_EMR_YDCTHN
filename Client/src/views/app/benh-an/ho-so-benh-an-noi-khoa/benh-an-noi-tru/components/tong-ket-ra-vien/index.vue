@@ -55,7 +55,7 @@
                   <el-input v-model="form2.tenBenhKemVv1" size="small"></el-input>
                 </el-form-item>
               </v-col>
-              <v-col cols="12">
+              <!-- <v-col cols="12">
                 <b>Bệnh kèm theo 2</b>
                 <el-form-item label="Mã bệnh">
                   <base-select-async v-model="form2.benhKem2.maBenh"
@@ -152,9 +152,7 @@
                 <el-form-item label="Tên bệnh">
                   <el-input v-model="form2.tenBenhKemVv9" size="small"></el-input>
                 </el-form-item>
-              </v-col>
-
-
+              </v-col> -->
               <v-col cols="12" class="padding-cols">
                 <el-form-item label="Phương pháp điều trị">
                   <el-input v-model="form.ppdttheoYhhd" size="small"></el-input>
@@ -196,7 +194,7 @@
                   <el-input v-model="form2.tenBenhKemVv1yhct" size="small" placeholder="Tên bệnh"></el-input>
                 </el-form-item>
               </v-col>
-              <v-col cols="12">
+              <!-- <v-col cols="12">
                 <b>Bệnh kèm 2</b>
                 <el-form-item label="Mã bệnh">
                   <base-select-async v-model="form2.maBenhKemVv2yhct"
@@ -299,7 +297,7 @@
                 <el-form-item label="Tên bệnh">
                   <el-input v-model="form2.tenBenhKemVv9yhct" size="small" placeholder="Tên bệnh"></el-input>
                 </el-form-item>
-              </v-col>
+              </v-col> -->
              
               <v-col cols="12" class="padding-cols">
                 <el-form-item label="Phương pháp điều trị">
@@ -351,7 +349,7 @@
                   <el-input v-model="form2.tenBenhKemRv1" size="small" placeholder="Tên bệnh"></el-input>
                 </el-form-item>
               </v-col>
-              <v-col cols="12">
+              <!-- <v-col cols="12">
                 <b>Bệnh kèm 2</b>
                 <el-form-item label="Mã bệnh">
                   <base-select-async v-model="form2.maBenhKemRv2" :label="(item) => `${item.maBenh} - ${item.tenBenh}`"
@@ -446,7 +444,7 @@
                 <el-form-item label="Tên bệnh">
                   <el-input v-model="form2.tenBenhKemRv9" size="small" placeholder="Tên bệnh"></el-input>
                 </el-form-item>
-              </v-col>
+              </v-col> -->
             </v-row>
           </div>
         </v-col>
@@ -483,7 +481,7 @@
                   <el-input v-model="form2.tenBenhKemRv1yhct" size="small" placeholder="Tên bệnh"></el-input>
                 </el-form-item>
               </v-col>
-              <v-col cols="12">
+              <!-- <v-col cols="12">
                 <b>Bệnh kèm 2</b>
                 <el-form-item label="Mã bệnh">
                   <base-select-async v-model="form2.maBenhKemRv2yhct"
@@ -586,7 +584,7 @@
                 <el-form-item label="Tên bệnh">
                   <el-input v-model="form2.tenBenhKemRv9yhct" size="small" placeholder="Tên bệnh"></el-input>
                 </el-form-item>
-              </v-col>
+              </v-col> -->
             </v-row>
           </div>
         </v-col>
@@ -630,18 +628,6 @@
         <v-col xl="3" lg="3" md="4" cols="3" class="padding-cols">
           <el-form-item label="Số tờ MRI">
             <el-input-number style="width: 100%" size="small" controls-position="right" v-model="form.soToMri">
-            </el-input-number>
-          </el-form-item>
-        </v-col>
-        <v-col xl="3" lg="3" md="4" cols="3" class="padding-cols">
-          <el-form-item label="Số tờ siêu âm">
-            <el-input-number style="width: 100%" size="small" controls-position="right" v-model="form.soToSa">
-            </el-input-number>
-          </el-form-item>
-        </v-col>
-        <v-col xl="3" lg="3" md="4" cols="3" class="padding-cols">
-          <el-form-item label="Số tờ xét nghiệm">
-            <el-input-number style="width: 100%" size="small" controls-position="right" v-model="form.soToXn">
             </el-input-number>
           </el-form-item>
         </v-col>

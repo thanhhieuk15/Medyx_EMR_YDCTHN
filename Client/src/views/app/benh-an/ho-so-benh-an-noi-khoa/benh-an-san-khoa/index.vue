@@ -84,7 +84,7 @@
               <v-icon small left> mdi-printer </v-icon>Ký phần 3
             </v-btn>
             <!-- <v-btn color="primary" small de depressed class="mr-4" @click="onDownloadFile" size="medium"> <v-icon small left> mdi-printer </v-icon>Tải file đã ký</v-btn> -->
-            <v-btn color="primary" small de depressed class="mr-4" @click="onPreviewFile" size="medium"> <v-icon small left> mdi-printer </v-icon>Xem file đã ký</v-btn>
+            <!-- <v-btn color="primary" small de depressed class="mr-4" @click="onPreviewFile" size="medium"> <v-icon small left> mdi-printer </v-icon>Xem file đã ký</v-btn> -->
 
 
 
@@ -173,10 +173,13 @@ export default {
       form: {
         benhAn: null,
         benhAnKhamYhct: null,
-        benhAnKhamYhhd: null,
         BenhAnKhoaDieuTri: null,
         benhantongketbenhan: null,
-        thongTinBenhNhan: null
+        thongTinBenhNhan: null,
+        benhAnTienSuSan:null,
+        benhAnPhuSan:null,
+        benhAnTienSuBenh:null,
+        benhAnPhauThuatPhieuPttt:null,
       },
       tabView: 1,
       tongFile: 0,
@@ -371,12 +374,12 @@ export default {
       this.form.benhAn = benhAn;
       this.form.BenhAnKhoaDieuTri = benhAnkdt;
       this.form.thongTinBenhNhan = thongtinbenhnhan;
-      console.log(this.form.thongTinBenhNhan);
     },
-    getBenhAn(benhAnTienSuBenh, benhAnYhhd, benhAnYhct) {
-      this.form.benhAnKhamYhct = benhAnYhct;
-      this.form.benhAnKhamYhhd = benhAnYhhd;
+    getBenhAn(benhAnTienSuBenh, benhAnTienSuSan, benhAnPhuSan,benhAnPhauThuatPhieuPttt) {
+      this.form.benhAnTienSuSan = benhAnTienSuSan;
+      this.form.benhAnPhuSan = benhAnPhuSan;
       this.form.benhAnTienSuBenh = benhAnTienSuBenh;
+      this.form.benhAnPhauThuatPhieuPttt = benhAnPhauThuatPhieuPttt;
     },
     getTongKetRaVien(data) {
       this.form.benhantongketbenhan = data;
@@ -386,6 +389,7 @@ export default {
       try {
         this.isLoading = true
         await update(id, this.form);
+        console.log(this.form)
         this.$message({
           message: "Cập nhật thành công.",
           type: "success",
@@ -440,73 +444,6 @@ export default {
       }
       // return printBa1(this.idba) + "_1";
     },
-
-    // async handlePrint1() {
-    //   const host = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""
-    //     }`;
-    //   try {
-    //     this.isLoadingPrint1 = true
-    //     const response = await fetch(
-    //       `${host}/api/benh-an/${this.idba}/print-ba-file1/${this.idba}_1.pdf?ShouldReturnPath=true`
-    //     );
-    //     if (response.ok) {
-    //       const data = await response.json();
-    //       // Kiểm tra và gán URL vào fileSignUrl
-    //       const fileSignUrl = `${host}` + '/BaoCao/ShowFileDinhKem?filepath=' + `${data.path}`;
-    //       window.open(fileSignUrl);
-    //       this.isLoadingPrint1 = false
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //     this.isLoadingPrint1 = false
-    //   }
-    //   // return printBa1(this.idba) + "_1";
-    // },
-    // async handlePrint2() {
-    //   const host = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""
-    //     }`;
-
-    //   try {
-    //     this.isLoadingPrint2 = true
-    //     const response = await fetch(
-    //       `${host}/api/benh-an/${this.idba}/print-ba-file2/${this.idba}_2.pdf?ShouldReturnPath=true`
-    //     );
-    //     if (response.ok) {
-    //       const data = await response.json();
-    //       // Kiểm tra và gán URL vào fileSignUrl
-    //       const fileSignUrl = `${host}` + '/BaoCao/ShowFileDinhKem?filepath=' + `${data.path}`;
-    //       window.open(fileSignUrl);
-    //       this.isLoadingPrint2 = false
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //     this.isLoadingPrint2 = false
-    //   }
-
-    //   //return printBa2(this.idba);
-    // },
-    // async handlePrint3() {
-    //   const host = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""
-    //     }`;
-    //   try {
-    //     this.isLoadingPrint3 = true
-    //     const response = await fetch(
-    //       `${host}/api/benh-an/${this.idba}/print-ba-file3/${this.idba}_3.pdf?ShouldReturnPath=true`
-    //     );
-    //     if (response.ok) {
-    //       const data = await response.json();
-    //       // Kiểm tra và gán URL vào fileSignUrl
-    //       const fileSignUrl = `${host}` + '/BaoCao/ShowFileDinhKem?filepath=' + `${data.path}`;
-    //       window.open(fileSignUrl);
-    //       this.isLoadingPrint3 = false
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //     this.isLoadingPrint3 = false
-    //   }
-
-    //   //return printBa3(this.idba);
-    // },
     viewPdf() {
       return viewPdf()
     },
@@ -514,12 +451,11 @@ export default {
     async handleSign1() {
       const host = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""
         }`;
-      const url = `${host}/api/benh-an/${this.idba}/handlePrint1/${this.idba}_1.pdf`
-      // Gọi API với ShouldReturnPath để lấy đường dẫn file
+     
       try {
         this.isLoading1 = true
         const fileSignUrl = `${host}/api/benh-an/${this.idba}/print-ba-file1/${this.idba}_1.pdf`;
-        window.open(`${host}/client/sample/Demo.htm?fileSignUrl=${fileSignUrl}&url=${url}`);
+        window.open(`${host}/client/sample/Demo.htm?fileSignUrl=${fileSignUrl}`);
         window.open(fileSignUrl);
         this.isLoading1 = false
       } catch (error) {
@@ -530,12 +466,11 @@ export default {
     async handleSign2() {
       const host = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""
         }`;
-      const url = `${host}/api/benh-an/${this.idba}/handlePrint2/${this.idba}_2.pdf`
-      // Gọi API với ShouldReturnPath để lấy đường dẫn file
+    
       try {
         this.isLoading2 = true
         const fileSignUrl = `${host}/api/benh-an/${this.idba}/print-ba-file2/${this.idba}_2.pdf`;
-        window.open(`${host}/client/sample/Demo.htm?fileSignUrl=${fileSignUrl}&url=${url}`);
+        window.open(`${host}/client/sample/Demo.htm?fileSignUrl=${fileSignUrl}`);
         window.open(fileSignUrl);
         this.isLoading2 = false
       } catch (error) {
@@ -546,12 +481,10 @@ export default {
     async handleSign3() {
       const host = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""
         }`;
-      const url = `${host}/api/benh-an/${this.idba}/handlePrint3/${this.idba}_3.pdf`
-      // Gọi API với ShouldReturnPath để lấy đường dẫn file
       try {
         this.isLoading3 = true
         const fileSignUrl = `${host}/api/benh-an/${this.idba}/print-ba-file3/${this.idba}_3.pdf`;
-        window.open(`${host}/client/sample/Demo.htm?fileSignUrl=${fileSignUrl}&url=${url}`);
+        window.open(`${host}/client/sample/Demo.htm?fileSignUrl=${fileSignUrl}`);
         window.open(fileSignUrl);
         this.isLoading3 = false
       } catch (error) {
@@ -560,87 +493,6 @@ export default {
       }
     },
 
-    // async handleSign1() {
-    //   const host = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""
-    //     }`;
-    //   const url = `${window.origin}/api/benh-an/${this.idba}/print-ba-file1/${this.idba}_1.pdf`
-    //   // Gọi API với ShouldReturnPath để lấy đường dẫn file
-    //   try {
-    //     this.isLoading1 = true
-    //     const response = await fetch(
-    //       `${host}/api/benh-an/${this.idba}/print-ba-file1/${this.idba}_1.pdf?ShouldReturnPath=true`
-    //     );
-    //     if (response.ok) {
-    //       const data = await response.json();
-    //       // Kiểm tra và gán URL vào fileSignUrl
-    //       const fileSignUrl = `${host}` + '/BaoCao/ShowFileDinhKem?filepath=' + `${data.path}`;
-    //       window.open(`${host}/client/sample/Demo.htm?fileSignUrl=${fileSignUrl}&url=${url}`);
-    //       window.open(fileSignUrl);
-    //       this.isLoading1 = false
-    //     } else {
-    //       console.error("Failed to fetch file path from API.");
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //     this.isLoading1 = false
-    //   }
-    // },
-    // async handleSign2() {
-    //   const host = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""
-    //     }`;
-    //   const url = `${window.origin}/api/benh-an/${this.idba}/print-ba-file2/${this.idba}_2.pdf`
-    //   // Gọi API với ShouldReturnPath để lấy đường dẫn file
-    //   try {
-    //     this.isLoading2 = true
-    //     const response = await fetch(
-    //       `${host}/api/benh-an/${this.idba}/print-ba-file2/${this.idba}_2.pdf?ShouldReturnPath=true`
-    //     );
-    //     if (response.ok) {
-    //       const data = await response.json();
-    //       // Kiểm tra và gán URL vào fileSignUrl
-    //       const fileSignUrl = `${host}` + '/BaoCao/ShowFileDinhKem?filepath=' + `${data.path}`;
-    //       window.open(`${host}/client/sample/Demo.htm?fileSignUrl=${fileSignUrl}&url=${url}`);
-    //       window.open(fileSignUrl);
-    //       this.isLoading2 = false
-    //     } else {
-    //       console.error("Failed to fetch file path from API.");
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //     this.isLoading2 = false
-    //   }
-    // },
-
-    // async handleSign3() {
-    //   const host = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ":" + window.location.port : ""
-    //     }`;
-    //   const url = `${window.origin}/api/benh-an/${this.idba}/print-ba-file3/${this.idba}_3.pdf`
-    //   // Gọi API với ShouldReturnPath để lấy đường dẫn file
-    //   try {
-    //     this.isLoading3 = true
-    //     const response = await fetch(
-    //       `${host}/api/benh-an/${this.idba}/print-ba-file3/${this.idba}_3.pdf?ShouldReturnPath=true`
-    //     );
-    //     if (response.ok) {
-    //       const data = await response.json();
-    //       // Kiểm tra và gán URL vào fileSignUrl
-    //       const fileSignUrl = `${host}` + '/BaoCao/ShowFileDinhKem?filepath=' + `${data.path}`;
-    //       window.open(`${host}/client/sample/Demo.htm?fileSignUrl=${fileSignUrl}&url=${url}`);
-    //       window.open(fileSignUrl);
-    //       this.isLoading3 = false
-    //     } else {
-    //       console.error("Failed to fetch file path from API.");
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //     this.isLoading3 = false
-    //   }
-    // },
-
-      // const host = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
-      // const fileSignUrl = `${window.origin}/api/benh-an/${this.idba}/print-ba-file3/${this.idba}_3.pdf`
-      // window.open(host + "/client/sample/Demo.htm?fileSignUrl=" + fileSignUrl)
- 
   },
 };
 </script>

@@ -4,19 +4,28 @@ import Vue from "vue";
 import localforage from "localforage";
 
 const request = async (config) => {
-  if (!config.cache) return service(config);
-  const url = axios.getUri(config);
-  const cachedData = await localforage.getItem(url);
-  if (cachedData) return cachedData;
-  const data = await service(config);
-  await localforage.setItem(url, data);
-  return data;
+  try {
+    if (!config.cache) return service(config);
+    const url = axios.getUri(config);
+    const cachedData = await localforage.getItem(url);
+    if (cachedData) return cachedData;
+    const data = await service(config);
+    await localforage.setItem(url, data);
+    return data;
+  } catch (error) {
+    console.error("Request failed:", error);
+    throw error;
+  }
+
 };
 
 const service = axios.create({
   baseURL: "/api",
   withCredentials: true,
   timeout: 60000,
+  headers: {
+    'Content-Type': 'application/json',
+  }
 });
 
 service.interceptors.request.use(
@@ -52,7 +61,7 @@ service.interceptors.response.use(
         if (quantityError <= 1) {
           vue.$message.error(
             error.response.data.errors[
-              Object.keys(error.response.data.errors)[0]
+            Object.keys(error.response.data.errors)[0]
             ][0]
           );
         } else {
@@ -60,7 +69,7 @@ service.interceptors.response.use(
             setTimeout((e) => {
               vue.$message.error(
                 error.response.data.errors[
-                  Object.keys(error.response.data.errors)[index]
+                Object.keys(error.response.data.errors)[index]
                 ][0]
               );
             }, 200);
@@ -72,7 +81,7 @@ service.interceptors.response.use(
         if (error.response.data.errors) {
           return vue.$message.error(
             error.response.data.errors[
-              Object.keys(error.response.data.errors)[0]
+            Object.keys(error.response.data.errors)[0]
             ][0]
           );
         }

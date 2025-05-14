@@ -151,6 +151,119 @@ namespace Medyx_EMR_BCA.ApiAssets.Services
                 NgayChiDinh = x.NgayYlenh
             }).FirstOrDefault(); ;
         }
+        public BenhanPhauThuatPhieuPttt GetMaxDetailBenhanPhauThuatPhieuPttt(decimal idba)
+        {
+            var DetailBenhanPhauThuatPhieuPtttQuery = _benhanPhauThuatPhieuPtttRepository.Table
+                .Where(x => x.Idba == idba && x.Huy == null && !string.IsNullOrEmpty(x.ChanDoanTruocPt) && !string.IsNullOrEmpty(x.ChanDoanSauPt))
+                .OrderBy(x => x.Sttpt)
+                .FirstOrDefault();
+            return DetailBenhanPhauThuatPhieuPtttQuery;
+            
+        }
+        public List<BenhanPhauThuatPhieuPtttDto> GetDetailBenhanPhauThuatPhieuPttt(decimal idba)
+        {
+            var DetailBenhanPhauThuatPhieuPtttQuery = _benhanPhauThuatPhieuPtttRepository.Table.Where(x => x.Idba == idba);
+            return DetailBenhanPhauThuatPhieuPtttQuery.Select(x => new BenhanPhauThuatPhieuPtttDto()
+            {
+                Sttpt = x.Sttpt,
+                Idba = x.Idba,
+                Khoa = new DmkhoaDto()
+                {
+                    MaKhoa = x.BenhanPhauThuat.BenhAnKhoaDieuTri.Dmkhoa.MaKhoa,
+                    TenKhoa = x.BenhanPhauThuat.BenhAnKhoaDieuTri.Dmkhoa.TenKhoa,
+                },
+                Buong = new DmkhoaBuongDto()
+                {
+                    TenBuong = x.BenhanPhauThuat.BenhAnKhoaDieuTri.DmkhoaBuong.TenBuong,
+                    MaBuong = x.BenhanPhauThuat.BenhAnKhoaDieuTri.DmkhoaBuong.MaBuong,
+                },
+                Giuong = new DmkhoaGiuongDto()
+                {
+                    TenGiuong = x.BenhanPhauThuat.BenhAnKhoaDieuTri.DmkhoaGiuong.TenGiuong,
+                    MaGiuong = x.BenhanPhauThuat.BenhAnKhoaDieuTri.DmkhoaGiuong.MaGiuong,
+                },
+                ChanDoan = new DmbenhTatDto()
+                {
+                    TenBenh = x.BenhanPhauThuat.BenhAnKhoaDieuTri.BenhChinh.TenBenh,
+                    MaBenh = x.BenhanPhauThuat.BenhAnKhoaDieuTri.BenhChinh.MaBenh,
+                },
+                PhauThuat = new DmphauThuatDto()
+                {
+                    MaPt = x.BenhanPhauThuat.DmphauThuat.MaPt,
+                    TenPt = x.BenhanPhauThuat.DmphauThuat.TenPt
+                },
+                BsChiDinh = new DmnhanVienDto()
+                {
+                    MaNv = x.BenhanPhauThuat.DmBschiDinh.MaNv,
+                    HoTen = x.BenhanPhauThuat.DmBschiDinh.HoTen,
+                },
+                NgayPt = x.NgayPt,
+                ChanDoanTruocPt = new DmbenhTatDto
+                {
+                    MaBenh = x.DmbenhTatChanDoanTruocPt.MaBenh,
+                    TenBenh = x.DmbenhTatChanDoanTruocPt.TenBenh
+                },
+                ChanDoanSauPt = new DmbenhTatDto
+                {
+                    MaBenh = x.DmbenhTatChanDoanSauPt.MaBenh,
+                    TenBenh = x.DmbenhTatChanDoanSauPt.TenBenh
+                },
+                PhuongPhap = x.PhuongPhap,
+                LoaiPhauThuat = new DmdichvuPhanLoaiPtttDto()
+                {
+                    MaPlpttt = x.DmdichvuPhanLoaiPttt.MaPlpttt,
+                    TenPlpttt = x.DmdichvuPhanLoaiPttt.TenPlpttt
+                },
+                PhuongPhapVoCam = x.PhuongPhapVoCam,
+                DanLuu = x.DanLuu,
+                Bac = x.Bac,
+                NgayRutChi = x.NgayRutChi,
+                NgayCatChi = x.NgayCatChi,
+                Khac = x.Khac,
+                TrinhTuPt = x.TrinhTuPt,
+                PhuongThucPt = x.PhuongThucPt,
+                ViTriPt = x.ViTriPt,
+                CachThucPt = x.CachThucPt,
+                Huy = x.Huy,
+                NgayLap = x.NgayLap,
+                NgayHuy = x.NgayHuy,
+                NgaySd = x.NgaySd,
+                NgayKy = x.NgayKy,
+                LuocDoPt = x.LuocDoPt,
+                NgayChiDinh = x.BenhanPhauThuat.NgayYlenh,
+                Bspt = new DmnhanVienDto()
+                {
+                    MaNv = x.DmBspt.MaNv,
+                    HoTen = x.DmBspt.HoTen
+                },
+                BsphuMo = new DmnhanVienDto()
+                {
+                    MaNv = x.DmBsphuMo.MaNv,
+                    HoTen = x.DmBsphuMo.HoTen
+                },
+                BsgayMe = new DmnhanVienDto()
+                {
+                    MaNv = x.DmBsgayMe.MaNv,
+                    HoTen = x.DmBsgayMe.HoTen
+                },
+                NguoiLap = new DmnhanVienDto()
+                {
+                    MaNv = x.DmNguoiLap.MaNv,
+                    HoTen = x.DmNguoiLap.HoTen
+                },
+                NguoiHuy = new DmnhanVienDto()
+                {
+                    MaNv = x.DmNguoiHuy.MaNv,
+                    HoTen = x.DmNguoiHuy.HoTen
+                },
+                NguoiSD = new DmnhanVienDto()
+                {
+                    MaNv = x.DmNguoiSD.MaNv,
+                    HoTen = x.DmNguoiSD.HoTen
+                },
+            }).ToList();
+        }
+
 
         public void Store(BenhAnPhauThuatPhieuPtttCreateVM parameters)
         {
@@ -160,10 +273,38 @@ namespace Medyx_EMR_BCA.ApiAssets.Services
 
             _benhanPhauThuatPhieuPtttRepository.Insert(parameters);
         }
+        public void StorePttt(BenhanPhauThuatPhieuPttt parameters)
+        {
+            var list = _benhanPhauThuatPhieuPtttRepository.Table.Where(x => x.Idba == Convert.ToDecimal(parameters.Idba)).ToList();
+            var maxSTT = list.Any() ? list.Max(x => x.Sttpt) : 0;
+            int newSTT = maxSTT + 1;
+            var benhAn = PermissionThrowHelper.GetBenhAnAndCheckPermission(parameters.Idba);
+            parameters.MaBa = benhAn.MaBa;
+            parameters.MaBn = benhAn.MaBn;
+            parameters.Sttpt = newSTT;
+
+            _benhanPhauThuatPhieuPtttRepository.Insert(parameters);
+        }
 
         public void Update(decimal idba, int sttpt, BenhAnPhauThuatPhieuPtttVM parameters)
         {
             PermissionThrowHelper.GetBenhAnAndCheckPermission(idba);
+            _benhanPhauThuatPhieuPtttRepository.Update(parameters, sttpt, idba);
+        }
+        public void UpdatePttt(decimal idba, int sttpt, BenhanPhauThuatPhieuPttt parameters)
+        {
+            var benhAn = PermissionThrowHelper.GetBenhAnAndCheckPermission(idba);
+            var pttt = _benhanPhauThuatPhieuPtttRepository.Table
+                .Where(x => x.Idba == idba && x.Huy == null && x.Sttpt == sttpt).FirstOrDefault();
+            parameters.MaBa = benhAn.MaBa;
+            parameters.MaBn = benhAn.MaBn;
+            parameters.ChanDoanSauPt = pttt.ChanDoanSauPt;
+            parameters.ChanDoanTruocPt = pttt.ChanDoanTruocPt;
+            
+            //pttt.NgayPt = parameters.NgayPt;
+            //pttt.PhuongPhapVoCam = parameters.PhuongPhapVoCam;
+            //pttt.Bspt = parameters.Bspt;
+            //pttt.BsgayMe = parameters.BsgayMe;
             _benhanPhauThuatPhieuPtttRepository.Update(parameters, sttpt, idba);
         }
 

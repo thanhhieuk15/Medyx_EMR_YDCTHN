@@ -23,6 +23,7 @@
         <ChanDoan 
           :benhAn="benhAn" 
           :benhAnKhoaDieuTri="benhAnKhoaDieuTri[0]" 
+           :benhAnPtttt="benhAnPtttt"
           @get-chanDoan="getChanDoan"
           />
       </div>
@@ -43,6 +44,7 @@ import ChanDoan from "./chanDoan.vue";
 import TinhTrangRaVien from "./tinhTrangRaVien.vue";
 import {
   chiTietToBenhAn,
+  getDetailBenhAnPttt,
   getTienSuBenh,
   getKhamYhhd,
   getKhoaDieuTri,
@@ -59,6 +61,14 @@ export default {
   data: () => ({
     benhAn: {},
     benhAnKhoaDieuTri: {
+    },
+    benhAnPtttt:{},
+    benhAnPhauThuatPhieuPttt: {
+      idba: null,
+      maBa: null,
+      maBn: null,
+      chanDoanTruocPt:null,
+      chanDoanSauPt: null
     },
     benhAnkdt:{
       idba: null,
@@ -105,6 +115,14 @@ export default {
       this.benhAnkdt.BsdieuTri=this.benhAnKhoaDieuTri[0].bsdieuTri.maNv
       this.benhAnkdt.buong=this.benhAnKhoaDieuTri[0].buong.maBuong
       this.benhAnkdt.giuong=this.benhAnKhoaDieuTri[0].giuong.maGiuong
+      data = await getDetailBenhAnPttt(id)
+      this.benhAnPtttt = data.data;
+      for (let key in this.benhAnPhauThuatPhieuPttt) {
+        if ( this.benhAnPtttt &&  this.benhAnPtttt.hasOwnProperty(key)) {
+          this.benhAnPhauThuatPhieuPttt[key] =  this.benhAnPtttt[key];
+        }
+      }
+      
     },
     getQuanLyNguoibenh(data){
       for (let key in this.benhAn) {
@@ -129,10 +147,18 @@ export default {
       this.benhAnkdt.MaBenhKemVk1=data.benhKem1.maBenh
       this.benhAnkdt.MaBenhKemVk2=data.benhKem2.maBenh
       this.benhAnkdt.MaBenhKemVk3=data.benhKem3.maBenh
-      // this.benhAnkdt.BsdieuTri=data.bsdieuTri.maNv
-      // this.benhAnkdt.buong=data.buong.maBuong
-      // this.benhAnkdt.giuong=data.giuong.maGiuong
-      this.$emit('get-ThongTinBenhAn',this.benhAn, this.benhAnkdt)
+      for (let key in this.benhAnPhauThuatPhieuPttt) {
+        if (data && data.hasOwnProperty(key)) {
+          this.benhAnPhauThuatPhieuPttt[key] = data[key];
+        }
+      }
+      for (let key in this.benhAnPhauThuatPhieuPttt) {
+        if (data && data.hasOwnProperty(key)) {
+          this.benhAnPhauThuatPhieuPttt[key] = data[key];
+
+        }
+      }
+      this.$emit('get-ThongTinBenhAn',this.benhAn, this.benhAnkdt,this.benhAnPhauThuatPhieuPttt)
     },
     getTinhTrangRaVien(data){
       for (let key in this.benhAn) {

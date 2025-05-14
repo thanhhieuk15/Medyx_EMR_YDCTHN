@@ -159,18 +159,12 @@
           </el-form-item>
         </v-col>
         <v-col cols="12" class="padding-cols">
-          <el-form-item label="V. CẬN LÂM SÀNG">
-            <el-input v-model="form.canLamSang" type="textarea" rows="4"></el-input>
-          </el-form-item>
-        </v-col>
-
-        <v-col cols="12" class="padding-cols">
-          <el-form-item label="VI. TÓM TẮT BỆNH ÁN">
-            <el-input v-model="form.tomTatBenhAn" type="textarea" rows="4"></el-input>
+          <el-form-item label="V. TÓM TẮT KẾT QUẢ CẬN LÂM SÀNG">
+            <el-input v-model="form.tomTatKqcls" type="textarea" rows="4"></el-input>
           </el-form-item>
         </v-col>
         <v-col cols="12" class="padding-cols">
-          <el-form-item label="VII. CHẨN ĐOÁN"></el-form-item>
+          <el-form-item label="VI. CHẨN ĐOÁN"></el-form-item>
         </v-col>
         <v-col cols="6">
           <b>Bệnh chính</b>
@@ -196,7 +190,7 @@
             <el-input v-model="form.tenBenhKemVv1" size="small"></el-input>
           </el-form-item>
         </v-col>
-        <v-col cols="6">
+        <!-- <v-col cols="6">
           <b>Bệnh kèm theo 2</b>
           <el-form-item label="Mã bệnh">
             <base-select-async v-model="form.maBenhKemVv2" :label="(item) => `${item.maBenh} - ${item.tenBenh}`"
@@ -291,7 +285,7 @@
           <el-form-item label="Tên bệnh">
             <el-input v-model="form.tenBenhKemVv9" size="small"></el-input>
           </el-form-item>
-        </v-col>
+        </v-col> -->
         <v-col cols="4" class="padding-cols">
           <el-form-item label="Bệnh phân biệt:">
             <base-select-async v-model="form.tenBenhPhanBiet" :label="(item) => `${item.maBenh} - ${item.tenBenh}`"

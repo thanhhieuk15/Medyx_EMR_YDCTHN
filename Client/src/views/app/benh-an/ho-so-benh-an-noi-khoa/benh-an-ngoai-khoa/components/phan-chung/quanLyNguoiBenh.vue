@@ -111,17 +111,15 @@
             <el-input v-model="form.tongSoNgayDt" type="number" min="0" size="small" :disabled="true"></el-input>
           </el-form-item>
         </v-col>
-        <v-col cols="12" class="padding-cols">
           <v-col cols="4" class="padding-cols">
           <el-form-item label="Tổng số ngày điều trị sau phẫu thuật">
-            <el-input v-model="form.vvlan" type="number" :min="0" size="small" ></el-input>
+            <el-input v-model="form.tongSoNgayDtSauPt" type="number" :min="0" size="small" ></el-input>
           </el-form-item>
         </v-col>
         <v-col cols="4" class="padding-cols">
           <el-form-item label="Tổng số ngày phẫu thuật">
-            <el-input v-model="form.tongsolanpt" type="number" :min="0" size="small" ></el-input>
+            <el-input v-model="form.tongSoLanPt" type="number" :min="0" size="small" ></el-input>
           </el-form-item>
-        </v-col>
         </v-col>
       </v-row>
     </el-form>
@@ -135,7 +133,7 @@ export default {
   props: ["benhAn", "benhAnKhoaDieuTri"],
   data: () => ({
     form: {
-      tongSoNgayDtsauPT:null,
+      tongSoNgayDtSauPt:null,
       ngayVv: null,
       trucTiepVao: null,
       noiGt: null,
@@ -150,7 +148,7 @@ export default {
       htraVien: null,
       maBv: null,
       tongSoNgayDt: null, 
-      tongsolanpt:null,
+      tongSoLanPt:null,
       maBvChuyenDen:null
     },
 

@@ -2,6 +2,7 @@
 using Amazon.Runtime.Internal;
 using AutoMapper;
 using Medyx.ApiAssets.Models.Configure;
+using Medyx_EMR.ApiAssets.Models;
 using Medyx_EMR_BCA.ApiAssets.Dto;
 using Medyx_EMR_BCA.ApiAssets.Enums;
 using Medyx_EMR_BCA.ApiAssets.Helpers;
@@ -60,6 +61,8 @@ namespace Medyx_EMR_BCA.ApiAssets.Services
         private IRepository<DmnhanVien> _dMNhanVien = null;
         private IRepository<BenhAnKhoaDieuTri> _KhoaDieuTriBA = null;
         private IRepository<BenhAnTienSuBenh> _benhAnTienSuBenhRepository = null;
+        private IRepository<BenhanPhauThuatPhieuPttt> _benhanPhauThuatPhieuPtttRepository = null;
+        private IRepository<BenhAnPhuSan> _benhAnPhuSanRepository = null;
         private PrintSetting PrintSetting { get; set; }
         private readonly IHostingEnvironment _hostingEnvironment;
         private IHttpContextAccessor _context { get; set; }
@@ -84,6 +87,8 @@ namespace Medyx_EMR_BCA.ApiAssets.Services
             _dMNhanVien = new GenericRepository<DmnhanVien>(context);
             _KhoaDieuTriBA = new GenericRepository<BenhAnKhoaDieuTri>(context);
             _dMBenhTatYhct = new GenericRepository<DmbenhTatYhct>(context);
+            _benhAnPhuSanRepository = new GenericRepository<BenhAnPhuSan>(context);
+            _benhanPhauThuatPhieuPtttRepository = new GenericRepository<BenhanPhauThuatPhieuPttt>(context);
 
 
 
@@ -773,6 +778,10 @@ namespace Medyx_EMR_BCA.ApiAssets.Services
                         Cmnd = benhAn.ThongTinBn.Cmnd,
                         NoiCapCmnd = benhAn.ThongTinBn.NoiCapCmnd,
                         NgayCapCmnd = benhAn.ThongTinBn.NgayCapCmnd,
+                        TrinhDoVHBo = benhAn.ThongTinBn.TrinhDoVHBo,
+                        TrinhDoVHMe = benhAn.ThongTinBn.TrinhDoVHMe,
+                        MaNgheNghiepBo = benhAn.ThongTinBn.MaNgheNghiepBo,
+                        MaNgheNghiepMe = benhAn.ThongTinBn.MaNgheNghiepMe,
                         NgheNghiep = new DmngheNghiepDto()
                         {
                             MaNn = benhAn.ThongTinBn.DmngheNghiep.MaNn == null ? "" : benhAn.ThongTinBn.DmngheNghiep.MaNn,
@@ -1460,6 +1469,10 @@ namespace Medyx_EMR_BCA.ApiAssets.Services
                     infoBn.MaPxa = benhAn.BenhNhan.PhuongXa.MaPxa;
                     infoBn.DoiTuong = benhAn.BenhNhan.DoiTuong.MaDt;
                     infoBn.GioiTinh = benhAn.BenhNhan.GioiTinh;
+                    infoBn.TrinhDoVHBo = benhAn.BenhNhan.TrinhDoVHBo;
+                    infoBn.TrinhDoVHMe = benhAn.BenhNhan.TrinhDoVHMe;
+                    infoBn.MaNgheNghiepBo = benhAn.BenhNhan.MaNgheNghiepBo;
+                    infoBn.MaNgheNghiepMe = benhAn.BenhNhan.MaNgheNghiepMe;
 
                     _benhAnRepository.Log<ThongTinBn>(ActionLogType.Modify, infoBn);
                 }
@@ -1481,71 +1494,235 @@ namespace Medyx_EMR_BCA.ApiAssets.Services
 
         public void ThongTinToBenhAnCreateUpdate(ToBenhAnVM info, decimal idba)
         {
-            _benhAnRepository.setLogActionName("Tờ bệnh án");
-            _benhAnRepository.Update(info.benhAn, (model) =>
+            var benhAnPttt = new BenhanPhauThuatPhieuPttt();
+            if (info.benhAn.LoaiBa == 10 || info.benhAn.LoaiBa == 11)
             {
-                PermissionThrowHelper.DongBenhAnCheck(model.XacNhanKetThucHs);
-                //info.benhAn.DmBenhKemVV1.MaBenh = info.benhAn.MaBenhKemVv1;
-                //info.benhAn.DmBenhKemVV1.TenBenh = info.benhAn.TenBenhKemVv1;
-                // BenhAnKhamYhct
-                info.BenhAnKhamYhct.Idba = model.Idba;
-                info.BenhAnKhamYhct.MaBa = model.MaBa;
-                info.BenhAnKhamYhct.MaBn = model.MaBn;
-                // BenhAnKhamYhhd
-                info.BenhAnKhamYhhd.Idba = model.Idba;
-                info.BenhAnKhamYhhd.MaBa = model.MaBa;
-                info.BenhAnKhamYhhd.MaBn = model.MaBn;
-                // BenhAnTongKetBenhAn
-                info.BenhAnTongKetBenhAn.Idba = model.Idba;
-                info.BenhAnTongKetBenhAn.MaBa = model.MaBa;
-                info.BenhAnTongKetBenhAn.MaBn = model.MaBn;
-                // BenhAnKhoaDieuTri
-                info.BenhAnKhoaDieuTri.Idba = model.Idba;
-                info.BenhAnKhoaDieuTri.MaBn = model.MaBn;
-                info.BenhAnKhoaDieuTri.MaBa = model.MaBa;
-                //info.BenhAnKhoaDieuTri.MaKhoa = model.MaKhoaVv;
-                //info.BenhAnKhoaDieuTri.NgayVaoKhoa = model.NgayVv;
-                //BenhAnTienSuBenh
-                info.BenhAnTienSuBenh.Idba = model.Idba;
-                info.BenhAnTienSuBenh.MaBn = model.MaBn;
-                info.BenhAnTienSuBenh.MaBa = model.MaBa;
-                //info.ThongTinBn.DoiTuong = model.ThongTinBn.DoiTuong;
-                //MaBaStorage.MaBaValue = info.benhAn.MaBa;
-                if (info.BenhAnKhoaDieuTri.Stt == null)
+
+                _benhAnRepository.setLogActionName("Tờ bệnh án");
+                _benhAnRepository.Update(info.benhAn, (model) =>
                 {
-                    info.BenhAnKhoaDieuTri.Stt = 1;
+                    PermissionThrowHelper.DongBenhAnCheck(model.XacNhanKetThucHs);
+                    // BenhAnTongKetBenhAn
+                    info.BenhAnTongKetBenhAn.Idba = model.Idba;
+                    info.BenhAnTongKetBenhAn.MaBa = model.MaBa;
+                    info.BenhAnTongKetBenhAn.MaBn = model.MaBn;
+                    // BenhAnKhoaDieuTri
+                    info.BenhAnKhoaDieuTri.Idba = model.Idba;
+                    info.BenhAnKhoaDieuTri.MaBn = model.MaBn;
+                    info.BenhAnKhoaDieuTri.MaBa = model.MaBa;
+                    //info.BenhAnKhoaDieuTri.MaKhoa = model.MaKhoaVv;
+                    //info.BenhAnKhoaDieuTri.NgayVaoKhoa = model.NgayVv;
+                    //BenhAnTienSuBenh
+                    info.BenhAnTienSuBenh.Idba = model.Idba;
+                    info.BenhAnTienSuBenh.MaBn = model.MaBn;
+                    info.BenhAnTienSuBenh.MaBa = model.MaBa;
+                    //BenhAnPhuSan
+                    info.BenhAnPhuSan.Idba = model.Idba;
+                    info.BenhAnPhuSan.MaBn = model.MaBn;
+                    info.BenhAnPhuSan.MaBa = model.MaBa;
+
+                    benhAnPttt.Idba = idba;
+                    benhAnPttt.MaBa = model.MaBa;
+                    benhAnPttt.MaBn = model.MaBn;
+                    //if(info.benhAn.LoaiBa != 10)
+                    //{
+                    //    info.BenhAnKhamYhhd.Idba = model.Idba;
+                    //    info.BenhAnKhamYhhd.MaBa = model.MaBa;
+                    //    info.BenhAnKhamYhhd.MaBn = model.MaBn;
+                    //}
+                       
+                    //info.ThongTinBn.DoiTuong = model.ThongTinBn.DoiTuong;
+                    //MaBaStorage.MaBaValue = info.benhAn.MaBa;
+                    if (info.BenhAnKhoaDieuTri.Stt == null)
+                    {
+                        info.BenhAnKhoaDieuTri.Stt = 1;
+                    }
+
+                    var kdt = _benhAnRepository._context.BenhAnKhoaDieuTri.FirstOrDefault(x => x.Idba == idba && x.Stt == info.BenhAnKhoaDieuTri.Stt);
+                    if (kdt != null)
+                    {
+                        info.BenhAnKhoaDieuTri.MaKhoa = kdt.MaKhoa;
+                        info.BenhAnKhoaDieuTri.NgayVaoKhoa = kdt.NgayVaoKhoa;
+                    }
+                    HanlderCreateUpdate<BenhAnTienSuBenh, BenhAnTienSuBenhVM>(info.BenhAnTienSuBenh, null, false, info.BenhAnTienSuBenh.Idba);
+                    //HanlderCreateUpdate<BenhAnKhamYhhd, BenhAnKhamYhhdVM>(info.BenhAnKhamYhhd, null, false, info.BenhAnKhamYhhd.Idba);
+                    HanlderCreateUpdate<BenhAnPhuSan, BenhAnPhuSanVM>(info.BenhAnPhuSan, null, false, info.BenhAnPhuSan.Idba);
+                    HanlderCreateUpdate<BenhAnTongKetBenhAn, BenhAnTongKetBenhAnVM>(info.BenhAnTongKetBenhAn, null, false, info.BenhAnTongKetBenhAn.Idba);
+                    HanlderCreateUpdate<BenhAnKhoaDieuTri, ToBenhAnBenhAnKhoaDieuTriVM>(info.BenhAnKhoaDieuTri, null, true, info.BenhAnKhoaDieuTri.Idba, info.BenhAnKhoaDieuTri.Stt);
+                    model.BsdieuTri = info.BenhAnTongKetBenhAn?.BsdieuTri;
+                    //model.ThongTinBn = info.ThongTinBn;
+                }, idba);
+                var thongTinBn = _thongTinBenhNhanRepository._context.ThongTinBn.FirstOrDefault(x => x.Idba == idba);
+                if (info.thongTinBenhNhan != null)
+                {
+                    thongTinBn.DoiTuong = info.thongTinBenhNhan.maDt;
+                    thongTinBn.GioiTinh = info.thongTinBenhNhan.gioiTinh;
+                    _thongTinBenhNhanRepository.Update(thongTinBn);
+                    _thongTinBenhNhanRepository.Save();
+                }
+                if (info.benhAn.LoaiBa == 10)
+                {
+                    var benhAnTienSu = _benhAnTienSuBenhRepository._context.BenhAnTienSuBenh.FirstOrDefault(x => x.Idba == idba);
+                    if (info.BenhAnTienSuBenh != null)
+                    {
+                        string tuNgay = info.BenhAnTienSuBenh.kinhTuNgay?.ToString("yyyy-MM-dd") ?? string.Empty;
+                        string denNgay = info.BenhAnTienSuBenh.kinhDenNgay?.ToString("yyyy-MM-dd") ?? string.Empty;
+                        benhAnTienSu.TinhTrangSinh = $"{tuNgay}|{denNgay}";
+                        _benhAnTienSuBenhRepository.Update(benhAnTienSu);
+                        _benhAnTienSuBenhRepository.Save();
+                    }
                 }
 
-                var kdt = _benhAnRepository._context.BenhAnKhoaDieuTri.FirstOrDefault(x => x.Idba == idba && x.Stt == info.BenhAnKhoaDieuTri.Stt);
-                if (kdt != null)
+                var benhAnPhauthuatPhieuPttt = _benhanPhauThuatPhieuPtttRepository.Table
+                    .Where(x => x.Idba == idba && x.Huy == null)
+                    .OrderBy(x => x.Sttpt)
+                    .FirstOrDefault();
+                if (info.benhAnPhauthuatPhieuPttt != null)
                 {
-                    info.BenhAnKhoaDieuTri.MaKhoa = kdt.MaKhoa;
-                    info.BenhAnKhoaDieuTri.NgayVaoKhoa = kdt.NgayVaoKhoa;
+                    if (benhAnPhauthuatPhieuPttt != null)
+                    {
+                        benhAnPhauthuatPhieuPttt.ChanDoanSauPt = info.benhAnPhauthuatPhieuPttt.ChanDoanSauPt;
+                        benhAnPhauthuatPhieuPttt.ChanDoanTruocPt = info.benhAnPhauthuatPhieuPttt.ChanDoanTruocPt;
+                        _benhanPhauThuatPhieuPtttRepository.Update(benhAnPhauthuatPhieuPttt);
+                        _benhanPhauThuatPhieuPtttRepository.Save();
+                    }
+                    else
+                    {
+                        benhAnPttt.Sttpt = 1;
+                        benhAnPttt.ChanDoanSauPt = info.benhAnPhauthuatPhieuPttt.ChanDoanSauPt;
+                        benhAnPttt.ChanDoanTruocPt = info.benhAnPhauthuatPhieuPttt.ChanDoanTruocPt;
+                        _benhanPhauThuatPhieuPtttRepository.Insert(benhAnPttt);
+
+                    }
+
                 }
 
-                HanlderCreateUpdate<BenhAnKhamYhct, BenhAnKhamYhctVM>(info.BenhAnKhamYhct, null, false, info.BenhAnKhamYhct.Idba);
-                HanlderCreateUpdate<BenhAnKhamYhhd, BenhAnKhamYhhdVM>(info.BenhAnKhamYhhd, null, false, info.BenhAnKhamYhhd.Idba);
-                HanlderCreateUpdate<BenhAnTienSuBenh, BenhAnTienSuBenhVM>(info.BenhAnTienSuBenh, null, false, info.BenhAnTienSuBenh.Idba);
-                HanlderCreateUpdate<BenhAnTongKetBenhAn, BenhAnTongKetBenhAnVM>(info.BenhAnTongKetBenhAn, null, false, info.BenhAnTongKetBenhAn.Idba);
-                HanlderCreateUpdate<BenhAnKhoaDieuTri, ToBenhAnBenhAnKhoaDieuTriVM>(info.BenhAnKhoaDieuTri, null, true, info.BenhAnKhoaDieuTri.Idba, info.BenhAnKhoaDieuTri.Stt);
-                model.BsdieuTri = info.BenhAnTongKetBenhAn?.BsdieuTri;
-                //model.ThongTinBn = info.ThongTinBn;
-            }, idba);
-            var thongTinBn = _thongTinBenhNhanRepository._context.ThongTinBn.FirstOrDefault(x => x.Idba == idba);
-            if (info.thongTinBenhNhan != null)
-            {
-                thongTinBn.DoiTuong = info.thongTinBenhNhan.maDt;
-                thongTinBn.GioiTinh = info.thongTinBenhNhan.gioiTinh;
-                _thongTinBenhNhanRepository.Update(thongTinBn);
-                _thongTinBenhNhanRepository.Save();
+                var benhAns = _benhAnRepository._context.BenhAn.FirstOrDefault(x => x.Idba == idba);
+                if (info.BenhAnPhuSan != null)
+                {
+                    benhAns.MaBenhChinhVv = info.BenhAnPhuSan.MaBenhChinhVv;
+                    _benhAnRepository.Update(benhAns);
+                    _benhAnRepository.Save();
+                }
+                var benhAnPhuSan = _benhAnPhuSanRepository._context.BenhAnPhuSan.FirstOrDefault(x => x.Idba == idba);
+                if (info.BenhAnPhuSan != null)
+                {
+                    benhAnPhuSan.CanNang = info.BenhAnPhuSan.CanNangps;
+                    _benhAnPhuSanRepository.Update(benhAnPhuSan);
+                    _benhAnPhuSanRepository.Save();
+                }
             }
-            var benhAnTienSu = _benhAnTienSuBenhRepository._context.BenhAnTienSuBenh.FirstOrDefault(x => x.Idba == idba);
-            if (info.BenhAnTienSuBenh != null)
+            else
             {
-                benhAnTienSu.CanNang = info.BenhAnTienSuBenh.canNangNhi;
-                benhAnTienSu.CanNang = info.BenhAnTienSuBenh.canNangSinh;
-                _benhAnTienSuBenhRepository.Update(benhAnTienSu);
-                _benhAnTienSuBenhRepository.Save();
+                _benhAnRepository.setLogActionName("Tờ bệnh án");
+                _benhAnRepository.Update(info.benhAn, (model) =>
+                {
+                    PermissionThrowHelper.DongBenhAnCheck(model.XacNhanKetThucHs);
+                    //info.benhAn.DmBenhKemVV1.MaBenh = info.benhAn.MaBenhKemVv1;
+                    //info.benhAn.DmBenhKemVV1.TenBenh = info.benhAn.TenBenhKemVv1;
+                    // BenhAnKhamYhct
+                    info.BenhAnKhamYhct.Idba = model.Idba;
+                    info.BenhAnKhamYhct.MaBa = model.MaBa;
+                    info.BenhAnKhamYhct.MaBn = model.MaBn;
+                    // BenhAnKhamYhhd
+                    info.BenhAnKhamYhhd.Idba = model.Idba;
+                    info.BenhAnKhamYhhd.MaBa = model.MaBa;
+                    info.BenhAnKhamYhhd.MaBn = model.MaBn;
+                    // BenhAnTongKetBenhAn
+                    info.BenhAnTongKetBenhAn.Idba = model.Idba;
+                    info.BenhAnTongKetBenhAn.MaBa = model.MaBa;
+                    info.BenhAnTongKetBenhAn.MaBn = model.MaBn;
+                    // BenhAnKhoaDieuTri
+                    info.BenhAnKhoaDieuTri.Idba = model.Idba;
+                    info.BenhAnKhoaDieuTri.MaBn = model.MaBn;
+                    info.BenhAnKhoaDieuTri.MaBa = model.MaBa;
+                    //info.BenhAnKhoaDieuTri.MaKhoa = model.MaKhoaVv;
+                    //info.BenhAnKhoaDieuTri.NgayVaoKhoa = model.NgayVv;
+                    //BenhAnTienSuBenh
+                    info.BenhAnTienSuBenh.Idba = model.Idba;
+                    info.BenhAnTienSuBenh.MaBn = model.MaBn;
+                    info.BenhAnTienSuBenh.MaBa = model.MaBa;
+
+                    benhAnPttt.Idba = idba;
+                    benhAnPttt.MaBa = model.MaBa;
+                    benhAnPttt.MaBn = model.MaBn;
+
+                    //info.ThongTinBn.DoiTuong = model.ThongTinBn.DoiTuong;
+                    //MaBaStorage.MaBaValue = info.benhAn.MaBa;
+                    if (info.BenhAnKhoaDieuTri.Stt == null)
+                    {
+                        info.BenhAnKhoaDieuTri.Stt = 1;
+                    }
+
+                    var kdt = _benhAnRepository._context.BenhAnKhoaDieuTri.FirstOrDefault(x => x.Idba == idba && x.Stt == info.BenhAnKhoaDieuTri.Stt);
+                    if (kdt != null)
+                    {
+                        info.BenhAnKhoaDieuTri.MaKhoa = kdt.MaKhoa;
+                        info.BenhAnKhoaDieuTri.NgayVaoKhoa = kdt.NgayVaoKhoa;
+                    }
+
+                    HanlderCreateUpdate<BenhAnKhamYhct, BenhAnKhamYhctVM>(info.BenhAnKhamYhct, null, false, info.BenhAnKhamYhct.Idba);
+                    HanlderCreateUpdate<BenhAnKhamYhhd, BenhAnKhamYhhdVM>(info.BenhAnKhamYhhd, null, false, info.BenhAnKhamYhhd.Idba);
+                    HanlderCreateUpdate<BenhAnTienSuBenh, BenhAnTienSuBenhVM>(info.BenhAnTienSuBenh, null, false, info.BenhAnTienSuBenh.Idba);
+                    HanlderCreateUpdate<BenhAnTongKetBenhAn, BenhAnTongKetBenhAnVM>(info.BenhAnTongKetBenhAn, null, false, info.BenhAnTongKetBenhAn.Idba);
+                    HanlderCreateUpdate<BenhAnKhoaDieuTri, ToBenhAnBenhAnKhoaDieuTriVM>(info.BenhAnKhoaDieuTri, null, true, info.BenhAnKhoaDieuTri.Idba, info.BenhAnKhoaDieuTri.Stt);
+                    model.BsdieuTri = info.BenhAnTongKetBenhAn?.BsdieuTri;
+                    //model.ThongTinBn = info.ThongTinBn;
+                }, idba);
+                var thongTinBn = _thongTinBenhNhanRepository._context.ThongTinBn.FirstOrDefault(x => x.Idba == idba);
+                if (info.thongTinBenhNhan != null)
+                {
+                    thongTinBn.DoiTuong = info.thongTinBenhNhan.maDt;
+                    thongTinBn.GioiTinh = info.thongTinBenhNhan.gioiTinh;
+                    _thongTinBenhNhanRepository.Update(thongTinBn);
+                    _thongTinBenhNhanRepository.Save();
+                }
+                var benhAnTienSu = _benhAnTienSuBenhRepository._context.BenhAnTienSuBenh.FirstOrDefault(x => x.Idba == idba);
+                if (info.BenhAnTienSuBenh != null)
+                {
+                    if (info.BenhAnTienSuBenh.canNangNhi != null)
+                    {
+                        benhAnTienSu.CanNang = info.BenhAnTienSuBenh.canNangNhi;
+                    }
+                    //benhAnTienSu.CanNang = info.BenhAnTienSuBenh.canNangSinh;
+                    _benhAnTienSuBenhRepository.Update(benhAnTienSu);
+                    _benhAnTienSuBenhRepository.Save();
+                }
+                var benhAnPhauthuatPhieuPttt = _benhanPhauThuatPhieuPtttRepository.Table
+                    .Where(x => x.Idba == idba && x.Huy == null)
+                    .OrderBy(x => x.Sttpt)
+                    .FirstOrDefault();
+                if (benhAnPhauthuatPhieuPttt != null || info.benhAnPhauthuatPhieuPttt != null)
+                {
+                    if (benhAnPhauthuatPhieuPttt != null && info.benhAnPhauthuatPhieuPttt != null)
+                    {
+                        benhAnPhauthuatPhieuPttt.ChanDoanSauPt = info.benhAnPhauthuatPhieuPttt.ChanDoanSauPt;
+                        benhAnPhauthuatPhieuPttt.ChanDoanTruocPt = info.benhAnPhauthuatPhieuPttt.ChanDoanTruocPt;
+                        _benhanPhauThuatPhieuPtttRepository.Update(benhAnPhauthuatPhieuPttt);
+                        _benhanPhauThuatPhieuPtttRepository.Save();
+                    }
+                    if (benhAnPhauthuatPhieuPttt == null && info.benhAnPhauthuatPhieuPttt != null)
+                    {
+                        var sttpt = _benhanPhauThuatPhieuPtttRepository.Table
+                              .Where(x => x.Idba == idba)
+                              .OrderByDescending(x => x.Sttpt)
+                              .FirstOrDefault();
+                        if(sttpt == null)
+                        {
+                            benhAnPttt.Sttpt = 1;
+                        }
+                        else
+                        {
+                            benhAnPttt.Sttpt = sttpt.Sttpt + 1;
+                        }
+                        benhAnPttt.ChanDoanSauPt = info.benhAnPhauthuatPhieuPttt.ChanDoanSauPt;
+                        benhAnPttt.ChanDoanTruocPt = info.benhAnPhauthuatPhieuPttt.ChanDoanTruocPt;
+                        _benhanPhauThuatPhieuPtttRepository.Insert(benhAnPttt);
+                    }
+
+                }
+
+
             }
 
         }

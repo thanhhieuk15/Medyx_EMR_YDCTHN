@@ -34,6 +34,7 @@
                     <button title="Thêm mới" data-bind="click: $root.Import" class="btn btn-info btn-xs btnImport @((khaithac==false?ImportDanhMuc:false) ? "" : "hidden")"><span class="glyphicon glyphicon-import"></span>&nbsp;&nbsp;Thêm mới</button>
                     <button title="In phiếu" data-bind="click: $root.printListDN" class="btn btn-info btn-xs btnExport @((khaithac==false?ExportExcel:false) ? "" : "hidden")"><span class="glyphicon glyphicon-export"></span>&nbsp;&nbsp;In phiếu</button>
                     <button title="In HSBA" data-bind="click: $root.printListHSBA" class="btn btn-info btn-xs btnExport @((khaithac==true?ExportExcel:khaithac) ? "" : "hidden")"><span class="glyphicon glyphicon-export"></span>&nbsp;&nbsp;In HSBA</button>
+                    <button title="Ký HSBA" data-bind="click: $root.SignListHSBA" class="btn btn-info btn-xs btnExport @((khaithac==true?ExportExcel:khaithac) ? "" : "hidden")"><span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Ký HSBA</button>
                     <button title="Filter" class="btn btn-info btn-xs btnFilter"><span class="glyphicon glyphicon-filter"></span>&nbsp;&nbsp;Filter</button>
                     <button title="Thoát" class="btn btn-info btn-xs btnExit"><span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;F10 - Thoát</button>
                 </div>

@@ -34,6 +34,9 @@ export default {
     benhAnYhct:{
     },
     benhAnYhhd:{},
+    benhAnTienSuSan:{},
+    benhAnPhuSan:{},
+    benhAnPhauThuatPhieuPttt:{},
     phan_a: {},
     phan_b: {},
     phan_c: {},
@@ -42,8 +45,10 @@ export default {
     getPhanA(data){
       this.phan_a=data
       this.benhAnTienSuBenh={...this.phan_a}
-      this.benhAnYhhd = {...this.phan_c, ...this.phan_a}
-      this.$emit('get-benhAn',this.benhAnTienSuBenh, this.benhAnYhhd, this.benhAnYhct)
+      this.benhAnTienSuSan={...this.phan_a},
+      this.benhAnPhuSan={...this.phan_a},
+      this.benhAnPhauThuatPhieuPttt={...this.phan_a},
+      this.$emit('get-benhAn',this.benhAnTienSuBenh, this.benhAnTienSuSan, this.benhAnPhuSan, this.benhAnPhauThuatPhieuPttt)
     },
     getPhanB(data,benhAnYhct){
       this.benhAnYhct=benhAnYhct;

@@ -21,6 +21,12 @@ using System.Xml;
 using System.Text;
 using System.Xml.Serialization;
 using Medyx_EMR_BCA.ApiAssets.Models;
+using Medyx_EMR.Models.DanhMuc;
+using Org.BouncyCastle.Asn1.Ocsp;
+using SharpCompress.Common;
+using HTC.WEB.NIOEH.Areas.Client.DanhMuc;
+using System.Configuration;
+using System.Data.SqlClient;
 
 namespace Medyx_EMR_BCA.Models.DBConText
 {
@@ -318,10 +324,6 @@ namespace Medyx_EMR_BCA.Models.DBConText
 		{
 			try
 			{
-				//string webRootPath = AppDomain.CurrentDomain;
-				//var webRootPath = Directory.GetCurrentDirectory()+"\\ReportHSBA";
-				//var webRootPath = ConfigurationManager.AppSettings["ReportDirectory"];
-				//WriteLog("bat dau");
 				string webRootPath = _config.GetValue<string>("ReportDirectory");
 				//WriteLog("webRootPath: " + webRootPath);
 				ReportDocument rpt = new ReportDocument();
@@ -359,19 +361,10 @@ namespace Medyx_EMR_BCA.Models.DBConText
 				int i = 0;
 				foreach (PdfSharp.Pdf.PdfPage page in PdfSharp.Pdf.IO.PdfReader.Open(stream2, PdfSharp.Pdf.IO.PdfDocumentOpenMode.Import).Pages)
 				{
-					//if ((filename.Contains("crBCHoadon") == true || filename.Contains("CRPhieuTamThu") == true || filename.Contains("CRPhieuChi") == true) && i == 0)
-					//	combinedPdf.AddPage(page);
-					//else if ((filename.Contains("crBCHoadon") == true || filename.Contains("CRPhieuTamThu") == true || filename.Contains("CRPhieuChi") == true) && i > 0)
-					//{
-					//}
-					//else if (!(filename.Contains("crBCHoadon") == true || filename.Contains("CRPhieuTamThu") == true || filename.Contains("CRPhieuChi") == true))
 					combinedPdf.AddPage(page);
 					i++;
 
 				}
-
-				//// probably not the most efficient, but works
-				//  var output = new MemoryStream();
 				combinedPdf.Save(fileName);
 				rpt.Close();
 				rpt.Dispose();
@@ -388,87 +381,189 @@ namespace Medyx_EMR_BCA.Models.DBConText
 		}
 		public FileStreamResult PrintZip(string reportpath, string filename, DataTable dt, IConfiguration _config)
 		{
-			#region PDF file
-			//string webRootPath = AppDomain.CurrentDomain;
-			//var webRootPath = Directory.GetCurrentDirectory()+"\\ReportHSBA";
-			//var webRootPath = ConfigurationManager.AppSettings["ReportDirectory"];
+            #region PDF file
+            try
+            {
+               
+                //string webRootPath = AppDomain.CurrentDomain;
+                //var webRootPath = Directory.GetCurrentDirectory()+"\\ReportHSBA";
+                //var webRootPath = ConfigurationManager.AppSettings["ReportDirectory"];
 
-			string webRootPath = _config.GetValue<string>("ReportDirectory");
-			string HSBARootPath = _config.GetValue<string>("HSBADirectory");
-			ReportDocument rpt = new ReportDocument();
-			string reportfilename = webRootPath + reportpath;
-			rpt.Load(reportfilename);//Crystal Report Path
-			rpt.SetDataSource(dt);//Get data source. All the data can be read in SQL.
-								  //string path = webRootPath + "\\temp\\" + DateTime.Now.AddDays(-1).Month.ToString() + DateTime.Now.AddDays(-1).Day.ToString();
-			string MaMay = this.GetLocalIPAddress();
-			string path = webRootPath + "\\temp\\" + DateTime.Now.AddDays(-1).Month.ToString() + DateTime.Now.AddDays(-1).Day.ToString() + "\\" + DateTime.Now.ToString("dd/MM/yyyyHHmm");
-			string fileName = path + filename;
+                string webRootPath = _config.GetValue<string>("ReportDirectory");
+                string HSBARootPath = _config.GetValue<string>("HSBADirectory");
+                ReportDocument rpt = new ReportDocument();
+                string reportfilename = webRootPath + reportpath;
+                rpt.Load(reportfilename);//Crystal Report Path
+                rpt.SetDataSource(dt);//Get data source. All the data can be read in SQL.
+                                      //string path = webRootPath + "\\temp\\" + DateTime.Now.AddDays(-1).Month.ToString() + DateTime.Now.AddDays(-1).Day.ToString();
+                string MaMay = this.GetLocalIPAddress();
+                string path = webRootPath + "\\temp\\" + DateTime.Now.AddDays(-1).Month.ToString() + DateTime.Now.AddDays(-1).Day.ToString() + "\\" + DateTime.Now.ToString("dd/MM/yyyyHHmm");
+                string fileName = path + filename;
 
-			if (!Directory.Exists(path))
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                if (System.IO.File.Exists(fileName))
+                {
+                    System.IO.File.Delete(fileName);
+                }
+                CrystalDecisions.Shared.ExportRequestContext reqContext = new CrystalDecisions.Shared.ExportRequestContext();
+                var exportOptions2 = new CrystalDecisions.Shared.ExportOptions
+                {
+                    ExportFormatType = CrystalDecisions.Shared.ExportFormatType.PortableDocFormat,
+                    FormatOptions = new CrystalDecisions.Shared.PdfFormatOptions { UsePageRange = false, FirstPageNumber = 1, LastPageNumber = 1 }
+                };
+                reqContext.ExportInfo = exportOptions2;
+                var stream2 = rpt.FormatEngine.ExportToStream(reqContext);
+                stream2.Seek(0, SeekOrigin.Begin);
+
+                // //// merge the two PDF streams
+                var combinedPdf = new PdfSharp.Pdf.PdfDocument();
+
+                // //foreach (PdfPage page in PdfReader.Open(stream1, PdfDocumentOpenMode.Import).Pages)
+                // //    combinedPdf.AddPage(page);
+                int i = 0;
+                foreach (PdfSharp.Pdf.PdfPage page in PdfSharp.Pdf.IO.PdfReader.Open(stream2, PdfSharp.Pdf.IO.PdfDocumentOpenMode.Import).Pages)
+                {
+                    //if ((filename.Contains("crBCHoadon") == true || filename.Contains("CRPhieuTamThu") == true || filename.Contains("CRPhieuChi") == true) && i == 0)
+                    //	combinedPdf.AddPage(page);
+                    //else if ((filename.Contains("crBCHoadon") == true || filename.Contains("CRPhieuTamThu") == true || filename.Contains("CRPhieuChi") == true) && i > 0)
+                    //{
+                    //}
+                    //else if (!(filename.Contains("crBCHoadon") == true || filename.Contains("CRPhieuTamThu") == true || filename.Contains("CRPhieuChi") == true))
+                    combinedPdf.AddPage(page);
+                    i++;
+
+                }
+
+                //// probably not the most efficient, but works
+                //  var output = new MemoryStream();
+                combinedPdf.Save(fileName);
+
+                //FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+                ////ZipFile.CreateFromDirectory(startPath, zipPath);
+                //return File(fs, "application/pdf");
+                ////return fileName;
+                #endregion
+
+                #region Zip
+                //tao file zip chua all tai lieu HSBA
+                DataRow[] contains = dt.Select("LoaiDeNghi = 1");
+                foreach (var r in contains)
+                {
+                    string maba = r["MaBA"].ToString();
+                    string startPath = HSBARootPath + "\\" + maba;
+                    string zipPath = path + "\\" + maba + ".zip";
+                    if (maba.Trim().Length > 0)
+                        ZipFile.CreateFromDirectory(startPath, zipPath);
+                }
+                string zpath = webRootPath + "\\temp\\" + DateTime.Now.AddDays(-1).Month.ToString() + DateTime.Now.AddDays(-1).Day.ToString() + "\\" + DateTime.Now.ToString("dd/MM/yyyyHHmm") + ".zip";
+                //tao file zip chua all file can xuat ra
+                ZipFile.CreateFromDirectory(path, zpath);
+                FileStream fs = new FileStream(zpath, FileMode.Open, FileAccess.Read);
+                return File(fs, "application/zip");
+            }
+			catch (Exception)
 			{
-				Directory.CreateDirectory(path);
+
+				throw;
 			}
-			if (System.IO.File.Exists(fileName))
-			{
-				System.IO.File.Delete(fileName);
-			}
-			CrystalDecisions.Shared.ExportRequestContext reqContext = new CrystalDecisions.Shared.ExportRequestContext();
-			var exportOptions2 = new CrystalDecisions.Shared.ExportOptions
-			{
-				ExportFormatType = CrystalDecisions.Shared.ExportFormatType.PortableDocFormat,
-				FormatOptions = new CrystalDecisions.Shared.PdfFormatOptions { UsePageRange = false, FirstPageNumber = 1, LastPageNumber = 1 }
-			};
-			reqContext.ExportInfo = exportOptions2;
-			var stream2 = rpt.FormatEngine.ExportToStream(reqContext);
-			stream2.Seek(0, SeekOrigin.Begin);
-
-			// //// merge the two PDF streams
-			var combinedPdf = new PdfSharp.Pdf.PdfDocument();
-
-			// //foreach (PdfPage page in PdfReader.Open(stream1, PdfDocumentOpenMode.Import).Pages)
-			// //    combinedPdf.AddPage(page);
-			int i = 0;
-			foreach (PdfSharp.Pdf.PdfPage page in PdfSharp.Pdf.IO.PdfReader.Open(stream2, PdfSharp.Pdf.IO.PdfDocumentOpenMode.Import).Pages)
-			{
-				//if ((filename.Contains("crBCHoadon") == true || filename.Contains("CRPhieuTamThu") == true || filename.Contains("CRPhieuChi") == true) && i == 0)
-				//	combinedPdf.AddPage(page);
-				//else if ((filename.Contains("crBCHoadon") == true || filename.Contains("CRPhieuTamThu") == true || filename.Contains("CRPhieuChi") == true) && i > 0)
-				//{
-				//}
-				//else if (!(filename.Contains("crBCHoadon") == true || filename.Contains("CRPhieuTamThu") == true || filename.Contains("CRPhieuChi") == true))
-				combinedPdf.AddPage(page);
-				i++;
-
-			}
-
-			//// probably not the most efficient, but works
-			//  var output = new MemoryStream();
-			combinedPdf.Save(fileName);
-
-			//FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-			////ZipFile.CreateFromDirectory(startPath, zipPath);
-			//return File(fs, "application/pdf");
-			////return fileName;
-			#endregion
-
-			#region Zip
-			//tao file zip chua all tai lieu HSBA
-			DataRow[] contains = dt.Select("LoaiDeNghi = 1");
-			foreach (var r in contains)
-			{
-				string maba = r["MaBA"].ToString();
-				string startPath = HSBARootPath + "\\" + maba;
-				string zipPath = path + "\\" + maba + ".zip";
-				if (maba.Trim().Length > 0)
-					ZipFile.CreateFromDirectory(startPath, zipPath);
-			}
-			string zpath = webRootPath + "\\temp\\" + DateTime.Now.AddDays(-1).Month.ToString() + DateTime.Now.AddDays(-1).Day.ToString() + "\\PhotoHSBA.zip";
-			//tao file zip chua all file can xuat ra
-			ZipFile.CreateFromDirectory(path, zpath);
-			FileStream fs = new FileStream(zpath, FileMode.Open, FileAccess.Read);
-			return File(fs, "application/zip");
 			#endregion
 		}
+        public DataTable spDMTrangThaiKy_Create(string IDBA, string MaBS, string DuongDanFile, string TenBS)
+        {
+            string tenStore = "SpInsertURLDMTrangThaiKyERM";
+            DataTable dr = new DataTable();
+            string StrConection = ConfigurationManager.ConnectionStrings["SqlDataProvider"].ConnectionString + "; connection timeout=6000; pooling=true; Max Pool Size=6000;Timeout=6000;MultipleActiveResultSets=True";
+            using (SqlConnection Conection = new SqlConnection(StrConection))
+            {
+                Conection.Open();
+                using (SqlCommand Command = new SqlCommand(tenStore, Conection))
+                {
+                    Command.CommandType = CommandType.StoredProcedure;
+                    Command.Parameters.Add(new SqlParameter("@IDBA", IDBA));
+                    Command.Parameters.Add(new SqlParameter("@MaBS ", MaBS));
+                    Command.Parameters.Add(new SqlParameter("@TenBS ", TenBS));
+                    Command.Parameters.Add(new SqlParameter("@DuongDanFile", DuongDanFile));
+                    //Command.ExecuteNonQuery();
+                    SqlDataAdapter dp = new SqlDataAdapter(Command);
+                    dp.Fill(dr);
+                }
+                Conection.Close();
+                Conection.Dispose();
+                return dr;
+
+            }
+        }
+
+        public string PrintPDFString(string reportpath, string filename, DataTable dt, IConfiguration _config)
+        {
+            try
+            {
+                // Lấy đường dẫn gốc của thư mục chứa Report
+                string webRootPath = _config.GetValue<string>("ReportDirectory");
+
+                ReportDocument rpt = new ReportDocument();
+                string reportfilename = webRootPath + reportpath;
+                //WriteLog("reportfilename: "+ reportfilename);
+                rpt.Load(reportfilename);//Crystal Report Path
+                rpt.SetDataSource(dt);//Get data source. All the data can be read in SQL.
+                string tempFolder = webRootPath + "\\temp\\" + DateTime.Now.AddDays(-1).Month.ToString() + DateTime.Now.AddDays(-1).Day.ToString();
+
+                // Tạo thư mục lưu file tạm
+                if (!Directory.Exists(tempFolder))
+                {
+                    Directory.CreateDirectory(tempFolder);
+                }
+
+                // Tạo đường dẫn file PDF đầy đủ
+                string fullFilePath = tempFolder + filename; 
+
+                // Xóa nếu file đã tồn tại
+                if (System.IO.File.Exists(fullFilePath))
+                {
+                    System.IO.File.Delete(fullFilePath);
+                }
+
+                // Export từ Crystal Report sang stream PDF
+                var reqContext = new CrystalDecisions.Shared.ExportRequestContext();
+                var exportOptions = new CrystalDecisions.Shared.ExportOptions
+                {
+                    ExportFormatType = CrystalDecisions.Shared.ExportFormatType.PortableDocFormat,
+                    FormatOptions = new CrystalDecisions.Shared.PdfFormatOptions()
+                };
+                reqContext.ExportInfo = exportOptions;
+
+                var stream = rpt.FormatEngine.ExportToStream(reqContext);
+                stream.Seek(0, SeekOrigin.Begin);
+
+                // Dùng PdfSharp để kết hợp các trang (nếu cần)
+                var combinedPdf = new PdfSharp.Pdf.PdfDocument();
+                foreach (PdfSharp.Pdf.PdfPage page in PdfSharp.Pdf.IO.PdfReader.Open(stream, PdfSharp.Pdf.IO.PdfDocumentOpenMode.Import).Pages)
+                {
+                    combinedPdf.AddPage(page);
+                }
+
+                // Lưu file PDF ra đĩa
+                combinedPdf.Save(fullFilePath);
+
+                // Đóng Crystal Report
+                rpt.Close();
+                rpt.Dispose();
+
+                // ✅ Trả về đường dẫn file PDF
+                return fullFilePath;
+            }
+            catch (Exception ex)
+            {
+                WriteLog("PrintPDF Error: " + ex.ToString());
+                return null;
+            }
+        }
+
+      
+
         public FileContentResult PrintXML(string filename, List<Bundle> dt, IConfiguration _config)
         //public ActionResult PrintXML(string filename, object dt, IConfiguration _config)
 		{

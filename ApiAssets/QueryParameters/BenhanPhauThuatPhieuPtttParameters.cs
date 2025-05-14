@@ -8,5 +8,6 @@ namespace Medyx_EMR_BCA.ApiAssets.QueryParameters
         {
         }
         public decimal? Idba { get; set; }
+        public bool? getModelNull { get; set; }
     }
 }

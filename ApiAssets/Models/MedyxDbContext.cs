@@ -1,4 +1,5 @@
 ﻿using Medyx.ApiAssets.Models;
+using Medyx_EMR.ApiAssets.Models;
 using Medyx_EMR.Models.DanhMuc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -158,6 +159,9 @@ namespace Medyx_EMR_BCA.ApiAssets.Models
         public virtual DbSet<DmthuocBaiThuoc> DmthuocBaiThuoc { get; set; }
         public virtual DbSet<DmthuocBaiThuocC> DmthuocBaiThuocC { get; set; }
         public virtual DbSet<DM_HSBA> DM_HSBA { get; set; }
+        public virtual DbSet<BenhAnPhuSan> BenhAnPhuSan { get; set; }
+
+        public virtual DbSet<BenhAnTienSuSan> BenhAnTienSuSan { get; set; }
 
 
         // Unable to generate entity type for table 'dbo.DMDichVu_BYT'. Please see the warning messages.
@@ -213,6 +217,27 @@ namespace Medyx_EMR_BCA.ApiAssets.Models
 
             modelBuilder.HasAnnotation("ProductVersion", "2.2.0-rtm-35687");
 
+            modelBuilder.Entity<BenhAnPhuSan>(entity =>
+            {
+                entity.HasKey(e => e.Idba)
+                  .HasName("PK_BenhAnPhuSan_1");
+                entity.Property(e => e.Idba)
+                    .HasColumnName("IDBA")
+                    .HasColumnType("numeric(38, 0)");
+            });
+            modelBuilder.Entity<BenhAnTienSuSan>(entity =>
+            {
+                entity.HasKey(e => new { e.Idba, e.STT })
+                    .HasName("PK_BenhAnTienSuSan_1");
+
+                entity.ToTable("BenhAn_TienSuSan");
+                entity.Property(e => e.Idba)
+                    .HasColumnName("IDBA")
+                    .HasColumnType("numeric(38, 0)");
+                entity.Property(e => e.STT)
+                   .HasColumnName("STT")
+                   .HasColumnType("int");
+            });
             modelBuilder.Entity<Account>(entity =>
             {
                 entity.HasKey(e => new { e.MaNv, e.Account1 });
@@ -1467,7 +1492,7 @@ namespace Medyx_EMR_BCA.ApiAssets.Models
 
             modelBuilder.Entity<BenhAnFilePhiCauTruc>(entity =>
             {
-                entity.HasKey(e => new { e.Idba, e.Stt ,e.LoaiTaiLieu });
+                entity.HasKey(e => new { e.Idba, e.Stt, e.LoaiTaiLieu });
 
                 entity.ToTable("BenhAn_FilePhiCauTruc");
 

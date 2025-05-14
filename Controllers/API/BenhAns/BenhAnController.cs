@@ -407,10 +407,10 @@ namespace Medyx_EMR_BCA.Controllers.API.BenhAns
                 var webRootPath = ConfigurationManager.AppSettings["ReportDirectory"].Replace("\\\\", "\\");
                 //WriteLog("bat dau");
                 //string webRootPath = _config.GetValue<string>("ReportDirectory");
-                //WriteLog("webRootPath: " + webRootPath);
+                WriteLog("webRootPath: " + webRootPath);
                 ReportDocument rpt = new ReportDocument();
                 string reportfilename = webRootPath + reportpath;
-                //WriteLog("reportfilename: "+ reportfilename);
+                WriteLog("reportfilename: "+ reportfilename);
                 rpt.Load(reportfilename);//Crystal Report Path
                 rpt.SetDataSource(dt);//Get data source. All the data can be read in SQL.
                 //string path = webRootPath + "\\temp\\" + DateTime.Now.AddDays(-1).Month.ToString() + DateTime.Now.AddDays(-1).Day.ToString();
@@ -487,23 +487,6 @@ namespace Medyx_EMR_BCA.Controllers.API.BenhAns
             }
         }
 
-        //[HttpGet("{id}/print-ba-file3/{maba}.pdf")]
-        ////[SessionMiddlewareFilter("HSBA/thongtinbenhan/export", "HSBA/tobenhan/export")]
-        //public ActionResult Print3(decimal id, [FromQuery] PrintParameters parameters)
-        //{
-        //    string stt = "3";
-        //    //string IDBAMaBa = MaBaStorage.MaBaValue + "-" + "1" + "-" + "c" + "-" + 41 + "-" + "c";
-        //    string Loaigiayto = "41";
-
-        //    var path = _benhAnService.Print3(id);
-        //    //byte[] fileBytes = System.IO.File.ReadAllBytes(path);
-        //    //string base64String = Convert.ToBase64String(fileBytes);
-        //    //SaveToDatabase(base64String, id,stt, Loaigiayto);
-        //    if (parameters.ShouldReturnPath)
-        //        return new JsonResult(new { path });
-        //    DownloadFileResult downloadFileResult = uploadFileRespository.Download(path, true, true);
-        //    return File(downloadFileResult.FileBytes, downloadFileResult.contentType);
-        //}
 
 
 
@@ -535,95 +518,7 @@ namespace Medyx_EMR_BCA.Controllers.API.BenhAns
                 throw ex;
             }
         }
-        //[HttpGet("{id}/print-ba-file2/{maba}.pdf")]
-        //[SessionMiddlewareFilter("HSBA/thongtinbenhan/export", "HSBA/tobenhan/export")]
-        //public ActionResult Print2(decimal id, [FromQuery] PrintParameters parameters)
-        //{
-        //    string stt = "2";
-        //    //string IDBAMaBa = MaBaStorage.MaBaValue + "-" + "1" + "-" + "c" + "-" + 40 + "-" + "c";
-        //    string Loaigiayto = "40";
-        //    var path = _benhAnService.Print2(id);
-        //    byte[] fileBytes = System.IO.File.ReadAllBytes(path);
-        //    string base64String = Convert.ToBase64String(fileBytes);
-        //    //SaveToDatabase(base64String, id,stt, Loaigiayto);
-        //    if (parameters.ShouldReturnPath)
-        //        return new JsonResult(new { path });
-        //    DownloadFileResult downloadFileResult = uploadFileRespository.Download(path, true, true);
-        //    return File(downloadFileResult.FileBytes, downloadFileResult.contentType);
-
-
-        //}
-
-        //[HttpGet("{id}/print-ba-file2/{maba}.pdf")]
-        //[SessionMiddlewareFilter("HSBA/thongtinbenhan/export", "HSBA/tobenhan/export")]
-        //public ActionResult Print2(decimal id, [FromQuery] PrintParameters parameters)
-        //{
-        //    //var path = _benhAnService.Print2(id);
-        //    //if (parameters.ShouldReturnPath)
-        //    //    return new JsonResult(new { path });
-        //    //DownloadFileResult downloadFileResult = uploadFileRespository.Download(path, true, true);
-        //    //return File(downloadFileResult.FileBytes, downloadFileResult.contentType);
-        //    string fileName = "D:\\EMR\\Storage\\Print\\202311301553033907.pdf";
-        //    FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.ReadWrite);
-        //    return File(fs, "application/pdf");
-        //}
-
-
-        // API in tờ bệnh án thứ nhất
-        //[HttpGet("{id}/print-ba-file1/{maba}_1.pdf")]
-        //public ActionResult Print1(decimal id, [FromQuery] PrintParameters parameters)
-        //{
-        //    string path = _benhAnService.Print1(id);
-
-        //    // Streaming file content
-        //    var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
-
-        //    if (parameters.ShouldReturnPath)
-        //        return new JsonResult(new { path });
-
-        //    DownloadFileResult downloadFileResult = uploadFileRespository.Download(path, true, true);
-        //    return File(downloadFileResult.FileBytes, downloadFileResult.contentType, downloadFileResult.FileName);
-        //}
-
-
-
-        //[HttpGet("{id}/print-ba-file1/{maba}_1.pdf")]
-        ////[SessionMiddlewareFilter("HSBA/thongtinbenhan/export", "HSBA/tobenhan/export")]
-        //public ActionResult Print1(decimal id, [FromQuery] PrintParameters parameters)
-        //{
-        //    string mess = "";
-        //    try
-        //    {
-        //         mess += "1";
-        //        string stt = "1";
-        //        //string IDBAMaBa = MaBaStorage.MaBaValue + "-" + "1" + "-" + "c" + "-" + 1 + "-" + "c";
-        //        string Loaigiayto = "1";
-        //        mess += "2";
-        //        var path = _benhAnService.Print1(id);
-        //        mess += "\npath:" + path;
-        //        if (!System.IO.File.Exists(path))
-        //        {
-        //            return NotFound(new { message = "File not found", path });
-        //        }
-        //        byte[] fileBytes = System.IO.File.ReadAllBytes(path);
-        //        mess += "\nfileBytes:" + fileBytes;
-        //        string base64String = Convert.ToBase64String(fileBytes);
-        //        //SaveToDatabase(base64String, id,stt, Loaigiayto);
-        //        mess += "parameters.ShouldReturnPath:" + parameters.ShouldReturnPath;
-        //        if (parameters.ShouldReturnPath)
-        //            return new JsonResult(new { path });
-
-
-        //        DownloadFileResult downloadFileResult = uploadFileRespository.Download(path, true, true);
-        //        WriteLog("\nError processing PDF file: " + mess);
-        //        return File(downloadFileResult.FileBytes, downloadFileResult.contentType);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        WriteLog("\nError processing PDF file: " + ex.Message + "- mess:" + mess);
-        //        throw ex;
-        //    }
-        //}
+        
 
       
         [HttpGet("{id}/print-ba-file1/{maba}_1.pdf")]

@@ -47,8 +47,11 @@
                     </el-form-item>
                 </v-col>
                 <v-col cols="6" class="padding-cols">
-                    <el-form-item class="item-form" label="Tiền thai (Para) ">
-                        <el-input v-model="form.para" type="text" size="small"></el-input>
+                    <el-form-item>
+                        <div class="title-group-checkbox mr-4">Tiền thai (Para)</div>
+                        <el-checkbox @change="setModelFormCheckboxPara(Para)"
+                            v-for="(item, index) in Para" :key="index" v-model="item.checkbox">{{ item.ten }}
+                        </el-checkbox>
                     </el-form-item>
                 </v-col>
                 <v-col cols="6" class="padding-cols">
@@ -61,7 +64,7 @@
                 </v-col>
                 <v-col cols="6" class="padding-cols">
                     <el-form-item class="item-form" label="Cân nặng lúc sinh">
-                        <el-input v-model="form.canNangSinh" type="number" size="mini" :step="0.01"
+                        <el-input v-model="form.dtdMax" type="number" size="mini" :step="0.01"
                             controls-position="right" style="width: 100%"></el-input>
                     </el-form-item>
                 </v-col>
@@ -389,7 +392,8 @@ export default {
                 benhLyKhac: null,
                 nuoiDuong: null,
                 chamSoc: null,
-                tiemChungBenhKhac: null,               
+                tiemChungBenhKhac: null,      
+                cacBenhLyKhac: null,         
                 benhChinh: {
                     maBenh: null,
                     tenBenh: null,
@@ -425,7 +429,7 @@ export default {
                 maBenhKemVv9: null,
                 tenBenhKemVv9: null,
                 isClickBenhKem: false,
-                canNangSinh: null
+                dtdMax: null
             },
             
             benh_khac: [
@@ -460,6 +464,12 @@ export default {
                 { name: "Uốn ván", checkbox: false },
                 { name: "Bạch Hầu", checkbox: false },
                 { name: "Tiêm chủng khác", checkbox: false }
+            ],
+            Para: [
+                { name: "Sinh (đủ tháng)", checkbox: false },
+                { name: "Sớm (đẻ non)", checkbox: false },
+                { name: "Sẩy (nạo, hút)", checkbox: false },
+                { name: "Sống", checkbox: false }
             ],
             rules: {
                 mach: [
@@ -525,7 +535,6 @@ export default {
                 }
             }
             data = await getTienSuBenh(id, { getModelNull: true })
-            console.log(data.data)
             for (let key in this.form) {
                 if (data && data.data && data.data.hasOwnProperty(key)) {
                     this.form[key] = data.data[key]
@@ -533,7 +542,6 @@ export default {
                 }
             }
             this.form.canNangSinh = data.data.CanNang;
-           
             // data = await getSelectBox({ MaParent: '017' });
             // this.conThu = this.setCheckbox(this.form.conThu, data.data.conThu)
             if (this.form.canNang && this.form.chieuCao) {
@@ -547,7 +555,8 @@ export default {
             this.nuoiDuong = this.setCheckbox(this.form.nuoiDuong, data.data)
             data = await getSelectBox({ MaParent: '206' });
             this.chamSoc = this.setCheckbox(this.form.chamSoc, data.data)
-            console.log(this.chiSoHamax)
+            data = await getSelectBox({ MaParent: '217' });
+            this.Para = this.setCheckbox(this.form.para, data.data)
             data = await getChiTietPhieuKhamVaoVien(id)
             if (this.form.lyDoVv == null) {
                 this.form.lyDoVv = data.data.lyDoVv
@@ -579,6 +588,15 @@ export default {
                 }
             })
             this.form.tinhTrangSinh = ma;
+        },
+        setModelFormCheckboxPara(arrCheckbox) {
+            let ma = "";
+            arrCheckbox.forEach(item => {
+                if (item.checkbox) {
+                    ma = ma + item.ma + ","
+                }
+            })
+            this.form.para = ma;
         },
         setModelFormCheckboxNuoiDuong(arrCheckbox) {
             let ma = "";

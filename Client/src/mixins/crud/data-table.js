@@ -137,8 +137,10 @@ export default {
       const paths = url.split("/");
       for (const idx in paths) {
         if (paths[idx].startsWith(":")) paths[idx] = row[paths[idx].substr(1)];
+        console.log(paths[idx])
       }
       const newUrl = paths.join("/");
+      console.log(newUrl)
       // window.location = paths.join("/");
       window.open(newUrl, "_blank");
     },

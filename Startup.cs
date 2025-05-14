@@ -1,4 +1,5 @@
 ﻿using Medyx.ApiAssets.Models.Configure;
+using Medyx_EMR.ApiAssets.Services;
 using Medyx_EMR_BCA.ApiAssets.Helpers;
 using Medyx_EMR_BCA.ApiAssets.Middlewares;
 using Medyx_EMR_BCA.ApiAssets.Models;
@@ -67,6 +68,7 @@ namespace MongGoDBConnectWeb
             services.AddScoped<UploadFileRespository>();
             services.AddScoped<BenhAnClsService>();
             services.AddScoped<BenhAnService>();
+            services.AddScoped<BenhAnPhuSanService>();
             services.AddScoped<BenhAnCpmService>();
             services.AddScoped<BenhAnFilePhiCauTrucService>();
             services.AddScoped<BenhAnKhoaDieuTriService>();
@@ -90,6 +92,7 @@ namespace MongGoDBConnectWeb
             services.AddScoped<BenhAnPhacDoDtService>();
             services.AddScoped<BenhAnTtvltlDotDieuTriService>();
             services.AddScoped<BenhAnTtvltlThuchienService>();
+            services.AddScoped<BenhAnTienSuSanService>();
 
         }
 

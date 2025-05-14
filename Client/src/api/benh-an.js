@@ -18,26 +18,26 @@ export function viewPdf(data) {
 export function createBa(data) {
   return request({
     url: "/benh-an/them-moi-thong-tin-benh-an",
-    method: "get",
+    method: "post",
     data,
   });
 }
 
-export function updateThongTinChung(id,data) {
+export function updateThongTinChung(id, data) {
   return request({
     url: `/benh-an/${id}/cap-nhap-thong-tin-benh-an/`,
     method: "post",
     data
   });
 }
-export function updateDongThongTinChung(id,data) {
+export function updateDongThongTinChung(id, data) {
   return request({
     url: `/benh-an/${id}/dong-thong-tin-benh-an/`,
     method: "post",
     data
   });
 }
-export function update(id,data) {
+export function update(id, data) {
   return request({
     url: `/benh-an/${id}/cap-nhap-to-benh-an`,
     method: "post",
@@ -65,11 +65,11 @@ export function getKhoa() {
   });
 }
 export function GetByAccount() {
-    return request({
-        url: "/khoa/GetByAccount",
-        method: "get",
-        //cache: true,
-    });
+  return request({
+    url: "/khoa/GetByAccount",
+    method: "get",
+    //cache: true,
+  });
 }
 export function getDetailBenhAn(id) {
   return request({
@@ -120,7 +120,57 @@ export function getKhoaDieuTri(params) {
     params
   });
 }
-
+export function getBenhAnTienSuSan(id) {
+  return request({
+    url: "/benh-an-tien-su-san/" + id,
+    method: "get",
+  });
+}
+export function getDeatilPhieuPhauThuat(id) {
+  return request({
+    url: "/benh-an-phau-thuat-phieu-pttt/" + id,
+    method: "get",
+  });
+}
+export function addPhieuPhauThuatPttt(data) {
+  return request({
+    url: `/benh-an-phau-thuat-phieu-pttt/PostPhauThuatPhieuPttt`,
+    method: "post",
+    data
+  });
+}
+export function storeTienSuSan(data) {
+  return request({
+    url: `/benh-an-tien-su-san`,
+    method: "post",
+    data,
+  });
+}
+export function updateTienSuSan(id, stt, data) {
+  return request({
+    url: `/benh-an-tien-su-san/${id}/cap-nhat-tien-su-san/${stt}`,
+    method: "put",
+    data,
+  });
+}
+export function deleteTienSuSan(id, stt) {
+  return request({
+    url: `/benh-an-tien-su-san/${id}/xoa-tien-su-san/${stt}`,
+    method: "delete",
+  });
+}
+export function getBenhAnPhuSan(id) {
+  return request({
+    url: "/benh-an-phu-san/" + id,
+    method: "get",
+  });
+}
+export function getDetailBenhAnPttt(id) {
+  return request({
+    url: `/benh-an-phau-thuat-phieu-pttt/${id}/chi-tiet-maxId`,
+    method: "get",
+  });
+}
 export function getLoai(id) {
   return request({
     url: "/benh-an/" + id + "/loai-benh-an",
@@ -155,12 +205,14 @@ export function printBa2(idba) {
     `${window.origin}/api/benh-an/${idba}/print-ba-file2/${idba}.pdf`,
     "_blank"
   );
-  return;}
+  return;
+}
 
 
-  export function printBa3(idba) {
-    window.open(
-      `${window.origin}/api/benh-an/${idba}/print-ba-file3/${idba}.pdf`,
-      "_blank"
-    );
-    return;}
+export function printBa3(idba) {
+  window.open(
+    `${window.origin}/api/benh-an/${idba}/print-ba-file3/${idba}.pdf`,
+    "_blank"
+  );
+  return;
+}

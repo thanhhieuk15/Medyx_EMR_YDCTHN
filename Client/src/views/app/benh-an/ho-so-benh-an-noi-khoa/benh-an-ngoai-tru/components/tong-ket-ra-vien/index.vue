@@ -55,7 +55,7 @@
                   <el-input v-model="form2.tenBenhKemVv1" size="small"></el-input>
                 </el-form-item>
               </v-col>
-              <v-col cols="12">
+              <!-- <v-col cols="12">
                 <b>Bệnh kèm theo 2</b>
                 <el-form-item label="Mã bệnh">
                   <base-select-async v-model="form2.benhKem2.maBenh"
@@ -152,7 +152,7 @@
                 <el-form-item label="Tên bệnh">
                   <el-input v-model="form2.tenBenhKemVv9" size="small"></el-input>
                 </el-form-item>
-              </v-col>
+              </v-col> -->
 
 
               <v-col cols="12" class="padding-cols">
@@ -196,7 +196,7 @@
                   <el-input v-model="form2.tenBenhKemVv1yhct" size="small" placeholder="Tên bệnh"></el-input>
                 </el-form-item>
               </v-col>
-              <v-col cols="12">
+              <!-- <v-col cols="12">
                 <b>Bệnh kèm 2</b>
                 <el-form-item label="Mã bệnh">
                   <base-select-async v-model="form2.maBenhKemVv2yhct"
@@ -299,7 +299,7 @@
                 <el-form-item label="Tên bệnh">
                   <el-input v-model="form2.tenBenhKemVv9yhct" size="small" placeholder="Tên bệnh"></el-input>
                 </el-form-item>
-              </v-col>
+              </v-col> -->
              
               <v-col cols="12" class="padding-cols">
                 <el-form-item label="Phương pháp điều trị">
@@ -351,7 +351,7 @@
                   <el-input v-model="form2.tenBenhKemRv1" size="small" placeholder="Tên bệnh"></el-input>
                 </el-form-item>
               </v-col>
-              <v-col cols="12">
+              <!-- <v-col cols="12">
                 <b>Bệnh kèm 2</b>
                 <el-form-item label="Mã bệnh">
                   <base-select-async v-model="form2.maBenhKemRv2" :label="(item) => `${item.maBenh} - ${item.tenBenh}`"
@@ -446,7 +446,7 @@
                 <el-form-item label="Tên bệnh">
                   <el-input v-model="form2.tenBenhKemRv9" size="small" placeholder="Tên bệnh"></el-input>
                 </el-form-item>
-              </v-col>
+              </v-col> -->
             </v-row>
           </div>
         </v-col>
@@ -483,7 +483,7 @@
                   <el-input v-model="form2.tenBenhKemRv1yhct" size="small" placeholder="Tên bệnh"></el-input>
                 </el-form-item>
               </v-col>
-              <v-col cols="12">
+              <!-- <v-col cols="12">
                 <b>Bệnh kèm 2</b>
                 <el-form-item label="Mã bệnh">
                   <base-select-async v-model="form2.maBenhKemRv2yhct"
@@ -586,36 +586,36 @@
                 <el-form-item label="Tên bệnh">
                   <el-input v-model="form2.tenBenhKemRv9yhct" size="small" placeholder="Tên bệnh"></el-input>
                 </el-form-item>
-              </v-col>
+              </v-col> -->
             </v-row>
           </div>
         </v-col>
-        <v-col xl="3" lg="3" md="4" cols="3" class="padding-cols">
+        <v-col cols="12" class="padding-cols">
           <el-form-item label="Quá Trình bệnh lý và diễn biến lâm sàng">
             <el-input size="small" v-model="form.quaTrinhBenhLy"></el-input>
           </el-form-item>
         </v-col>
-        <v-col xl="3" lg="3" md="4" cols="3" class="padding-cols">
+        <v-col cols="12" class="padding-cols">
           <el-form-item label="Tóm tắt kết quả xét nghiệm cận lâm sàng có giá trị chẩn đoán:">
             <el-input size="small" v-model="form.tomTatKetQuaCls"></el-input>
           </el-form-item>
         </v-col>
-        <v-col xl="3" lg="3" md="4" cols="3" class="padding-cols">
+        <v-col cols="12" class="padding-cols">
           <el-form-item label="3. Phương pháp điều trị">
             <el-input size="small" v-model="form.phuongPhapDT"></el-input>
           </el-form-item>
         </v-col>
-        <v-col xl="3" lg="3" md="4" cols="3" class="padding-cols">
+        <v-col cols="12" class="padding-cols">
           <el-form-item label="4. Tình trạng người bệnh ra viện">
             <el-input size="small" v-model="form.tinhTrangBnrv"></el-input>
           </el-form-item>
         </v-col>
-        <v-col xl="3" lg="3" md="4" cols="3" class="padding-cols">
+        <v-col cols="12" class="padding-cols">
           <el-form-item label="5. Hướng điều trị và các chế độ tiếp theo">
             <el-input v-model="form.huongDt" size="small"></el-input>
           </el-form-item>
         </v-col>
-        <v-col xl="3" lg="3" md="4" cols="3" class="padding-cols">
+        <!-- <v-col xl="3" lg="3" md="4" cols="3" class="padding-cols">
           <el-form-item label="Số tờ X-Quang">
             <el-input-number style="width: 100%" size="small" controls-position="right" v-model="form.soToXquang">
             </el-input-number>
@@ -675,15 +675,15 @@
               :label="(item) => `${item.hoTen} - ${item.maNv} - ${item.khoa.tenKhoa}`" keyValue="maNv"
               :apiFunc="getNhanVien" style="width: 100%" size="small"></base-select-async>
           </el-form-item>
-        </v-col>
-        <v-col xl="3" lg="3" md="4" cols="3" class="padding-cols">
+        </v-col> -->
+        <v-col cols="6" class="padding-cols">
           <el-form-item label="Ngày tháng năm ký">
             <el-date-picker type="datetime" style="width: 100%" size="small" v-model="form.ngayKy"
               format="dd/mm/yyyy HH:mm:ss" value-format="yyyy-MM-ddTHH:mm:ss"
               placeholder="dd/mm/yyyy HH:mm"></el-date-picker>
           </el-form-item>
         </v-col>
-        <v-col xl="3" lg="3" md="4" cols="3" class="padding-cols">
+        <v-col cols="6" class="padding-cols">
           <el-form-item label="Bác sĩ khám, chữa bệnh">
             <base-select-async v-model="form.bsdieuTri" placeholder="Tìm kiếm theo tên"
               :label="(item) => `${item.hoTen} - ${item.maNv} - ${item.khoa.tenKhoa}`" keyValue="maNv"

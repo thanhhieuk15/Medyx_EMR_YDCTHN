@@ -58,6 +58,14 @@ export function getNhanVien(params) {
     method: "get",
     params,
   });
+  
+}
+export function getNhanVienBSPT(params) {
+  return request({
+    url: "/dm-nhan-vien",
+    method: "get",
+    params,
+  });
 }
 export function getBenhAnKhoaDieuTri(params) {
   return request({

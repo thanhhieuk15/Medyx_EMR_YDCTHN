@@ -1,8 +1,5 @@
 <template>
     <div>
-        <div style="font-size: 16px; font-weight: bold" class="mb-3">
-            A. Y HỌC HIỆN ĐẠI
-        </div>
         <el-form :model="form" :rules="rules" ref="form">
             <v-row>
                 <v-col cols="12" class="padding-cols">
@@ -357,10 +354,10 @@ export default {
                 tenBenhKemVv9: null,
                 isClickBenhKem: false,
                 donDaTriLieuHa: null,
-                dieuTriTangHathuongXuyen:null,
-                noiDieuTriTangHa:null,
-                thoiDiemPhatHienTangHa:null,
-                thoiDiemPhatHienDtd:null
+                dieuTriTangHathuongXuyen: null,
+                noiDieuTriTangHa: null,
+                thoiDiemPhatHienTangHa: null,
+                thoiDiemPhatHienDtd: null
             },
             benh_khac: [
                 {
@@ -557,7 +554,7 @@ export default {
             }
             data = await getTienSuBenh(id, { getModelNull: true })
             console.log(data);
-            
+
             for (let key in this.form) {
                 if (data && data.data && data.data.hasOwnProperty(key)) {
                     this.form[key] = data.data[key]

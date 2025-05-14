@@ -119,6 +119,10 @@ export default {
             {
                 ma: '5',
                 ten: 'Tử Vong'
+            },
+            {
+                ma: '6',
+                ten: 'Chuyển viện'
             }
         ],
         giaiPhauBenh: [
