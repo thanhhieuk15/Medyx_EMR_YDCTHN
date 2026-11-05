@@ -1,0 +1,18 @@
+﻿@{
+    Layout = "~/Views/HSBADS/_LayoutHSBDS.cshtml";
+}
+
+@{
+    Medyx_EMR_BCA.Models.DBConText.UserProfileSessionData Model = ViewData["UserProfileSessionData"] as
+            Medyx_EMR_BCA.Models.DBConText.UserProfileSessionData;
+    var ListRoleSession = Model.ListRoleSession;
+    var QuyenXem = ListRoleSession.Where(x => x.ActionDetailsName == "/HSBA/Index/Modify").Count() > 0 ? "true" : "false";
+    var Create = ListRoleSession.Where(x => x.ActionDetailsName == "/HSBA/Index/Create").Count() > 0;
+    var id = ViewData["id"];
+    var stt = ViewData["stt"];
+    var maPhieuBG = ViewData["maPhieuBG"];
+}
+
+<div id="app">
+    <chi-tiet-phieu-ban-giao-b-n :id="@id" :stt="@stt" :maPhieuBG="@maPhieuBG" :permission="@(Newtonsoft.Json.JsonConvert.SerializeObject(ListRoleSession))" />
+</div>
