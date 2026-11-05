@@ -60,6 +60,13 @@
           {{ item.name }}
         </div>
         <div class="d-flex align-center">
+            <el-tooltip effect="dark" content="Xem" placement="bottom">
+    <i style="margin-right: 20px"
+       color="rgba(0, 0, 0, 0.54)" dark
+       @click="getViewFile(item.idba,item.stt,item.name)"
+       class="el-icon-view">
+    </i>
+</el-tooltip>
           <el-tooltip  effect="dark" content="Tải xuống" placement="bottom">
             <i style="margin-right: 20px" 
                 color="rgba(0, 0, 0, 0.54)" dark  
@@ -133,7 +140,8 @@ export default {
       });
       this.files = data.data;
       this.files.forEach((item) => {
-        item.name = item.link.split("\\").at(-1);
+        item.name = item.taiLiieuDinhKem?.split("\\").at(-1) || '';
+
       });
       this.$emit("get-total-files", this.files ? this.files.length : 0);
     },
@@ -180,7 +188,28 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    },
+      },
+      async getViewFile(idba, stt, name) {
+          try {
+              let data = await downloadFile(idba, stt);
+
+              // 1. Tạo Blob từ dữ liệu trả về
+              // Lưu ý: Nếu là file PDF, hãy thêm type: 'application/pdf' để trình duyệt hiểu và hiển thị giao diện xem thay vì tải về.
+              var blob = new Blob([data], { type: 'application/pdf' });
+
+              // 2. Tạo một đường dẫn URL tạm thời cho Blob này
+              var fileURL = URL.createObjectURL(blob);
+
+              // 3. Mở URL này trong một tab mới bên cạnh
+              window.open(fileURL, '_blank');
+
+              // (Tùy chọn) Giải phóng bộ nhớ sau khi dùng xong nếu không cần giữ lại URL này lâu dài
+              // setTimeout(() => URL.revokeObjectURL(fileURL), 100);
+
+          } catch (error) {
+              console.log(error);
+          }
+      },
     async removeFile( item) {
       var loaiTaiLieu = 1;
       await deleteFile(item.idba, item.stt,loaiTaiLieu);
