@@ -316,10 +316,10 @@ namespace Medyx_EMR_BCA.Controllers.API.BenhAnKhoaDieuTris
         public dynamic LuuTru(decimal id)
         {
             var benhAn = _benhAnRepository.GetById(id);
-            if (benhAn.XacNhanLuuTru == 0 || benhAn.XacNhanLuuTru == null)
-            {
-                return false;
-            }
+            //if (benhAn.XacNhanLuuTru == 0 || benhAn.XacNhanLuuTru == null)
+            //{
+            //    return false;
+            //}
             return new JsonResult(new
             {
                 xacNhanLuuTru = benhAn.XacNhanLuuTru,

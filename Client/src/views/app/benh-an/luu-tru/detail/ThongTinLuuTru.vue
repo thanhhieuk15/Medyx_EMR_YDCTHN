@@ -22,8 +22,10 @@
             HSBA</el-button>
           <el-button type="success" :disabled="daLuuTru" @click="submitForm" size="medium">Lưu trữ</el-button>
           <el-button type="success" @click="submitExport" size="medium">Kết xuất</el-button>
-          <!-- <el-button type="success" @click="onDownloadFile" size="medium">Tải file đã ký</el-button>
-          <el-button type="primary" @click="onPreviewFile" size="medium">Xem file đã ký</el-button> -->
+          <el-button type="success" @click="onDownloadFile" size="medium">Tải file đã ký</el-button>
+          <!--<el-button type="primary" @click="onPreviewFile" size="medium">Xem file đã ký</el-button>-->
+                      <el-button type="success" small de depressed class="mr-4" @click="onPreviewFile" :loading="isLoadingPrint"
+            size="medium"> <v-icon small left> mdi-printer </v-icon>Xem file đã ký</el-button>
         </v-col>
 
         <!-- <el-form-item>
@@ -124,13 +126,18 @@ import { exportHSBA, DownloadFile, PreviewFile } from "@/api/tap-tin-dinh-kem.js
 
 export default {
   props: ["id", "danhSachLoaiTaiLieu"],
-  data() {
-    return {
 
+  data() {
+    const userStr = localStorage.getItem("currentUser");
+      const user = userStr ? JSON.parse(userStr) : null;
+    return {
+        user, // CHÈN THÊM DÒNG NÀY: Để Vue hiểu được "this.user" trong các hàm khác
+      
       getNhanVien,
       loading: null,
       daLuuTru: false,
       date: null,
+      isLoadingPrint:false,
       rules: {
         soLuuTru: [
           {
@@ -158,24 +165,34 @@ export default {
       form: {
         soLuuTru: "",
         xacNhanLuuTru: 1,
-        nguoiLuuTru: null,
+        nguoiLuuTru: user ? user.id : null,
         ngayLuuTru: new Date().toLocaleDateString("en-CA"),
       },
     };
   },
-  computed: {},
+  mounted() {
+      if (this.id) {
+      this.getThongTinLuuTru(); // Gọi hàm lấy dữ liệu từ DB lên form
+    }
+  },
+
   methods: {
+
     async getThongTinLuuTru() {
       try {
+     
         const { data } = await getThongTinLuuTru(this.id);
+           console.log(data);
+
         if (!data) {
           this.daLuuTru = false;
           return;
         }
+        data.nguoiLuuTru = this.user.id;
         for (const field in this.form) {
           this.form[field] = data[field];
         }
-        this.daLuuTru = true;
+        //this.daLuuTru = true;
       } catch (error) {
         console.log(error)
       }
@@ -214,6 +231,7 @@ export default {
     },
     async onPreviewFile() {
       try {
+           this.isLoadingPrint = true;
         const response = await PreviewFile(this.id);
         if (response == undefined) {
           console.error('Không có file đã ký nào');
@@ -224,17 +242,11 @@ export default {
             "_blank"
           );
         }
-        console.log(response);
-        // if (response) {
-        //   const host = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
-        //   window.open(
-        //     `${host}/Storage/DownloadFolder/`+response.data,
-        //     "_blank"
-        //   );
-        // }
       } catch (error) {
         console.log(error)
-      }
+      } finally {
+  this.isLoadingPrint = false;
+}
     },
     async forceFileDownload(blob, title) {
       const url = window.URL.createObjectURL(blob);
@@ -299,11 +311,6 @@ export default {
       const host = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
       window.open(host + "/client/Signbase64.html")
     }
-  },
-  created() {
-    // console.log("CheckPlugin", BkavCAPlugin,CheckPluginValid,value)
-
-
   },
 };
 </script>
