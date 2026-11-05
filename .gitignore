@@ -369,3 +369,4 @@ wwwroot/client
 /ReportHSBA/Report/CRPhieuNhanDinhBanDau.rpt
 /ReportHSBA/Report/CRPhieuTruyenDich.rpt
 /ReportHSBA/Report/CRTomTatMo.rpt
+/Controllers/API/BenhAns/BenhAnControllerold.cs
